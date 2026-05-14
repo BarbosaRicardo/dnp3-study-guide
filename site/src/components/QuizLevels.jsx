@@ -22,7 +22,7 @@ const LEVEL_META = [
     description: 'Failure modes, calculations, and real-world edge cases. Pass to unlock Level 3.',
     headerBg: 'bg-slate-800',
     accentText: 'text-amber-400',
-    borderColor: 'border-slate-200',
+    borderColor: 'border-amber-900/30',
     activeBorder: 'border-slate-700',
     emoji: '📙',
   },
@@ -32,7 +32,7 @@ const LEVEL_META = [
     description: 'Textbook-depth. Questions cite chapter and page. AI applications included.',
     headerBg: 'bg-[#0d0d14]',
     accentText: 'text-orange-400',
-    borderColor: 'border-slate-200',
+    borderColor: 'border-amber-900/30',
     activeBorder: 'border-slate-900',
     emoji: '📕',
   },
@@ -69,12 +69,12 @@ function ResourceDrawer({ resources, level, onClose }) {
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-y-auto bg-white p-4 space-y-3">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {(!resources || resources.length === 0) && (
             <p className="text-slate-400 text-sm text-center py-8">Resources coming soon.</p>
           )}
           {resources?.map((r, i) => (
-            <div key={i} className="border border-slate-100 rounded-xl overflow-hidden">
+            <div key={i} className="border border-amber-900/20 rounded-xl overflow-hidden">
               {r.type === 'youtube' && (
                 <a
                   href={r.searchUrl}
@@ -205,12 +205,12 @@ function LevelCard({ meta, questions, chapterId, locked, passed }) {
           onClick={() => !locked && setOpen((o) => !o)}
           className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors ${
             locked ? 'opacity-60 cursor-not-allowed bg-white' :
-            open ? `${headerBg}` : 'bg-white hover:bg-slate-50'
+            open ? `${headerBg}` : 'hover:bg-amber-900/10'
           }`}
         >
           <span className="text-lg leading-none flex-shrink-0">{locked ? '🔒' : passed ? '✅' : emoji}</span>
           <div className="flex-1 min-w-0">
-            <div className={`font-bold text-sm ${open ? 'text-white' : 'text-slate-800'}`}>{label}</div>
+            <div className={`font-bold text-sm ${open ? 'text-white' : 'text-slate-300'}`}>{label}</div>
             <div className={`text-xs mt-0.5 leading-snug ${open ? accentText : 'text-slate-500'}`}>{description}</div>
           </div>
           {!locked && (
@@ -222,7 +222,7 @@ function LevelCard({ meta, questions, chapterId, locked, passed }) {
         </button>
 
         {!locked && open && (
-          <div className="border-t border-slate-100">
+          <div className="border-t border-amber-900/20">
             {/* Passed banner */}
             {passed && resources.length > 0 && (
               <div className={`px-4 py-2 flex items-center justify-between ${
@@ -234,7 +234,7 @@ function LevelCard({ meta, questions, chapterId, locked, passed }) {
                 <button
                   onClick={() => setDrawerOpen(true)}
                   className={`flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-white ${
-                    level === 3 ? 'bg-orange-600' : level === 2 ? 'bg-amber-600' : 'bg-mblue-600'
+                    level === 3 ? 'bg-orange-600' : level === 2 ? 'bg-amber-600' : 'bg-amber-500'
                   }`}
                 >
                   Dig Deeper
@@ -298,9 +298,9 @@ export default function QuizLevels({ chapterId }) {
   return (
     <div className="my-8 space-y-3">
       <div className="flex items-center gap-2 mb-1">
-        <div className="h-px flex-1 bg-slate-200" />
-        <span className="text-xs font-bold uppercase tracking-widest text-slate-400">Knowledge Levels</span>
-        <div className="h-px flex-1 bg-slate-200" />
+        <div className="h-px flex-1" style={{ background: "rgba(245,158,11,0.15)" }} />
+        <span className="text-xs font-bold uppercase tracking-widest text-xs font-bold uppercase tracking-widest" style={{ color: "rgba(245,158,11,0.45)" }}>Knowledge Levels</span>
+        <div className="h-px flex-1" style={{ background: "rgba(245,158,11,0.15)" }} />
       </div>
       {LEVEL_META.map((meta, i) => (
         <LevelCard

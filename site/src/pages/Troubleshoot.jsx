@@ -39,7 +39,7 @@ export default function Troubleshoot() {
   return (
     <ChapterLayout chapterId="troubleshoot" title="Troubleshooting DNP3" emoji="🔍" prev="security" next="lab">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">DNP3 Was Designed to Be Diagnosable</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">DNP3 Was Designed to Be Diagnosable</h2>
         <p>
           DNP3 was designed by utility engineers who knew that substations are remote, field techs are
           expensive to dispatch, and you need to diagnose problems without being on-site.
@@ -62,10 +62,10 @@ export default function Troubleshoot() {
       <FunFact index={7} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Common Problems and Fixes</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Common Problems and Fixes</h2>
         <div className="space-y-4">
           {COMMON_ISSUES.map((item) => (
-            <div key={item.issue} className="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+            <div key={item.issue} className="bg-slate-800/40 border border-amber-900/30 rounded-2xl overflow-hidden">
               <div className="bg-mred-50 border-b border-mred-100 px-4 py-3">
                 <div className="font-bold text-mred-500 text-sm">Problem: {item.issue}</div>
               </div>
@@ -74,7 +74,7 @@ export default function Troubleshoot() {
                   <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Possible Causes</div>
                   <ul className="space-y-1">
                     {item.causes.map((c, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
+                      <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
                         <span className="text-mred-400 font-bold flex-shrink-0">→</span>
                         {c}
                       </li>
@@ -83,7 +83,7 @@ export default function Troubleshoot() {
                 </div>
                 <div>
                   <div className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2">Fix</div>
-                  <p className="text-xs text-slate-700 leading-relaxed">{item.fix}</p>
+                  <p className="text-xs text-slate-300 leading-relaxed">{item.fix}</p>
                 </div>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function Troubleshoot() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Wireshark DNP3 Dissector</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Wireshark DNP3 Dissector</h2>
         <p>
           Wireshark has supported DNP3 decoding since version 1.4. It decodes every layer:
           data link frame, transport header, application APDU, and object data. For DNP3 over TCP,
@@ -113,7 +113,7 @@ export default function Troubleshoot() {
       <AnalogyCard analogy={ANALOGIES[4]} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Interpreting Malformed Frames</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Interpreting Malformed Frames</h2>
         <p>
           When Wireshark shows a DNP3 frame as "malformed" or you see CRC errors, the frame is corrupt.
           The question is: corrupt at what point?
@@ -125,9 +125,9 @@ export default function Troubleshoot() {
             { symptom: 'Length byte wrong', cause: 'Framing lost — parser found 0x0564 in random noise, not a real frame' },
             { symptom: 'Valid CRC but wrong sequence', cause: 'Duplicate frame retransmit, or sequence counter desynchronized' },
           ].map((row, i) => (
-            <div key={i} className="flex gap-4 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+            <div key={i} className="flex gap-4 bg-slate-800/40 rounded-xl px-4 py-3 border border-amber-900/20">
               <span className="font-semibold text-mred-500 min-w-48 flex-shrink-0 text-xs">{row.symptom}</span>
-              <span className="text-slate-600 text-xs">{row.cause}</span>
+              <span className="text-slate-400 text-xs">{row.cause}</span>
             </div>
           ))}
         </div>
@@ -137,6 +137,7 @@ export default function Troubleshoot() {
 
       <FunFact index={8} />
 
+      <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.troubleshoot} />
       <QuizLevels chapterId="troubleshoot" />
     </ChapterLayout>
   )

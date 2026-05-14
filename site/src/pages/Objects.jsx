@@ -24,7 +24,7 @@ export default function Objects() {
   return (
     <ChapterLayout chapterId="objects" title="Data Objects & Groups" emoji="🗂️" prev="appLayer" next="fc">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">The Group/Variation System</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">The Group/Variation System</h2>
         <p>
           DNP3 uses a structured object library where every data type is identified by a
           <strong> Group</strong> number and a <strong>Variation</strong> number. Group defines the
@@ -50,7 +50,7 @@ export default function Objects() {
       <FunFact index={8} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">The Core Object Groups</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">The Core Object Groups</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-xs border-collapse">
             <thead>
@@ -64,10 +64,10 @@ export default function Objects() {
             <tbody>
               {OBJECT_GROUPS.map((row, i) => (
                 <tr key={row.group} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
-                  <td className="px-3 py-2 font-mono font-bold text-mblue-600">{row.group}</td>
-                  <td className="px-3 py-2 font-medium text-slate-700">{row.name}</td>
+                  <td className="px-3 py-2 font-mono font-bold text-amber-400">{row.group}</td>
+                  <td className="px-3 py-2 font-medium text-slate-300">{row.name}</td>
                   <td className="px-3 py-2 font-mono text-slate-500">{row.var}</td>
-                  <td className="px-3 py-2 text-slate-600">{row.note}</td>
+                  <td className="px-3 py-2 text-slate-400">{row.note}</td>
                 </tr>
               ))}
             </tbody>
@@ -76,33 +76,33 @@ export default function Objects() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Object Headers and Qualifier Codes</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Object Headers and Qualifier Codes</h2>
         <p>
           Objects in a DNP3 APDU are grouped into <strong>object headers</strong>. Each header specifies
           what data follows using a Group, Variation, Qualifier Code, and optional index/count/range fields.
         </p>
-        <div className="mt-4 bg-slate-50 rounded-xl border border-slate-200 p-4 font-mono text-sm">
+        <div className="mt-4 bg-slate-800/30 rounded-xl border border-amber-900/30 p-4 font-mono text-sm">
           <div className="text-slate-400 mb-2">Object Header format:</div>
           <div className="flex gap-2 flex-wrap">
-            <span className="bg-mblue-600 text-white px-3 py-1 rounded-lg">Group (1 byte)</span>
-            <span className="text-slate-500">+</span>
+            <span className="bg-amber-500 text-white px-3 py-1 rounded-lg">Group (1 byte)</span>
+            <span className="text-slate-400">+</span>
             <span className="bg-mcyan-500 text-white px-3 py-1 rounded-lg">Variation (1 byte)</span>
-            <span className="text-slate-500">+</span>
+            <span className="text-slate-400">+</span>
             <span className="bg-mgreen-500 text-white px-3 py-1 rounded-lg">Qualifier (1 byte)</span>
-            <span className="text-slate-500">+</span>
+            <span className="text-slate-400">+</span>
             <span className="bg-amber-500 text-white px-3 py-1 rounded-lg">Range/Count/Index</span>
           </div>
-          <div className="mt-3 text-xs text-slate-500 space-y-1">
-            <div><span className="text-mblue-600 font-bold">Qualifier 0x00</span> — Start/Stop index (8-bit), read specific point range</div>
-            <div><span className="text-mblue-600 font-bold">Qualifier 0x06</span> — No range, all objects — read everything the device has</div>
-            <div><span className="text-mblue-600 font-bold">Qualifier 0x17</span> — Count of objects (8-bit), used in responses with event data</div>
-            <div><span className="text-mblue-600 font-bold">Qualifier 0x28</span> — Start/Stop index (16-bit), for devices with many points</div>
+          <div className="mt-3 text-xs text-slate-400 space-y-1">
+            <div><span className="text-amber-400 font-bold">Qualifier 0x00</span> — Start/Stop index (8-bit), read specific point range</div>
+            <div><span className="text-amber-400 font-bold">Qualifier 0x06</span> — No range, all objects — read everything the device has</div>
+            <div><span className="text-amber-400 font-bold">Qualifier 0x17</span> — Count of objects (8-bit), used in responses with event data</div>
+            <div><span className="text-amber-400 font-bold">Qualifier 0x28</span> — Start/Stop index (16-bit), for devices with many points</div>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Quality Flags</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Quality Flags</h2>
         <p>
           One of DNP3's most underappreciated features: <strong>quality flags</strong>. Most object
           variations include a flags byte that tells you the <em>quality</em> of the data, not just its value.
@@ -118,7 +118,7 @@ export default function Objects() {
           ].map((f) => (
             <div key={f.flag} className={`border rounded-xl p-3 ${f.color}`}>
               <div className="font-bold text-xs">{f.flag}</div>
-              <div className="text-xs mt-1 text-slate-600">{f.desc}</div>
+              <div className="text-xs mt-1 text-slate-400">{f.desc}</div>
             </div>
           ))}
         </div>
@@ -134,6 +134,7 @@ export default function Objects() {
 
       <FunFact index={9} />
 
+      <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.objects} />
       <QuizLevels chapterId="objects" />
     </ChapterLayout>
   )

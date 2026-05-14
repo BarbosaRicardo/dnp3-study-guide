@@ -9,7 +9,7 @@ export default function Security() {
   return (
     <ChapterLayout chapterId="security" title="DNP3 Secure Authentication" emoji="🔒" prev="unsol" next="troubleshoot">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Why DNP3 Needed Security</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Why DNP3 Needed Security</h2>
         <p>
           The original DNP3 protocol had zero security. None. Zip. Any device on the network could send
           any command to any outstation and it would execute. This was acceptable in 1993 when substations
@@ -38,14 +38,14 @@ export default function Security() {
       <FunFact index={5} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">SA v2 vs SA v5 — Pick One (They Don't Talk to Each Other)</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">SA v2 vs SA v5 — Pick One (They Don't Talk to Each Other)</h2>
         <p>
           There are two versions of DNP3 Secure Authentication in widespread deployment:
         </p>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-            <div className="font-bold text-navy-700 mb-2">SA Version 2</div>
-            <ul className="text-xs text-slate-600 space-y-1">
+          <div className="bg-slate-800/30 border border-amber-900/30 rounded-xl p-4">
+            <div className="font-bold text-amber-400 mb-2">SA Version 2</div>
+            <ul className="text-xs text-slate-400 space-y-1">
               <li>• Published ~2007 (before IEEE 1815)</li>
               <li>• Uses HMAC-SHA1 or HMAC-MD5</li>
               <li>• Pre-shared symmetric keys only</li>
@@ -55,8 +55,8 @@ export default function Security() {
             </ul>
           </div>
           <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-            <div className="font-bold text-navy-700 mb-2">SA Version 5 (Current)</div>
-            <ul className="text-xs text-slate-600 space-y-1">
+            <div className="font-bold text-amber-400 mb-2">SA Version 5 (Current)</div>
+            <ul className="text-xs text-slate-400 space-y-1">
               <li>• Defined in IEEE 1815-2012</li>
               <li>• HMAC-SHA256 (minimum), HMAC-SHA3 supported</li>
               <li>• Supports asymmetric key exchange (certificate-based)</li>
@@ -75,14 +75,14 @@ export default function Security() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">How Authentication Works</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">How Authentication Works</h2>
         <p>
           DNP3 SA uses a <strong>challenge-response</strong> mechanism. The verifier (usually the outstation
           for critical functions) challenges the requester (usually the master) to prove it knows the
           shared secret before executing a command.
         </p>
-        <div className="mt-4 bg-slate-50 rounded-2xl border border-slate-200 p-5">
-          <div className="font-semibold text-navy-700 mb-4">Challenge-Response Flow (SA v5)</div>
+        <div className="mt-4 bg-slate-800/30 rounded-2xl border border-amber-900/30 p-5">
+          <div className="font-semibold text-amber-400 mb-4">Challenge-Response Flow (SA v5)</div>
           <div className="space-y-3 text-xs">
             {[
               { step: '1', desc: 'Master sends a command (e.g., Select for a breaker operation)' },
@@ -92,8 +92,8 @@ export default function Security() {
               { step: '5', desc: 'Outstation independently computes the same HMAC and compares. Match = authenticated, proceed. No match = reject.' },
             ].map((s) => (
               <div key={s.step} className="flex gap-3">
-                <div className="w-6 h-6 bg-mblue-600 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">{s.step}</div>
-                <div className="text-slate-700 pt-0.5">{s.desc}</div>
+                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">{s.step}</div>
+                <div className="text-slate-300 pt-0.5">{s.desc}</div>
               </div>
             ))}
           </div>
@@ -101,7 +101,7 @@ export default function Security() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Aggressive Mode</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Aggressive Mode</h2>
         <p>
           Normal SA adds 2 round trips per authenticated command (challenge + reply before the command executes).
           For high-frequency operations, this overhead is unacceptable. Enter <strong>Aggressive Mode</strong>.
@@ -126,6 +126,7 @@ export default function Security() {
 
       <FunFact index={6} />
 
+      <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.security} />
       <QuizLevels chapterId="security" />
     </ChapterLayout>
   )

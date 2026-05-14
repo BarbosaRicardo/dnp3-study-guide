@@ -2,11 +2,51 @@ import React from 'react'
 import { Lightbulb, AlertTriangle, FlaskConical, Star, Cpu } from 'lucide-react'
 
 const TYPES = {
-  key:     { icon: Lightbulb,     bg: 'bg-blue-50',   border: 'border-blue-300',   text: 'text-blue-800',   label: 'text-blue-600',   iconBg: 'bg-blue-500',   title: 'Key Concept' },
-  warning: { icon: AlertTriangle, bg: 'bg-orange-50', border: 'border-orange-300', text: 'text-orange-800', label: 'text-orange-600', iconBg: 'bg-orange-500', title: 'Warning' },
-  example: { icon: FlaskConical,  bg: 'bg-green-50',  border: 'border-green-300',  text: 'text-green-800',  label: 'text-green-600',  iconBg: 'bg-green-500',  title: 'Example' },
-  pro:     { icon: Star,          bg: 'bg-amber-50',  border: 'border-amber-300',  text: 'text-amber-800',  label: 'text-amber-600',  iconBg: 'bg-amber-500',  title: 'Pro Tip' },
-  field:   { icon: Cpu,           bg: 'bg-red-50',    border: 'border-red-300',    text: 'text-red-800',    label: 'text-red-600',    iconBg: 'bg-red-500',    title: '⚠️ Field Gotcha' },
+  key: {
+    icon: Lightbulb,
+    bg: 'rgba(59,130,246,0.08)',
+    border: 'rgba(59,130,246,0.3)',
+    text: '#93c5fd',
+    label: '#60a5fa',
+    iconBg: '#1d4ed8',
+    title: 'Key Concept',
+  },
+  warning: {
+    icon: AlertTriangle,
+    bg: 'rgba(239,68,68,0.08)',
+    border: 'rgba(239,68,68,0.3)',
+    text: '#fca5a5',
+    label: '#f87171',
+    iconBg: '#b91c1c',
+    title: 'Warning',
+  },
+  example: {
+    icon: FlaskConical,
+    bg: 'rgba(34,197,94,0.08)',
+    border: 'rgba(34,197,94,0.28)',
+    text: '#86efac',
+    label: '#4ade80',
+    iconBg: '#15803d',
+    title: 'Example',
+  },
+  pro: {
+    icon: Star,
+    bg: 'rgba(245,158,11,0.08)',
+    border: 'rgba(245,158,11,0.3)',
+    text: '#fde68a',
+    label: '#fbbf24',
+    iconBg: '#b45309',
+    title: 'Pro Tip',
+  },
+  field: {
+    icon: Cpu,
+    bg: 'rgba(239,68,68,0.08)',
+    border: 'rgba(239,68,68,0.35)',
+    text: '#fca5a5',
+    label: '#f87171',
+    iconBg: '#991b1b',
+    title: '⚠️ Field Gotcha',
+  },
 }
 
 export default function Callout({ type = 'key', title, children }) {
@@ -14,16 +54,22 @@ export default function Callout({ type = 'key', title, children }) {
   const Icon = t.icon
 
   return (
-    <div className={`rounded-2xl border ${t.bg} ${t.border} p-5 my-5`}>
+    <div
+      className="rounded-2xl p-5 my-5"
+      style={{ background: t.bg, border: `1px solid ${t.border}` }}
+    >
       <div className="flex items-start gap-3">
-        <div className={`flex-shrink-0 w-8 h-8 ${t.iconBg} rounded-lg flex items-center justify-center`}>
+        <div
+          className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+          style={{ background: t.iconBg }}
+        >
           <Icon size={16} className="text-white" />
         </div>
         <div>
-          <div className={`text-xs font-bold uppercase tracking-widest mb-1.5 ${t.label}`}>
+          <div className="text-xs font-bold uppercase tracking-widest mb-1.5" style={{ color: t.label }}>
             {title || t.title}
           </div>
-          <div className={`text-sm leading-relaxed ${t.text}`}>
+          <div className="text-sm leading-relaxed" style={{ color: t.text }}>
             {children}
           </div>
         </div>

@@ -11,7 +11,7 @@ export default function AppLayer() {
   return (
     <ChapterLayout chapterId="appLayer" title="Application Layer" emoji="📦" prev="datalink" next="objects">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">The APDU: What You Actually Care About</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">The APDU: What You Actually Care About</h2>
         <p>
           The Application Layer is where the real work happens. The Application Protocol Data Unit (APDU)
           contains the <strong>Function Code</strong> (what to do), the <strong>data objects</strong>
@@ -33,12 +33,12 @@ export default function AppLayer() {
           <div>
             <div className="text-xs text-slate-400 mb-2">Request (Master → Outstation):</div>
             <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
-              <div className="frame-field bg-mblue-600/80 border-r border-white/20">
+              <div className="frame-field bg-amber-500/80 border-r border-white/20">
                 <div className="text-mcyan-400">App Ctrl</div>
                 <div>AC</div>
                 <div className="text-white/50">1 byte</div>
               </div>
-              <div className="frame-field bg-mblue-600/60 border-r border-white/20">
+              <div className="frame-field bg-amber-500/60 border-r border-white/20">
                 <div className="text-mcyan-400">Func Code</div>
                 <div>FC</div>
                 <div className="text-white/50">1 byte</div>
@@ -53,12 +53,12 @@ export default function AppLayer() {
           <div>
             <div className="text-xs text-slate-400 mb-2">Response (Outstation → Master):</div>
             <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
-              <div className="frame-field bg-mblue-600/80 border-r border-white/20">
+              <div className="frame-field bg-amber-500/80 border-r border-white/20">
                 <div className="text-mcyan-400">App Ctrl</div>
                 <div>AC</div>
                 <div className="text-white/50">1 byte</div>
               </div>
-              <div className="frame-field bg-mblue-600/60 border-r border-white/20">
+              <div className="frame-field bg-amber-500/60 border-r border-white/20">
                 <div className="text-mcyan-400">Func Code</div>
                 <div>FC=0x81</div>
                 <div className="text-white/50">1 byte</div>
@@ -84,19 +84,19 @@ export default function AppLayer() {
       </div>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Application Control Byte</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Application Control Byte</h2>
         <p>
           The Application Control (AC) byte is the first byte of every APDU. It carries sequencing
           and fragmentation information:
         </p>
-        <div className="mt-4 bg-slate-50 rounded-xl border border-slate-200 p-4 font-mono text-sm">
+        <div className="mt-4 bg-slate-800/30 rounded-xl border border-amber-900/30 p-4 font-mono text-sm">
           <div className="text-slate-400 mb-2">AC byte: [FIR | FIN | CON | UNS | Seq (4 bits)]</div>
           <div className="space-y-2">
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">FIR</span><span className="text-slate-700">First fragment — set if this is the first application fragment</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">FIN</span><span className="text-slate-700">Final fragment — set if this is the last application fragment</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">CON</span><span className="text-slate-700">Confirm required — master must send an explicit Application Confirm</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">UNS</span><span className="text-slate-700">Unsolicited response — this message was not triggered by a poll</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">Seq</span><span className="text-slate-700">Application sequence number (0–15) — matches requests to responses</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">FIR</span><span className="text-slate-300">First fragment — set if this is the first application fragment</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">FIN</span><span className="text-slate-300">Final fragment — set if this is the last application fragment</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">CON</span><span className="text-slate-300">Confirm required — master must send an explicit Application Confirm</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">UNS</span><span className="text-slate-300">Unsolicited response — this message was not triggered by a poll</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">Seq</span><span className="text-slate-300">Application sequence number (0–15) — matches requests to responses</span></div>
           </div>
         </div>
       </section>
@@ -104,7 +104,7 @@ export default function AppLayer() {
       <FunFact index={6} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">IIN Bits — Read These Every Time</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">IIN Bits — Read These Every Time</h2>
         <p>
           The <strong>Internal Indications (IIN)</strong> are 16 flag bits present in every response.
           They tell you what's happening inside the outstation right now. A good master implementation
@@ -137,9 +137,9 @@ export default function AppLayer() {
                 { bit: 'IIN2.6', name: 'Config corrupt', meaning: '🚨 Outstation configuration is corrupted — call the vendor' },
               ].map((row, i) => (
                 <tr key={row.bit} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
-                  <td className="px-3 py-2 font-mono font-bold text-mblue-600">{row.bit}</td>
-                  <td className="px-3 py-2 font-medium text-slate-700">{row.name}</td>
-                  <td className="px-3 py-2 text-slate-600">{row.meaning}</td>
+                  <td className="px-3 py-2 font-mono font-bold text-amber-400">{row.bit}</td>
+                  <td className="px-3 py-2 font-medium text-slate-300">{row.name}</td>
+                  <td className="px-3 py-2 text-slate-400">{row.meaning}</td>
                 </tr>
               ))}
             </tbody>
@@ -156,7 +156,7 @@ export default function AppLayer() {
       </Callout>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Fragmentation and Confirm Mechanism</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Fragmentation and Confirm Mechanism</h2>
         <p>
           When a response is too large to fit in a single application fragment (which happens constantly
           for large poll responses), the outstation sends multiple fragments. The master can request
@@ -176,6 +176,7 @@ export default function AppLayer() {
 
       <FunFact index={7} />
 
+      <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.appLayer} />
       <QuizLevels chapterId="appLayer" />
     </ChapterLayout>
   )

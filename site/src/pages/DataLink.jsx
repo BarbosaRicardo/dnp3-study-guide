@@ -11,7 +11,7 @@ export default function DataLink() {
   return (
     <ChapterLayout chapterId="datalink" title="Data Link Layer" emoji="🔗" prev="layers" next="appLayer">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">The Frame That Lives on the Wire</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">The Frame That Lives on the Wire</h2>
         <p>
           The DNP3 Data Link Layer is responsible for getting bytes from point A to point B on a single
           communication segment. It handles <strong>addressing</strong>, <strong>error detection</strong>,
@@ -32,17 +32,17 @@ export default function DataLink() {
         </div>
         <div className="p-4">
           <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
-            <div className="frame-field bg-mblue-600/80 border-r border-white/20">
+            <div className="frame-field bg-amber-500/80 border-r border-white/20">
               <div className="text-mcyan-400">Start</div>
               <div>0x05 0x64</div>
               <div className="text-white/50">2 bytes</div>
             </div>
-            <div className="frame-field bg-mblue-600/60 border-r border-white/20">
+            <div className="frame-field bg-amber-500/60 border-r border-white/20">
               <div className="text-mcyan-400">Len</div>
               <div>LEN</div>
               <div className="text-white/50">1 byte</div>
             </div>
-            <div className="frame-field bg-mblue-600/60 border-r border-white/20">
+            <div className="frame-field bg-amber-500/60 border-r border-white/20">
               <div className="text-mcyan-400">Control</div>
               <div>CTRL</div>
               <div className="text-white/50">1 byte</div>
@@ -80,7 +80,7 @@ export default function DataLink() {
       </Callout>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Addressing: Source and Destination</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Addressing: Source and Destination</h2>
         <p>
           DNP3 uses <strong>16-bit addresses</strong> for both source and destination. This gives a range of
           0 to 65535, though the full range isn't available:
@@ -92,9 +92,9 @@ export default function DataLink() {
             { range: '65528 – 65534', label: '0xFFF8 – 0xFFFE', desc: 'Reserved for future use' },
             { range: '65535', label: '0xFFFF', desc: 'Broadcast address — all outstations receive, none respond' },
           ].map((r) => (
-            <div key={r.range} className="flex items-center gap-4 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
-              <span className="font-mono text-xs text-mblue-600 min-w-28">{r.label}</span>
-              <span className="text-slate-600">{r.desc}</span>
+            <div key={r.range} className="flex items-center gap-4 bg-slate-800/40 rounded-xl px-4 py-3 border border-amber-900/20">
+              <span className="font-mono text-xs text-amber-400 min-w-28">{r.label}</span>
+              <span className="text-slate-400">{r.desc}</span>
             </div>
           ))}
         </div>
@@ -103,24 +103,24 @@ export default function DataLink() {
       <FunFact index={4} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">The Control Byte</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">The Control Byte</h2>
         <p>
           The 1-byte Control field encodes several flags. The most important:
         </p>
-        <div className="mt-4 bg-slate-50 rounded-xl border border-slate-200 p-4 font-mono text-sm">
+        <div className="mt-4 bg-slate-800/30 rounded-xl border border-amber-900/30 p-4 font-mono text-sm">
           <div className="text-slate-400 mb-2">Control byte: [DIR | PRM | FCB | FCV | FC (4 bits)]</div>
           <div className="space-y-2">
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">DIR</span><span className="text-slate-700">Direction bit — 1 = from master, 0 = from outstation</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">PRM</span><span className="text-slate-700">Primary bit — 1 = primary frame (from master), 0 = secondary</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">FCB</span><span className="text-slate-700">Frame Count Bit — alternates 0/1 on successive primary frames for duplicate detection</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">FCV</span><span className="text-slate-700">Frame Count Valid — tells receiver whether to check the FCB</span></div>
-            <div className="flex gap-3"><span className="text-mblue-600 font-bold w-8">FC</span><span className="text-slate-700">Link layer function code — Reset Link (0), Test Link (2), User Data (3), etc.</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">DIR</span><span className="text-slate-300">Direction bit — 1 = from master, 0 = from outstation</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">PRM</span><span className="text-slate-300">Primary bit — 1 = primary frame (from master), 0 = secondary</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">FCB</span><span className="text-slate-300">Frame Count Bit — alternates 0/1 on successive primary frames for duplicate detection</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">FCV</span><span className="text-slate-300">Frame Count Valid — tells receiver whether to check the FCB</span></div>
+            <div className="flex gap-3"><span className="text-amber-400 font-bold w-8">FC</span><span className="text-slate-300">Link layer function code — Reset Link (0), Test Link (2), User Data (3), etc.</span></div>
           </div>
         </div>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">CRC-16/DNP — Not Your Father's CRC</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">CRC-16/DNP — Not Your Father's CRC</h2>
         <p>
           DNP3 uses a specific CRC variant: <strong>CRC-16/DNP</strong>, also known as CRC-ANSI or
           CRC-16-IBM with a specific polynomial and initialization. It is <em>different</em> from CRC-16/Modbus.
@@ -145,6 +145,7 @@ export default function DataLink() {
 
       <FunFact index={5} />
 
+      <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.datalink} />
       <QuizLevels chapterId="datalink" />
     </ChapterLayout>
   )

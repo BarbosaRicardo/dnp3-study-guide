@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Lightbulb, RefreshCw } from 'lucide-react'
+import { Zap, RefreshCw } from 'lucide-react'
 import { FUN_FACTS } from '../data/chapters'
 
 export default function FunFact({ index }) {
@@ -8,7 +8,6 @@ export default function FunFact({ index }) {
     index !== undefined ? index % FUN_FACTS.length : Math.floor(Math.random() * FUN_FACTS.length)
   )
   const fact = FUN_FACTS[current]
-
   const next = () => setCurrent((c) => (c + 1) % FUN_FACTS.length)
 
   return (
@@ -19,27 +18,34 @@ export default function FunFact({ index }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
         transition={{ duration: 0.3 }}
-        className="bg-amber-50 border border-amber-200 rounded-2xl p-5 my-6 relative overflow-hidden"
+        className="rounded-2xl p-5 my-6 relative overflow-hidden"
+        style={{
+          background: 'rgba(245,158,11,0.06)',
+          border: '1px solid rgba(245,158,11,0.22)',
+        }}
       >
-        {/* Decorative background */}
-        <div className="absolute top-0 right-0 text-8xl opacity-5 pointer-events-none select-none">💡</div>
+        <div className="absolute top-0 right-0 text-8xl opacity-5 pointer-events-none select-none">⚡</div>
 
         <div className="flex items-start gap-3">
-          <div className="flex-shrink-0 w-9 h-9 bg-amber-400 rounded-xl flex items-center justify-center">
-            <Lightbulb size={18} className="text-white" />
+          <div
+            className="flex-shrink-0 w-9 h-9 rounded-xl flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg,#f59e0b,#fbbf24)' }}
+          >
+            <Zap size={17} className="text-black" />
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold text-amber-700 uppercase tracking-widest">Fun Fact</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-amber-400">Field Intel</span>
               <span className="text-lg">{fact.emoji}</span>
             </div>
-            <p className="text-slate-700 text-sm leading-relaxed">{fact.text}</p>
+            <p className="text-slate-300 text-sm leading-relaxed">{fact.text}</p>
           </div>
         </div>
 
         <button
           onClick={next}
-          className="mt-3 ml-12 flex items-center gap-1.5 text-xs text-amber-600 hover:text-amber-800 font-medium transition-colors"
+          className="mt-3 ml-12 flex items-center gap-1.5 text-xs font-medium transition-colors hover:text-amber-300"
+          style={{ color: 'rgba(245,158,11,0.6)' }}
         >
           <RefreshCw size={12} />
           Another fact

@@ -4,6 +4,10 @@ import Callout from '../components/Callout'
 import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import CodeLab from '../components/CodeLab'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
+import { DNP3_LAB } from '../data/labExercises'
 
 const TOOLS = [
   {
@@ -54,7 +58,7 @@ export default function Lab() {
   return (
     <ChapterLayout chapterId="lab" title="DNP3 Lab & Practice" emoji="🧪" prev="troubleshoot">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Getting Your Hands Dirty</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Getting Your Hands Dirty</h2>
         <p>
           Reading about DNP3 is useful. Actually building a master, watching it poll an outstation,
           and seeing the event buffers fill up in real time is where it becomes permanent knowledge.
@@ -69,7 +73,7 @@ export default function Lab() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-4">Tools and Simulators</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-4">Tools and Simulators</h2>
         <div className="space-y-3">
           {TOOLS.map((tool) => (
             <a
@@ -77,15 +81,15 @@ export default function Lab() {
               href={tool.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="block bg-white border border-slate-200 rounded-2xl p-5 hover:border-mblue-300 hover:shadow-md transition-all group"
+              className="block bg-slate-800/40 border border-amber-900/30 rounded-2xl p-5 hover:border-amber-500/40 hover:shadow-md transition-all group"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="font-bold text-navy-700 group-hover:text-mblue-600 transition-colors">{tool.name}</span>
-                    <span className="text-xs bg-mblue-50 text-mblue-600 px-2 py-0.5 rounded-full font-medium">{tool.type}</span>
+                    <span className="font-bold text-amber-400 group-hover:text-amber-400 transition-colors">{tool.name}</span>
+                    <span className="text-xs bg-amber-900/20 text-amber-400 px-2 py-0.5 rounded-full font-medium">{tool.type}</span>
                   </div>
-                  <p className="text-sm text-slate-600 leading-relaxed">{tool.desc}</p>
+                  <p className="text-sm text-slate-400 leading-relaxed">{tool.desc}</p>
                   <div className="mt-2 text-xs text-slate-400 font-medium">{tool.cost}</div>
                 </div>
               </div>
@@ -97,7 +101,7 @@ export default function Lab() {
       <FunFact index={9} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Lab Exercise 1: OpenDNP3 Master/Outstation</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Lab Exercise 1: OpenDNP3 Master/Outstation</h2>
         <p>
           OpenDNP3 ships with demo programs. Here's the fastest path to a working DNP3 exchange on localhost:
         </p>
@@ -117,7 +121,7 @@ export default function Lab() {
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Lab Exercise 2: Python DNP3 Master</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Lab Exercise 2: Python DNP3 Master</h2>
         <p>
           The pydnp3 library wraps OpenDNP3 for Python. A minimal master that reads Binary Input
           Group 1 from a running outstation looks like this:
@@ -148,7 +152,7 @@ export default function Lab() {
       </Callout>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Lab Checklist: Minimum Competency</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Lab Checklist: Minimum Competency</h2>
         <div className="space-y-2">
           {[
             'Run a DNP3 outstation simulator and connect a master to it',
@@ -162,9 +166,9 @@ export default function Lab() {
             'Sync time on an outstation using Group 50 Variation 1',
             'Read a device profile document and configure the master poll schedule from it',
           ].map((item, i) => (
-            <div key={i} className="flex items-start gap-3 bg-slate-50 rounded-xl px-4 py-3 border border-slate-100">
+            <div key={i} className="flex items-start gap-3 bg-slate-800/40 rounded-xl px-4 py-3 border border-amber-900/20">
               <div className="w-5 h-5 border-2 border-mblue-300 rounded flex-shrink-0 mt-0.5" />
-              <span className="text-sm text-slate-700">{item}</span>
+              <span className="text-sm text-slate-300">{item}</span>
             </div>
           ))}
         </div>
@@ -173,6 +177,10 @@ export default function Lab() {
       <GifCard gifKey="celebrate" caption="You made it through DNP3! That's real utility SCADA knowledge 🎉" side="right" />
 
       <FunFact index={11} />
+
+      <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.lab} />
+
+      <CodeLab exercises={DNP3_LAB} />
 
       <QuizLevels chapterId="lab" />
     </ChapterLayout>

@@ -12,10 +12,12 @@ import Unsolicited from './pages/Unsolicited'
 import Security from './pages/Security'
 import Troubleshoot from './pages/Troubleshoot'
 import Lab from './pages/Lab'
+import Flashcards from './pages/Flashcards'
+import ManagerReport from './pages/ManagerReport'
 
 export default function App() {
   return (
-    <div className="flex min-h-screen bg-slate-50 font-sans">
+    <div className="flex min-h-screen font-sans">
       <Sidebar />
       <main className="flex-1 min-w-0 overflow-y-auto">
         <Routes>
@@ -30,6 +32,8 @@ export default function App() {
           <Route path="/security"     element={<Security />} />
           <Route path="/troubleshoot" element={<Troubleshoot />} />
           <Route path="/lab"          element={<Lab />} />
+          <Route path="/flashcards"   element={<Flashcards />} />
+          <Route path="/report"       element={<ManagerReport />} />
         </Routes>
       </main>
     </div>

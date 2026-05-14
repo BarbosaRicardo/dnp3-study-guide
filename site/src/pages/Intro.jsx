@@ -18,7 +18,7 @@ export default function Intro() {
   return (
     <ChapterLayout chapterId="intro" title="DNP3 Overview" emoji="📡" next="layers">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">What Is DNP3?</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">What Is DNP3?</h2>
         <p>
           DNP3 (Distributed Network Protocol 3) is a set of communications protocols used between
           components in process automation systems. It was developed in 1993 by <strong>Westronic Inc.</strong> for
@@ -46,7 +46,7 @@ export default function Intro() {
       <FunFact index={0} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Where Is DNP3 Used?</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Where Is DNP3 Used?</h2>
         <p>
           DNP3 is the dominant protocol in <strong>North American electric utility SCADA</strong>.
           If you work at a utility, water authority, or oil & gas company and your SCADA talks to field
@@ -59,18 +59,18 @@ export default function Intro() {
             { label: 'Oil & Gas', emoji: '🛢️', desc: 'Pipeline monitoring, compressor stations' },
             { label: 'Transportation', emoji: '🚦', desc: 'Traffic signals, rail, traffic management' },
           ].map((item) => (
-            <div key={item.label} className="bg-slate-50 rounded-xl p-4 text-center border border-slate-200">
+            <div key={item.label} className="bg-slate-800/30 rounded-xl p-4 text-center border border-amber-900/30">
               <div className="text-3xl mb-2">{item.emoji}</div>
-              <div className="font-semibold text-navy-700 text-sm">{item.label}</div>
-              <div className="text-xs text-slate-500 mt-1">{item.desc}</div>
+              <div className="font-semibold text-amber-400 text-sm">{item.label}</div>
+              <div className="text-xs text-slate-400 mt-1">{item.desc}</div>
             </div>
           ))}
         </div>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">DNP3 vs The Competition</h2>
-        <p className="mb-4 text-slate-500 text-sm">Why use DNP3 instead of Modbus, IEC 60870-5, or IEC 61850?</p>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">DNP3 vs The Competition</h2>
+        <p className="mb-4 text-slate-400 text-sm">Why use DNP3 instead of Modbus, IEC 60870-5, or IEC 61850?</p>
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -85,9 +85,9 @@ export default function Intro() {
             <tbody>
               {TABLE_PROTOCOLS.map((row, i) => (
                 <tr key={i} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
-                  <td className="px-4 py-3 font-semibold text-mblue-600">{row.name}</td>
-                  <td className="px-4 py-3 text-xs text-slate-500 font-mono">{row.origin}</td>
-                  <td className="px-4 py-3 text-slate-600 text-xs">{row.useCase}</td>
+                  <td className="px-4 py-3 font-semibold text-amber-400">{row.name}</td>
+                  <td className="px-4 py-3 text-xs text-slate-400 font-mono">{row.origin}</td>
+                  <td className="px-4 py-3 text-slate-400 text-xs">{row.useCase}</td>
                   <td className="px-4 py-3 text-xs">{row.events}</td>
                   <td className="px-4 py-3 text-xs">{row.timestamps}</td>
                 </tr>
@@ -104,7 +104,7 @@ export default function Intro() {
       </Callout>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Key Terminology</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Key Terminology</h2>
         <div className="space-y-3">
           {[
             { term: 'Master',      def: 'The controlling device — initiates polls, issues controls. Usually the SCADA server or EMS.' },
@@ -117,8 +117,8 @@ export default function Intro() {
             { term: 'Class 0/1/2/3', def: 'Data classification — Class 0 = static values, Class 1/2/3 = event buffers by priority.' },
           ].map((item, i) => (
             <div key={i} className="flex gap-3 text-sm">
-              <span className="font-bold text-mblue-600 min-w-28 flex-shrink-0">{item.term}</span>
-              <span className="text-slate-600">{item.def}</span>
+              <span className="font-bold text-amber-400 min-w-28 flex-shrink-0">{item.term}</span>
+              <span className="text-slate-400">{item.def}</span>
             </div>
           ))}
         </div>

@@ -10,12 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.23.1",
+    "@monaco-editor/react": "^4.7.0",
     "framer-motion": "^11.2.10",
     "lucide-react": "^0.379.0",
+    "react": "^18.3.1",
     "react-confetti": "^6.1.0",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.1",
     "use-sound": "^4.0.3"
   },
   "devDependencies": {

@@ -11,7 +11,7 @@ export default function Unsolicited() {
   return (
     <ChapterLayout chapterId="unsol" title="Unsolicited Responses" emoji="📣" prev="fc" next="security">
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Event-Driven Reporting</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Event-Driven Reporting</h2>
         <p>
           In Modbus, the master polls every device in round-robin order. The fastest you can detect
           an event is one poll cycle. For a system with 200 devices and 100ms polls, that's 20 seconds
@@ -26,12 +26,12 @@ export default function Unsolicited() {
         </p>
       </section>
 
-      <div className="bg-slate-50 rounded-2xl border border-slate-200 p-5 my-6">
-        <div className="font-semibold text-navy-700 mb-4">Unsolicited Response Lifecycle</div>
+      <div className="bg-slate-800/30 rounded-2xl border border-amber-900/30 p-5 my-6">
+        <div className="font-semibold text-amber-400 mb-4">Unsolicited Response Lifecycle</div>
         <div className="flex flex-col gap-2 text-sm">
           {[
-            { step: '1', actor: 'Outstation', action: 'Breaker trips → creates Class 1 event in buffer', color: 'bg-mblue-600' },
-            { step: '2', actor: 'Outstation', action: 'Sends Unsolicited Response (FC=0x82) with event data', color: 'bg-mblue-600' },
+            { step: '1', actor: 'Outstation', action: 'Breaker trips → creates Class 1 event in buffer', color: 'bg-amber-500' },
+            { step: '2', actor: 'Outstation', action: 'Sends Unsolicited Response (FC=0x82) with event data', color: 'bg-amber-500' },
             { step: '3', actor: 'Master',     action: 'Receives unsolicited response, parses event', color: 'bg-mcyan-500' },
             { step: '4', actor: 'Master',     action: 'Sends Application Confirm (FC=0x00)', color: 'bg-mcyan-500' },
             { step: '5', actor: 'Outstation', action: 'Receives confirm → clears event from buffer', color: 'bg-mgreen-500' },
@@ -40,8 +40,8 @@ export default function Unsolicited() {
               <div className={`${s.color} text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}>
                 {s.step}
               </div>
-              <div className="text-xs text-mblue-600 font-semibold w-20 flex-shrink-0">{s.actor}</div>
-              <div className="text-slate-700 text-xs">{s.action}</div>
+              <div className="text-xs text-amber-400 font-semibold w-20 flex-shrink-0">{s.actor}</div>
+              <div className="text-slate-300 text-xs">{s.action}</div>
             </div>
           ))}
         </div>
@@ -54,7 +54,7 @@ export default function Unsolicited() {
       <FunFact index={0} />
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Class 0, Class 1, Class 2, Class 3</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Class 0, Class 1, Class 2, Class 3</h2>
         <p>
           DNP3 classifies all outstation data into four classes. The class system is how you tell
           the protocol what's important and how often to report it.
@@ -69,10 +69,10 @@ export default function Unsolicited() {
             <div key={c.cls} className={`border rounded-xl p-4 ${c.color}`}>
               <div className="flex items-center gap-2 mb-1">
                 <span className="text-lg">{c.emoji}</span>
-                <span className="font-bold text-navy-700">{c.cls}</span>
-                <span className="text-slate-500 text-sm">— {c.title}</span>
+                <span className="font-bold text-amber-400">{c.cls}</span>
+                <span className="text-slate-400 text-sm">— {c.title}</span>
               </div>
-              <p className="text-sm text-slate-700 ml-7">{c.desc}</p>
+              <p className="text-sm text-slate-300 ml-7">{c.desc}</p>
             </div>
           ))}
         </div>
@@ -88,7 +88,7 @@ export default function Unsolicited() {
       </Callout>
 
       <section>
-        <h2 className="text-xl font-bold text-navy-700 mb-3">Enable and Disable Unsolicited</h2>
+        <h2 className="text-xl font-bold text-amber-400 mb-3">Enable and Disable Unsolicited</h2>
         <p>
           Unsolicited responses don't just happen automatically. The master must explicitly
           <strong> enable</strong> them using FC=0x14 (Enable Unsolicited Responses) with the
@@ -114,6 +114,7 @@ export default function Unsolicited() {
 
       <FunFact index={4} />
 
+      <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.unsol} />
       <QuizLevels chapterId="unsol" />
     </ChapterLayout>
   )

@@ -1,11 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2 } from 'lucide-react'
+import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, LogIn, LogOut } from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
+import { supabase } from '../lib/supabase'
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
+  const [session, setSession] = useState(null)
+  const [showLogin, setShowLogin] = useState(false)
+  const [loginEmail, setLoginEmail] = useState('')
+  const [loginPassword, setLoginPassword] = useState('')
+  const [loginError, setLoginError] = useState('')
+  const [loginLoading, setLoginLoading] = useState(false)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => setSession(s))
+    return () => subscription.unsubscribe()
+  }, [])
+
+  function resolveEmail(input) {
+    const t = input.trim()
+    return t.includes('@') ? t : `${t}@scadahub.io`
+  }
+
+  async function handleLogin(e) {
+    e.preventDefault()
+    setLoginError('')
+    setLoginLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email: resolveEmail(loginEmail),
+      password: loginPassword,
+    })
+    setLoginLoading(false)
+    if (error) { setLoginError(error.message) } else { setShowLogin(false) }
+  }
   const { getChapterStatus, overallProgress } = useProgress()
   const prog = overallProgress()
 
@@ -111,6 +141,40 @@ export default function Sidebar() {
           <LayoutGrid size={12} />
           ← SCADA Hub
         </a>
+        {/* Auth section */}
+        {session ? (
+          <div className="flex items-center justify-between gap-2 px-1">
+            <span className="text-xs truncate" style={{ color: 'rgba(245,158,11,0.5)' }}>{session.user.email}</span>
+            <button onClick={() => supabase.auth.signOut()} title="Sign out" style={{ color: 'rgba(245,158,11,0.5)' }} className="hover:text-rose-400 transition flex-shrink-0">
+              <LogOut size={13} />
+            </button>
+          </div>
+        ) : (
+          <>
+            <button
+              onClick={() => setShowLogin(!showLogin)}
+              className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all"
+              style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)', color: 'rgba(245,158,11,0.7)' }}
+            >
+              <LogIn size={12} />
+              {showLogin ? 'Cancel' : 'Sign In to Track Progress'}
+            </button>
+            {showLogin && (
+              <form onSubmit={handleLogin} className="flex flex-col gap-1.5">
+                {loginError && <p className="text-xs text-rose-400">{loginError}</p>}
+                <input type="text" placeholder="username or email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)}
+                  className="bg-slate-800/60 border border-amber-900/30 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50" />
+                <input type="password" placeholder="password" value={loginPassword} onChange={e => setLoginPassword(e.target.value)}
+                  className="bg-slate-800/60 border border-amber-900/30 rounded-lg px-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500/50" />
+                <button type="submit" disabled={loginLoading}
+                  className="font-bold rounded-lg px-3 py-1.5 text-xs transition text-black disabled:opacity-50"
+                  style={{ background: 'linear-gradient(135deg,#f59e0b,#fbbf24)' }}>
+                  {loginLoading ? 'Signing in…' : 'Sign In'}
+                </button>
+              </form>
+            )}
+          </>
+        )}
         <p className="text-center text-xs" style={{ color: 'rgba(245,158,11,0.35)' }}>
           DNP3 · IEEE 1815 · May 2026
         </p>

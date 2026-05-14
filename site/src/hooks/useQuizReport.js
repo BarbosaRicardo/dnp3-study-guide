@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
 
-const SUPABASE_URL = 'https://qacvqifwvqjmyzvryxkw.supabase.co'
-const SUPABASE_KEY = 'sb_publishable_vRSczSzVTBwJ3CteyGUdeA_XD13TiWc'
 export const APP_NAME = 'dnp3'
-
 const LOCAL_KEY = 'quiz_submissions_v1'
+const ADMIN_ROLE = 'admin'
 
-const HEADERS = {
-  'Content-Type': 'application/json',
-  'apikey': SUPABASE_KEY,
-  'Authorization': `Bearer ${SUPABASE_KEY}`,
+function isAdmin(session) {
+  return session?.user?.user_metadata?.role === ADMIN_ROLE
 }
 
+// ─── Write ────────────────────────────────────────────────────────────────────
 export async function recordQuizSubmission({ chapter, level, score, total, attempt }) {
+  const { data: { session } } = await supabase.auth.getSession()
+
   const record = {
     app: APP_NAME,
     chapter,
@@ -22,40 +22,51 @@ export async function recordQuizSubmission({ chapter, level, score, total, attem
     pct: Math.round((score / total) * 100),
     passed: score / total >= 0.7,
     attempt,
+    user_id: session?.user?.id ?? null,
   }
+
+  // Always cache locally as fallback
   try {
     const existing = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]')
     existing.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), ts: Date.now(), ...record })
     localStorage.setItem(LOCAL_KEY, JSON.stringify(existing))
   } catch {}
-  fetch(`${SUPABASE_URL}/rest/v1/quiz_submissions`, {
-    method: 'POST',
-    headers: { ...HEADERS, 'Prefer': 'return=minimal' },
-    body: JSON.stringify(record),
-  }).catch(() => {})
+
+  // Persist to Supabase (auth token auto-included by client)
+  supabase.from('quiz_submissions').insert(record).then(({ error }) => {
+    if (error) console.warn('Supabase insert failed:', error.message)
+  })
 }
 
-async function fetchFromSupabase(appFilter) {
-  const filter = appFilter ? `&app=eq.${appFilter}` : ''
-  const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/quiz_submissions?order=created_at.desc&limit=1000${filter}`,
-    { headers: HEADERS }
-  )
-  if (!res.ok) throw new Error(res.statusText)
-  return res.json()
-}
-
+// ─── Read (this app only) ─────────────────────────────────────────────────────
 export function useQuizReport() {
   const [submissions, setSubmissions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => setSession(s))
+    return () => subscription.unsubscribe()
+  }, [])
 
   const refresh = async () => {
     setLoading(true)
     setError(null)
     try {
-      const data = await fetchFromSupabase(APP_NAME)
-      setSubmissions(data)
+      let query = supabase
+        .from('quiz_submissions')
+        .select('*')
+        .eq('app', APP_NAME)
+        .order('created_at', { ascending: false })
+        .limit(1000)
+
+      // Non-admin authenticated users: filter to own rows only
+      // Admin: RLS policy allows all rows — no client-side filter needed
+      const { data, error: sbError } = await query
+      if (sbError) throw new Error(sbError.message)
+      setSubmissions(data || [])
     } catch (e) {
       setError(e.message)
       try { setSubmissions([...JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]')].reverse()) } catch {}
@@ -64,24 +75,35 @@ export function useQuizReport() {
     }
   }
 
-  useEffect(() => { refresh() }, [])
+  useEffect(() => { refresh() }, [session])
 
-  const clearLocal = () => { localStorage.removeItem(LOCAL_KEY) }
-
-  return { submissions, loading, error, refresh, clearLocal }
+  return { submissions, loading, error, refresh, isAdmin: isAdmin(session), session }
 }
 
+// ─── Read (all apps) — manager/admin view ─────────────────────────────────────
 export function useAllSubmissions() {
   const [submissions, setSubmissions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [session, setSession] = useState(null)
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setSession(data.session))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => setSession(s))
+    return () => subscription.unsubscribe()
+  }, [])
 
   const refresh = async () => {
     setLoading(true)
     setError(null)
     try {
-      const data = await fetchFromSupabase(null)
-      setSubmissions(data)
+      const { data, error: sbError } = await supabase
+        .from('quiz_submissions')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(2000)
+      if (sbError) throw new Error(sbError.message)
+      setSubmissions(data || [])
     } catch (e) {
       setError(e.message)
     } finally {
@@ -89,7 +111,7 @@ export function useAllSubmissions() {
     }
   }
 
-  useEffect(() => { refresh() }, [])
+  useEffect(() => { refresh() }, [session])
 
-  return { submissions, loading, error, refresh }
+  return { submissions, loading, error, refresh, isAdmin: isAdmin(session), session }
 }

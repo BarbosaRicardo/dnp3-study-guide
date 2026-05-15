@@ -33,7 +33,7 @@ export default function Layers() {
             { layer: 'Data Link Layer (Layer 2)',   abbr: 'LPDU', color: 'bg-mgreen-500', desc: '0x0564 start, addresses, CRC-16/DNP, direction bit' },
             { layer: 'Physical Layer (Layer 1)',    abbr: 'PHY',  color: 'bg-slate-600',  desc: 'RS-232, RS-485 serial or TCP/IP (port 20000)' },
           ].map((l) => (
-            <div key={l.layer} className="flex items-center gap-4 bg-white rounded-xl border border-amber-900/20 p-3">
+            <div key={l.layer} className="flex items-center gap-4 rounded-xl border border-amber-900/30 p-3" style={{ background: 'rgba(245,158,11,0.04)' }}>
               <div className={`${l.color} text-white text-xs font-bold px-3 py-2 rounded-lg w-16 text-center flex-shrink-0`}>
                 {l.abbr}
               </div>
@@ -44,7 +44,7 @@ export default function Layers() {
             </div>
           ))}
         </div>
-        <div className="bg-slate-100 px-4 py-2 text-xs text-slate-400 text-center">
+        <div className="px-4 py-2 text-xs text-slate-500 text-center" style={{ background: 'rgba(255,255,255,0.04)' }}>
           ↑ User data flows down through layers; responses flow back up
         </div>
       </div>

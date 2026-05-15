@@ -17,14 +17,25 @@ function MCQQuestion({ q, onAnswer, answered }) {
   }
 
   return (
-    <div className="space-y-3 mt-4">
+    <div className="space-y-2.5 mt-4">
       {q.options.map((opt, idx) => {
-        let cls = 'border-2 border-slate-200 bg-white text-slate-700 hover:border-mblue-400 hover:bg-mblue-50'
-        if (selected === idx) {
-          if (idx === q.answer) cls = 'border-2 border-mgreen-500 bg-green-50 text-green-800'
-          else cls = 'border-2 border-mred-500 bg-red-50 text-red-800'
-        } else if (answered && idx === q.answer) {
-          cls = 'border-2 border-mgreen-500 bg-green-50 text-green-800'
+        const isCorrect = idx === q.answer
+        const isSelected = selected === idx
+
+        let style = { background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }
+        let badgeStyle = { background: 'rgba(255,255,255,0.06)', color: '#64748b', border: '1px solid rgba(255,255,255,0.08)' }
+
+        if (isSelected && isCorrect) {
+          style = { background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.5)', color: '#6ee7b7', boxShadow: '0 0 12px rgba(16,185,129,0.2)' }
+          badgeStyle = { background: 'rgba(16,185,129,0.2)', color: '#34d399', border: '1px solid rgba(16,185,129,0.4)' }
+        } else if (isSelected && !isCorrect) {
+          style = { background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.5)', color: '#fca5a5', boxShadow: '0 0 12px rgba(239,68,68,0.15)' }
+          badgeStyle = { background: 'rgba(239,68,68,0.2)', color: '#f87171', border: '1px solid rgba(239,68,68,0.4)' }
+        } else if (answered && isCorrect) {
+          style = { background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.35)', color: '#6ee7b7' }
+          badgeStyle = { background: 'rgba(16,185,129,0.15)', color: '#34d399', border: '1px solid rgba(16,185,129,0.3)' }
+        } else if (answered) {
+          style = { background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: '#475569' }
         }
 
         return (
@@ -32,10 +43,13 @@ function MCQQuestion({ q, onAnswer, answered }) {
             key={idx}
             onClick={() => handleSelect(idx)}
             disabled={answered}
-            className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-3 ${cls}`}
+            className="w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 flex items-center gap-3"
+            style={style}
+            onMouseEnter={e => { if (!answered) e.currentTarget.style.background = 'rgba(245,158,11,0.08)' }}
+            onMouseLeave={e => { if (!answered) e.currentTarget.style.background = style.background }}
           >
-            <span className="flex-shrink-0 w-6 h-6 rounded-full border-2 flex items-center justify-center text-xs font-bold border-current">
-              {answered && idx === q.answer ? '✓' : answered && selected === idx ? '✗' : String.fromCharCode(65 + idx)}
+            <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold" style={badgeStyle}>
+              {answered && isCorrect ? '✓' : answered && isSelected ? '✗' : String.fromCharCode(65 + idx)}
             </span>
             {opt}
           </button>
@@ -71,13 +85,13 @@ function FillQuestion({ q, onAnswer, answered }) {
           onKeyDown={(e) => e.key === 'Enter' && !submitted && check()}
           disabled={submitted}
           placeholder="Type your answer..."
-          className={`flex-1 px-4 py-3 rounded-xl border-2 font-mono text-sm transition-colors
-            ${submitted
-              ? correct
-                ? 'border-mgreen-500 bg-green-50 text-green-800'
-                : 'border-mred-500 bg-red-50 text-red-800'
-              : 'border-slate-200 focus:border-mblue-400 focus:outline-none'
-            }`}
+          className="flex-1 px-4 py-3 rounded-xl font-mono text-sm transition-colors focus:outline-none"
+          style={submitted
+            ? correct
+              ? { border: '1px solid rgba(16,185,129,0.5)', background: 'rgba(16,185,129,0.1)', color: '#6ee7b7' }
+              : { border: '1px solid rgba(239,68,68,0.5)', background: 'rgba(239,68,68,0.1)', color: '#fca5a5' }
+            : { border: '1px solid rgba(255,255,255,0.12)', background: 'rgba(255,255,255,0.04)', color: '#e2e8f0' }
+          }
         />
         {!submitted && (
           <button onClick={check} className="btn-primary text-sm">
@@ -232,7 +246,7 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
             {passed ? 'Nailed it!' : 'Not quite yet...'}
           </h3>
           <p className="text-slate-500 mb-2">
-            You got <span className="font-bold text-mblue-600">{score}/{total}</span> correct ({pct}%)
+            You got <span className="font-bold text-amber-400">{score}/{total}</span> correct ({pct}%)
           </p>
           {attempt > 0 && (
             <p className="text-xs text-slate-400 mb-4">
@@ -258,7 +272,7 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
   }
 
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden my-8">
+    <div className="rounded-2xl overflow-hidden my-8" style={{ background: 'rgba(8,13,16,0.8)', border: '1px solid rgba(245,158,11,0.15)' }}>
       {/* Header */}
       <div className={`${theme.header} px-6 py-4 flex items-center justify-between`}>
         <div className="flex items-center gap-2">
@@ -278,7 +292,7 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
       </div>
 
       {/* Progress bar */}
-      <div className="h-1 bg-slate-100">
+      <div className="h-1" style={{ background: 'rgba(255,255,255,0.04)' }}>
         <div
           className="progress-bar"
           style={{ width: `${((current + (answered ? 1 : 0)) / activeQuestions.length) * 100}%` }}
@@ -312,7 +326,7 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
                 <div className="text-purple-200">{q.ai_application}</div>
               </div>
             )}
-            <p className="font-semibold text-slate-800 leading-relaxed whitespace-pre-line">
+            <p className="font-semibold text-slate-100 leading-relaxed whitespace-pre-line">
               {q.question}
             </p>
 
@@ -332,28 +346,30 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
                   exit={{ opacity: 0, height: 0 }}
                   className="mt-5"
                 >
-                  <div className={`rounded-xl p-4 flex gap-3 ${
-                    answers[q.id]
-                      ? 'bg-green-50 border border-green-200'
-                      : 'bg-red-50 border border-red-200'
-                  }`}>
+                  <div
+                    className="rounded-xl p-4 flex gap-3"
+                    style={answers[q.id]
+                      ? { background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.3)' }
+                      : { background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }
+                    }
+                  >
                     {answers[q.id]
-                      ? <CheckCircle2 size={20} className="text-mgreen-500 flex-shrink-0 mt-0.5" />
-                      : <XCircle size={20} className="text-mred-500 flex-shrink-0 mt-0.5" />
+                      ? <CheckCircle2 size={20} className="text-emerald-400 flex-shrink-0 mt-0.5" />
+                      : <XCircle size={20} className="text-red-400 flex-shrink-0 mt-0.5" />
                     }
                     <div className="min-w-0">
-                      <p className={`font-semibold text-sm mb-1 ${answers[q.id] ? 'text-green-800' : 'text-red-800'}`}>
+                      <p className={`font-semibold text-sm mb-1 ${answers[q.id] ? 'text-emerald-400' : 'text-red-400'}`}>
                         {answers[q.id] ? '✅ Correct!' : '❌ Not quite...'}
                       </p>
-                      <p className="text-sm text-slate-700 leading-relaxed">{q.explanation}</p>
+                      <p className="text-sm text-slate-300 leading-relaxed">{q.explanation}</p>
 
                       {/* Key points — shown for wrong answers */}
                       {!answers[q.id] && q.keyPoints && q.keyPoints.length > 0 && (
-                        <div className="mt-3 border-t border-red-200 pt-3">
-                          <p className="text-xs font-bold uppercase tracking-widest text-red-600 mb-2">Key Points to Remember</p>
+                        <div className="mt-3 border-t border-red-900/40 pt-3">
+                          <p className="text-xs font-bold uppercase tracking-widest text-red-400 mb-2">Key Points to Remember</p>
                           <ul className="space-y-1">
                             {q.keyPoints.map((pt, idx) => (
-                              <li key={idx} className="flex items-start gap-2 text-xs text-slate-700">
+                              <li key={idx} className="flex items-start gap-2 text-xs text-slate-300">
                                 <span className="text-red-400 font-bold flex-shrink-0 mt-0.5">→</span>
                                 {pt}
                               </li>
@@ -374,13 +390,13 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
                     if (drillResources.length === 0) return null
                     const correct = answers[q.id]
                     return (
-                      <div className={`mt-3 rounded-xl overflow-hidden border ${correct ? 'border-slate-200' : 'border-orange-200'}`}>
-                        <div className={`px-3 py-2 border-b ${correct ? 'bg-slate-50 border-slate-200' : 'bg-orange-50 border-orange-200'}`}>
-                          <span className={`text-xs font-bold uppercase tracking-widest ${correct ? 'text-slate-500' : 'text-orange-600'}`}>
+                      <div className="mt-3 rounded-xl overflow-hidden" style={{ border: `1px solid ${correct ? 'rgba(255,255,255,0.1)' : 'rgba(245,158,11,0.2)'}` }}>
+                        <div className="px-3 py-2 border-b" style={{ background: correct ? 'rgba(255,255,255,0.04)' : 'rgba(245,158,11,0.08)', borderColor: correct ? 'rgba(255,255,255,0.08)' : 'rgba(245,158,11,0.2)' }}>
+                          <span className={`text-xs font-bold uppercase tracking-widest ${correct ? 'text-slate-500' : 'text-amber-400'}`}>
                             {correct ? '📚 Dig Deeper' : '🎯 Drill It — Review These'}
                           </span>
                         </div>
-                        <div className={`divide-y ${correct ? 'divide-slate-100' : 'divide-orange-100'}`}>
+                        <div className="divide-y divide-white/5">
                           {drillResources.map((r, ri) => (
                             <div key={ri}>
                               {r.type === 'youtube' && (
@@ -388,11 +404,11 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
                                   href={r.searchUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-red-50 transition-colors group"
+                                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-red-900/20 transition-colors group"
                                 >
-                                  <Youtube size={15} className="text-red-500 flex-shrink-0" />
-                                  <span className="text-xs text-slate-700 flex-1 group-hover:text-red-700 leading-snug">{r.title}</span>
-                                  <ExternalLink size={11} className="text-slate-300 flex-shrink-0" />
+                                  <Youtube size={15} className="text-red-400 flex-shrink-0" />
+                                  <span className="text-xs text-slate-400 flex-1 group-hover:text-red-300 leading-snug">{r.title}</span>
+                                  <ExternalLink size={11} className="text-slate-600 flex-shrink-0" />
                                 </a>
                               )}
                               {r.type === 'doc' && (
@@ -400,19 +416,19 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
                                   href={r.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-blue-50 transition-colors group"
+                                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-blue-900/20 transition-colors group"
                                 >
-                                  <ExternalLink size={15} className="text-blue-500 flex-shrink-0" />
-                                  <span className="text-xs text-slate-700 flex-1 group-hover:text-blue-700 leading-snug">{r.title}</span>
-                                  <ExternalLink size={11} className="text-slate-300 flex-shrink-0" />
+                                  <ExternalLink size={15} className="text-blue-400 flex-shrink-0" />
+                                  <span className="text-xs text-slate-400 flex-1 group-hover:text-blue-300 leading-snug">{r.title}</span>
+                                  <ExternalLink size={11} className="text-slate-600 flex-shrink-0" />
                                 </a>
                               )}
                               {r.type === 'book' && (
-                                <div className="flex items-start gap-3 px-3 py-2.5 bg-amber-50/60">
-                                  <BookOpen size={15} className="text-amber-600 flex-shrink-0 mt-0.5" />
+                                <div className="flex items-start gap-3 px-3 py-2.5" style={{ background: 'rgba(245,158,11,0.06)' }}>
+                                  <BookOpen size={15} className="text-amber-400 flex-shrink-0 mt-0.5" />
                                   <div className="text-xs leading-snug">
-                                    <span className="font-bold text-amber-800">{r.title}</span>
-                                    {r.author && <span className="text-amber-600"> — {r.author}</span>}
+                                    <span className="font-bold text-amber-300">{r.title}</span>
+                                    {r.author && <span className="text-amber-500"> — {r.author}</span>}
                                     <div className="text-slate-500 mt-0.5">{r.chapter}{r.page ? `, p. ${r.page}` : ''}</div>
                                   </div>
                                 </div>

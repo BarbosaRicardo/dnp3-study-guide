@@ -55,7 +55,7 @@ export default function FunctionCodes() {
           </thead>
           <tbody>
             {FUNCTION_CODES.map((row, i) => (
-              <tr key={row.fc} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+              <tr key={row.fc} className={i % 2 === 0 ? 'bg-white/5' : ''}>
                 <td className="px-3 py-2 font-mono font-bold text-amber-400 whitespace-nowrap">{row.fc}</td>
                 <td className="px-3 py-2 font-semibold text-slate-300 whitespace-nowrap">{row.name}</td>
                 <td className="px-3 py-2 text-slate-400 whitespace-nowrap text-xs">{row.dir}</td>

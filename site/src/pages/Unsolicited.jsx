@@ -61,14 +61,13 @@ export default function Unsolicited() {
         </p>
         <div className="mt-4 space-y-3">
           {[
-            { cls: 'Class 0', emoji: '📋', color: 'border-slate-300 bg-slate-50', title: 'Static Data', desc: 'Current values of all data points — no events, no timestamps. This is a snapshot. Read with a full "Integrity Poll" (read all Class 0 data) after device restarts.' },
-            { cls: 'Class 1', emoji: '🔴', color: 'border-red-300 bg-red-50', title: 'High Priority Events', desc: 'Critical events — breaker trips, protection operations, major alarms. Polled first. Reported immediately in unsolicited responses.' },
-            { cls: 'Class 2', emoji: '🟡', color: 'border-amber-300 bg-amber-50', title: 'Medium Priority Events', desc: 'Important but less critical — voltage exceedances, equipment status changes, non-critical alarms.' },
-            { cls: 'Class 3', emoji: '🟢', color: 'border-green-300 bg-green-50', title: 'Low Priority Events', desc: 'Routine changes — counter updates, slow-moving analog changes, informational events. Polled last.' },
+            { cls: 'Class 0', color: 'border-slate-700 bg-slate-800/60', title: 'Static Data', desc: 'Current values of all data points — no events, no timestamps. This is a snapshot. Read with a full "Integrity Poll" (read all Class 0 data) after device restarts.' },
+            { cls: 'Class 1', color: 'border-red-900/60 bg-red-950/40', title: 'High Priority Events', desc: 'Critical events — breaker trips, protection operations, major alarms. Polled first. Reported immediately in unsolicited responses.' },
+            { cls: 'Class 2', color: 'border-amber-900/60 bg-amber-950/40', title: 'Medium Priority Events', desc: 'Important but less critical — voltage exceedances, equipment status changes, non-critical alarms.' },
+            { cls: 'Class 3', color: 'border-green-900/60 bg-green-950/40', title: 'Low Priority Events', desc: 'Routine changes — counter updates, slow-moving analog changes, informational events. Polled last.' },
           ].map((c) => (
             <div key={c.cls} className={`border rounded-xl p-4 ${c.color}`}>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-lg">{c.emoji}</span>
                 <span className="font-bold text-amber-400">{c.cls}</span>
                 <span className="text-slate-400 text-sm">— {c.title}</span>
               </div>

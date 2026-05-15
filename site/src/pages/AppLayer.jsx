@@ -136,7 +136,7 @@ export default function AppLayer() {
                 { bit: 'IIN2.5', name: 'Already executing', meaning: 'A previous operate is still in progress' },
                 { bit: 'IIN2.6', name: 'Config corrupt', meaning: '🚨 Outstation configuration is corrupted — call the vendor' },
               ].map((row, i) => (
-                <tr key={row.bit} className={i % 2 === 0 ? 'bg-slate-50' : 'bg-white'}>
+                <tr key={row.bit} className={i % 2 === 0 ? 'bg-white/5' : ''}>
                   <td className="px-3 py-2 font-mono font-bold text-amber-400">{row.bit}</td>
                   <td className="px-3 py-2 font-medium text-slate-300">{row.name}</td>
                   <td className="px-3 py-2 text-slate-400">{row.meaning}</td>

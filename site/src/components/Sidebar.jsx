@@ -134,7 +134,7 @@ export default function Sidebar() {
           Download PDF Study Guide
         </a>
         <a
-          href="https://barbosaricardo.github.io/scada-hub/"
+          href="https://scada-hub.vercel.app"
           className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all"
           style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)', color: 'rgba(245,158,11,0.7)' }}
         >

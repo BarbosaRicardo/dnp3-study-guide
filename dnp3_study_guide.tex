@@ -1,0 +1,809 @@
+\documentclass[11pt,twoside]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{needspace}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{parskip}
+
+\geometry{margin=1in, top=1.1in, bottom=1.1in}
+
+% Colors
+\definecolor{dnpamber}{RGB}{251,191,36}
+\definecolor{dnpnavy}{RGB}{15,23,42}
+\definecolor{dnpslate}{RGB}{71,85,105}
+\definecolor{dnpgreen}{RGB}{34,197,94}
+\definecolor{dnpred}{RGB}{239,68,68}
+\definecolor{dnpblue}{RGB}{59,130,246}
+\definecolor{lightgray}{RGB}{248,249,250}
+\definecolor{boxborder}{RGB}{217,119,6}
+
+% Callout boxes
+\tcbuselibrary{skins, breakable}
+\newtcolorbox{keybox}[1][]{%
+  enhanced, breakable,
+  colback=yellow!8, colframe=dnpamber, arc=4pt,
+  title=\textbf{Key Concept},
+  fonttitle=\small\bfseries\color{dnpnavy},
+  #1
+}
+\newtcolorbox{warnbox}[1][]{%
+  enhanced, breakable,
+  colback=red!5, colframe=dnpred!60, arc=4pt,
+  title=\textbf{Warning},
+  fonttitle=\small\bfseries\color{dnpnavy},
+  #1
+}
+\newtcolorbox{probox}[1][]{%
+  enhanced, breakable,
+  colback=blue!5, colframe=dnpblue!50, arc=4pt,
+  title=\textbf{Pro Tip},
+  fonttitle=\small\bfseries\color{dnpnavy},
+  #1
+}
+\newtcolorbox{specbox}[1][]{%
+  enhanced, breakable,
+  colback=gray!6, colframe=dnpslate, arc=4pt,
+  title=\textbf{Spec Depth},
+  fonttitle=\small\bfseries\color{dnpnavy},
+  #1
+}
+
+% Headers
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[LO]{\small DNP3 Study Guide}
+\fancyhead[RE]{\small\leftmark}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Section formatting
+\titleformat{\section}[block]{\large\bfseries\color{dnpnavy}}{}{0em}{}[\vspace{2pt}\hrule\vspace{4pt}]
+\titleformat{\subsection}[block]{\normalsize\bfseries\color{dnpslate}}{}{0em}{}
+\titleformat{\subsubsection}[runin]{\small\bfseries}{}{0em}{}[\ ---\ ]
+
+\hypersetup{
+  colorlinks=true, linkcolor=dnpslate, urlcolor=dnpblue,
+  pdftitle={DNP3 Study Guide}, pdfauthor={SCADA Hub}
+}
+
+\title{%
+  {\Huge\bfseries DNP3 Study Guide}\\[6pt]
+  {\large Distributed Network Protocol 3}\\[4pt]
+  {\normalsize From Serial Substations to Secure Authentication}\\[12pt]
+  {\small SCADA Hub Training Series}
+}
+\author{Ricardo Barbosa \\ \small SCADA Hub --- \texttt{barbosaricardo.github.io/dnp3-study-guide}}
+\date{2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\begin{abstract}
+\noindent
+DNP3 (Distributed Network Protocol 3) is the dominant SCADA communications protocol in North American electric utilities and water systems. This guide covers the full protocol stack from physical layer framing through Secure Authentication v5. It is written for working field engineers, SCADA integrators, and protection engineers who need to configure, troubleshoot, and certify DNP3 systems --- not for academics who want a literature survey. Every section includes concrete field examples, gotchas that have burned real engineers, and the spec-level detail you need to pass interoperability testing.
+
+\textbf{Certification relevance:} ISA CCST (Levels I--III), ISA CAP, NERC reliability standards (FAC, COM), utility device acceptance testing.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 1: DNP3 Overview}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{What Is DNP3?}
+
+DNP3 was developed in 1993 by Westronic Inc.\ for the electric utility industry. The problem it solved: electric utilities needed to communicate with remote substations over slow, unreliable serial links (1200--9600 baud) while getting \emph{timestamped events} with millisecond precision. Modbus couldn't do it. IEC 60870-5 was the European answer; Westronic took 60870-5 as the base and extended it significantly for North American conditions.
+
+The result: a 3-layer protocol stack (Application, Transport, Data Link) that supports event buffering, quality flags, 48-bit UTC timestamps, and eventually --- after the Aurora Generator Vulnerability in 2007 --- cryptographic Secure Authentication.
+
+\begin{keybox}
+DNP3 in one sentence: A \textbf{Master} polls an \textbf{Outstation}, but the Outstation can also push \textbf{Unsolicited Reports} when events occur, complete with timestamps down to the millisecond. It is what Modbus would be if it cared about time.
+\end{keybox}
+
+\subsection{Where DNP3 Is Used}
+
+\begin{itemize}[noitemsep]
+  \item \textbf{Electric utilities} --- Substation RTUs, breaker status, meter data, capacitor bank control
+  \item \textbf{Water treatment} --- Pump stations, tank levels, chlorine dosing, lift stations
+  \item \textbf{Oil \& gas} --- Pipeline monitoring, compressor stations, custody transfer
+  \item \textbf{Transportation} --- Traffic signals, rail systems, traffic management centers
+\end{itemize}
+
+If you work at a North American utility and your SCADA talks to field RTUs, there is a very high probability those RTUs speak DNP3. The DNP3 Users Group estimates over 30 million DNP3-capable devices are deployed worldwide.
+
+\subsection{DNP3 vs.\ The Competition}
+
+\begin{tabularx}{\textwidth}{lXXcc}
+\toprule
+\textbf{Protocol} & \textbf{Origin} & \textbf{Primary Use} & \textbf{Events?} & \textbf{Timestamps?}\\
+\midrule
+Modbus RTU/TCP & Modicon, 1979 & Legacy PLCs, manufacturing & No & No \\
+DNP3 & Westronic, 1993 & Electric utilities, water SCADA & Yes & 48-bit ms UTC \\
+IEC 60870-5 & IEC, 1990s & European utilities & Yes & Yes \\
+IEC 61850 & IEC, 2003 & Modern substations, relays & Yes (GOOSE) & Microsecond \\
+\bottomrule
+\end{tabularx}
+
+\begin{warnbox}
+DNP3 is \textbf{not} Modbus with timestamps. The data model, addressing, framing, CRC polynomial, and communication pattern are all different. If you approach DNP3 with Modbus muscle memory, you will suffer. Start fresh.
+\end{warnbox}
+
+\subsection{Key Terminology}
+
+\begin{description}[style=nextline, leftmargin=2cm, labelwidth=1.8cm]
+  \item[Master] The controlling device --- initiates polls, issues controls. Usually the SCADA server or EMS.
+  \item[Outstation] The field device --- RTU, IED, or intelligent relay. Responds to polls; sends unsolicited reports.
+  \item[APDU] Application Protocol Data Unit --- top-layer payload with function code and data objects.
+  \item[TPDU] Transport Protocol Data Unit --- fragments large APDUs for the data link layer.
+  \item[LPDU] Link Protocol Data Unit --- the actual frame on the wire, with 0x0564 start bytes and CRC-16/DNP.
+  \item[IIN] Internal Indications --- 16-bit flag word in every response reporting outstation health.
+  \item[Group/Var] DNP3 object system --- Group = data type, Variation = format/precision.
+  \item[Class 0/1/2/3] Data classification --- Class 0 = static values, Class 1/2/3 = event buffers by priority.
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 2: Protocol Layers}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The Three-Layer Stack}
+
+DNP3 uses a subset of the OSI model called the \textbf{Enhanced Performance Architecture (EPA)}: only three layers, no session or presentation layer. This is a deliberate choice --- fewer layers mean less overhead on slow serial links.
+
+\begin{center}
+\begin{tabularx}{0.75\textwidth}{|c|X|}
+\hline
+\textbf{Layer} & \textbf{Role} \\
+\hline
+Application (AL) & Function codes, data objects, IIN flags, fragmentation \\
+Transport (TL) & Segments AL messages $>$ 249 bytes into TPDU chunks \\
+Data Link (DL) & Framing, addressing, CRC error detection, flow control \\
+\hline
+\end{tabularx}
+\end{center}
+
+Each layer wraps the layer above it. A large application message gets fragmented by the Transport layer into 249-byte chunks, each chunk gets wrapped in a Data Link frame, and those frames flow over whatever physical medium you're using (serial RS-485, TCP/IP, radio, fiber).
+
+\subsection{Layer Boundaries and Sizes}
+
+\begin{itemize}[noitemsep]
+  \item \textbf{Data Link frame:} Maximum 292 bytes (18-byte header + up to 274 payload bytes)
+  \item \textbf{Transport segment:} Maximum 249 bytes of application data per segment
+  \item \textbf{Application fragment:} Maximum 2048 bytes per APDU fragment
+  \item \textbf{Maximum APDU via transport:} $64 \times 249 = 15{,}936$ bytes (64 transport segments)
+\end{itemize}
+
+\begin{specbox}
+The transport header is a single byte. Bit 7 = FIN (this is the last segment), Bit 6 = FIR (this is the first segment), Bits 5:0 = sequence number (0--63). A single-segment message has FIN=1, FIR=1.
+\end{specbox}
+
+\subsection{Physical Connections}
+
+DNP3 is transport-agnostic. The same application layer works over:
+\begin{itemize}[noitemsep]
+  \item RS-232 / RS-485 serial (1200--115200 baud)
+  \item TCP/IP (IANA-assigned port 20000)
+  \item UDP/IP (also port 20000)
+  \item Fiber, radio, spread-spectrum --- anything that moves bytes
+\end{itemize}
+
+TCP DNP3 is now common in substations. The application layer is identical; only the link layer behavior changes slightly (TCP handles framing reliability, so link layer retries are less critical).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 3: Data Link Layer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Frame Structure}
+
+Every DNP3 Data Link frame begins with the two-byte start sequence \texttt{0x05 0x64}. This is the sync pattern --- if you see these bytes in a serial capture, DNP3 is flowing.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{|c|c|X|}
+\hline
+\textbf{Field} & \textbf{Size} & \textbf{Description} \\
+\hline
+Start Bytes & 2 bytes & Always \texttt{0x05 0x64} \\
+Length & 1 byte & Number of bytes following (header + user data, not including CRCs) \\
+Control & 1 byte & DIR, PRM, FCB, FCV bits + Function Code nibble \\
+Destination & 2 bytes & Little-endian 16-bit address (0--65519 valid; 65535 = broadcast) \\
+Source & 2 bytes & Little-endian 16-bit address \\
+CRC & 2 bytes & CRC-16/DNP over header bytes \\
+User Data & up to 16-byte blocks, each with 2-byte CRC & Payload from transport layer \\
+\hline
+\end{tabularx}
+\end{center}
+
+\subsection{CRC-16/DNP}
+
+DNP3 uses a non-standard CRC variant: \textbf{CRC-16/DNP} (also called CRC-16/M-BUS).
+
+\begin{specbox}
+CRC-16/DNP parameters: polynomial = \texttt{0x3D65}, initial value = \texttt{0xFFFF}, RefIn = True, RefOut = True, XorOut = \texttt{0xFFFF}. This is \emph{not} the same as CRC-16/ANSI or CRC-16/IBM. Implementing the wrong CRC is a common source of interoperability failures during device bring-up.
+\end{specbox}
+
+Every 16-byte block of user data has its own 2-byte CRC appended. This allows partial-frame error detection without waiting for the entire frame --- useful on noisy serial lines where burst errors are common.
+
+\subsection{The Control Byte}
+
+The single Control byte encodes the frame direction and function:
+
+\begin{itemize}[noitemsep]
+  \item \textbf{DIR} (bit 7): 1 = Master-to-Outstation, 0 = Outstation-to-Master
+  \item \textbf{PRM} (bit 6): 1 = Primary station (frame initiator), 0 = Secondary
+  \item \textbf{FCB} (bit 5): Frame Count Bit --- alternates 0/1 for duplicate detection
+  \item \textbf{FCV} (bit 4): Frame Count Valid --- 1 if FCB is meaningful
+  \item \textbf{FC} (bits 3:0): Link Layer Function Code
+\end{itemize}
+
+\begin{probox}
+\textbf{Wireshark tip:} Filter for \texttt{dnp3} to see decoded frames. The Control byte will decode to readable fields. A Control byte of \texttt{0xC4} decodes to DIR=1, PRM=1, FCB=0, FCV=0, FC=4 (UNCONFIRMED\_USER\_DATA).
+\end{probox}
+
+\subsection{Frame Count Bit (FCB) Mechanism}
+
+The FCB alternates between 0 and 1 on successive confirmed frames. The outstation echoes back the FCB in its response. If the master receives a response with the wrong FCB, it knows a frame was duplicated or lost. This is DNP3's link-layer duplicate detection for confirmed services.
+
+FCB is NOT used with UNCONFIRMED\_USER\_DATA --- the most common frame type for poll responses.
+
+\subsection{Addressing}
+
+\begin{itemize}[noitemsep]
+  \item Valid addresses: 0--65519
+  \item 65520--65534: Reserved
+  \item 65535 (0xFFFF): Broadcast address --- no response expected
+  \item 0xFFFC (65532): Self-address --- outstation reports its own address when polled at this address (some devices)
+\end{itemize}
+
+A common site configuration error: duplicate outstation addresses. Two RTUs with the same address will both respond to polls, colliding on the serial bus. The symptom is CRC errors and random timeouts. Check the address map before calling the manufacturer.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 4: Application Layer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{APDU Structure}
+
+The Application Protocol Data Unit (APDU) is the top-level DNP3 payload:
+
+\begin{center}
+\begin{tabularx}{0.8\textwidth}{|c|X|}
+\hline
+\textbf{Field} & \textbf{Description} \\
+\hline
+App Control & Sequence number + FIR/FIN fragmentation bits \\
+Function Code & 1 byte, defines operation type \\
+IIN (responses only) & 2 bytes, 16 internal indication flags \\
+Object Headers & Zero or more Group/Var/Qualifier/Range/Data tuples \\
+\hline
+\end{tabularx}
+\end{center}
+
+\subsection{Application Control Byte}
+
+\begin{itemize}[noitemsep]
+  \item \textbf{FIR} (bit 7): First fragment
+  \item \textbf{FIN} (bit 6): Final fragment
+  \item \textbf{CON} (bit 5): Confirmation requested from receiver
+  \item \textbf{UNS} (bit 4): Unsolicited message flag
+  \item \textbf{SEQ} (bits 3:0): Sequence number 0--15 (wraps)
+\end{itemize}
+
+For multi-fragment responses: first fragment has FIR=1, FIN=0; intermediate fragments have FIR=0, FIN=0; final fragment has FIR=0, FIN=1. A single-fragment response has FIR=1, FIN=1.
+
+\subsection{Function Codes}
+
+\begin{longtable}{cll}
+\toprule
+\textbf{Code} & \textbf{Name} & \textbf{Direction / Use}\\
+\midrule
+\endhead
+0x00 & CONFIRM & M$\rightarrow$O or O$\rightarrow$M: Acknowledge receipt \\
+0x01 & READ & M$\rightarrow$O: Poll for data \\
+0x02 & WRITE & M$\rightarrow$O: Write values (time, event enables) \\
+0x03 & SELECT & M$\rightarrow$O: First step of SBO control \\
+0x04 & OPERATE & M$\rightarrow$O: Second step of SBO control \\
+0x05 & DIRECT\_OPERATE & M$\rightarrow$O: Single-step control (no SELECT required) \\
+0x06 & DIRECT\_OPERATE\_NR & M$\rightarrow$O: Direct operate, no response \\
+0x07 & FREEZE & M$\rightarrow$O: Snapshot counters \\
+0x08 & FREEZE\_AND\_CLEAR & M$\rightarrow$O: Snapshot then zero counters \\
+0x14 & ASSIGN\_CLASS & M$\rightarrow$O: Set event class assignments \\
+0x17 & DELAY\_MEASURE & M$\rightarrow$O: Measure one-way propagation delay \\
+0x18 & RECORD\_CURRENT\_TIME & M$\rightarrow$O: Record arrival timestamp \\
+0x50 & RESPONSE & O$\rightarrow$M: Normal response to a READ \\
+0x82 & UNSOLICITED\_RESPONSE & O$\rightarrow$M: Event-driven push \\
+0x81 & AUTHENTICATE\_REQUEST & M$\rightarrow$O: SA v5 challenge \\
+\bottomrule
+\end{longtable}
+
+\subsection{Internal Indications (IIN)}
+
+Every outstation response includes a 2-byte IIN field. Each bit is a status flag. You need to know all 16.
+
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{IIN} & \textbf{Name} & \textbf{Meaning} \\
+\midrule
+IIN1.0 & BROADCAST & Received a broadcast message \\
+IIN1.1 & CLASS1\_EVENTS & Class 1 events available \\
+IIN1.2 & CLASS2\_EVENTS & Class 2 events available \\
+IIN1.3 & CLASS3\_EVENTS & Class 3 events available \\
+IIN1.4 & NEED\_TIME & Outstation needs time sync \\
+IIN1.5 & LOCAL\_CONTROL & At least one point in local control mode \\
+IIN1.6 & DEVICE\_TROUBLE & Hardware or configuration problem \\
+IIN1.7 & DEVICE\_RESTART & Device has restarted (cleared on first READ) \\
+\midrule
+IIN2.0 & FUNC\_NOT\_SUPP & Function code not supported \\
+IIN2.1 & OBJ\_UNKNOWN & Object Group/Variation not recognized \\
+IIN2.2 & PARAM\_ERROR & Request parameter out of range \\
+IIN2.3 & EVENT\_BUFFER\_OVERFLOW & Events were discarded (buffer full) \\
+IIN2.4 & ALREADY\_EXECUTING & Control already in progress \\
+IIN2.5 & CONFIG\_CORRUPT & Device configuration is corrupt \\
+IIN2.6 & RESERVED & Reserved, should be 0 \\
+IIN2.7 & RESERVED & Reserved, should be 0 \\
+\bottomrule
+\end{tabularx}
+
+\begin{warnbox}
+\textbf{IIN1.7 (DEVICE\_RESTART):} The outstation sets this bit whenever it restarts and it stays set until the master issues a \textit{READ of IIN with the clear bit} or writes to G80V1 (IIN object). If you see IIN1.7 stuck on, the master is not clearing it. This fills the event buffer with restart events over time.
+\end{warnbox}
+
+\subsection{Select-Before-Operate (SBO)}
+
+SBO is the two-step control sequence for safety-critical operations (opening breakers, operating switches):
+
+\begin{enumerate}[noitemsep]
+  \item Master sends SELECT (FC=0x03) with control object and parameters
+  \item Outstation echoes back the same SELECT with a status code
+  \item If status = 0 (Success), master sends OPERATE (FC=0x04) within the SBO timeout
+  \item Outstation executes the control and responds
+\end{enumerate}
+
+If the OPERATE arrives after the SBO timeout (typically 10 seconds), the outstation rejects it with status code 4 (Timeout). The OPERATE parameters must exactly match the SELECT parameters --- any byte-level difference and the outstation will reject with status code 2 (No Select).
+
+\subsection{Qualifier Codes}
+
+Qualifier codes appear in object headers and determine how the range is specified:
+
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Qualifier} & \textbf{Name} & \textbf{Range Format} \\
+\midrule
+0x00 & 8-bit Start/Stop & Indices 0--255 \\
+0x01 & 16-bit Start/Stop & Indices 0--65535 \\
+0x06 & No Range / All & Read all objects of this type \\
+0x07 & 8-bit Count & Next N objects \\
+0x08 & 16-bit Count & Next N objects (N up to 65535) \\
+0x17 & 8-bit Index & Individually addressed, up to 255 \\
+0x28 & 16-bit Index & Individually addressed, up to 65535 \\
+\bottomrule
+\end{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 5: Data Objects \& Groups}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The Group/Variation System}
+
+DNP3 data is organized into typed objects. Every object has a \textbf{Group} (what type of data) and a \textbf{Variation} (what format/precision/flags).
+
+\begin{longtable}{cll}
+\toprule
+\textbf{Group} & \textbf{Type} & \textbf{Common Variations} \\
+\midrule
+\endhead
+1 & Binary Input (static) & Var 1: packed (no flags), Var 2: with flags \\
+2 & Binary Input Event & Var 1: no time, Var 2: absolute time, Var 3: relative time \\
+3 & Double-bit Binary Input & Var 1: packed, Var 2: with flags \\
+4 & Double-bit Binary Input Event & Var 1: no time, Var 2: absolute time \\
+10 & Binary Output (static) & Var 1: packed, Var 2: with flags \\
+11 & Binary Output Event & Var 1: no time, Var 2: with time \\
+12 & Control Relay Output Block (CROB) & Var 1: the standard control object \\
+20 & Binary Counter (static) & Var 1: 32-bit w/flags, Var 5: 32-bit no flags \\
+22 & Binary Counter Event & Var 1: 32-bit no time, Var 5: 32-bit with absolute time \\
+30 & Analog Input (static) & Var 1: 32-bit int, Var 2: 16-bit int, Var 5: float, Var 6: double \\
+32 & Analog Input Event & Var 1: 32-bit no time, Var 3: 32-bit absolute time, Var 5: float no time \\
+40 & Analog Output Status & Var 1: 32-bit int, Var 3: float \\
+41 & Analog Output Block & Var 1: 32-bit int, Var 3: float \\
+50 & Time and Date & Var 1: absolute timestamp, Var 3: last-recorded time \\
+51 & Time and Date CTO & Var 1: absolute CTO (Common Time of Occurrence) \\
+52 & Time Delay & Var 2: time delay fine (ms) \\
+60 & Class Data & Var 1: Class 0 (static), Var 2/3/4: Class 1/2/3 (events) \\
+70 & File Transfer & Var 3: file command, Var 4: file command status \\
+80 & Internal Indications & Var 1: IIN register (used to clear DEVICE\_RESTART) \\
+\bottomrule
+\end{longtable}
+
+\subsection{Binary Input Quality Flags}
+
+Group 1/2 Variation 2 includes a flags byte per point:
+\begin{itemize}[noitemsep]
+  \item \textbf{bit 0 — ONLINE:} 1 = point is online and valid
+  \item \textbf{bit 1 — RESTART:} Set after device restart until first poll
+  \item \textbf{bit 2 — COMM\_LOST:} 1 = communications to field device lost (IED behind RTU)
+  \item \textbf{bit 3 — REMOTE\_FORCED:} Value overridden by remote command
+  \item \textbf{bit 4 — LOCAL\_FORCED:} Value overridden locally (keyswitch, SCADA override)
+  \item \textbf{bit 5 — CHATTER:} Point is oscillating faster than configured chatter filter
+  \item \textbf{bit 6 — STATE:} The actual binary state (0 or 1)
+\end{itemize}
+
+\subsection{Analog Input Quality Flags}
+
+Group 30/32 Variation 1 flags byte:
+\begin{itemize}[noitemsep]
+  \item \textbf{bit 0 — ONLINE}
+  \item \textbf{bit 2 — COMM\_LOST}
+  \item \textbf{bit 3 — REMOTE\_FORCED}
+  \item \textbf{bit 4 — LOCAL\_FORCED}
+  \item \textbf{bit 5 — OVERRANGE:} Value exceeds sensor range
+  \item \textbf{bit 6 — REFERENCE\_ERR:} Reference check failed
+\end{itemize}
+
+\subsection{Control Relay Output Block (CROB) --- Group 12 Var 1}
+
+CROB is the standard control object for binary outputs:
+
+\begin{center}
+\begin{tabularx}{0.8\textwidth}{|c|c|X|}
+\hline
+\textbf{Byte} & \textbf{Field} & \textbf{Description} \\
+\hline
+0 & ControlCode & See table below \\
+1 & Count & Number of times to operate (1--255) \\
+2--5 & OnTime & Duration ON in milliseconds (uint32) \\
+6--9 & OffTime & Duration OFF in milliseconds (uint32) \\
+10 & Status & 0 = Success (response only); request = 0 \\
+\hline
+\end{tabularx}
+\end{center}
+
+ControlCode byte breakdown: bits 7:6 = TCC (Trip/Close Code), bit 5 = CR (Clear), bit 4 = QU (Queue), bits 3:0 = Code.
+
+Common Code values: 0x03 = LATCH\_ON, 0x04 = LATCH\_OFF, 0x41 = PULSE\_ON (TCC=01, Code=01).
+
+\begin{warnbox}
+If a CROB OPERATE is rejected with status 2 (No Select), byte-compare the SELECT and OPERATE payloads. Even a 1-bit difference in any CROB field (including reserved bits) will cause rejection. This is spec-required behavior, not a device bug.
+\end{warnbox}
+
+\subsection{Event Classification}
+
+Points are assigned to event classes (Class 1, 2, or 3) in the Device Profile Document. Class assignment determines event priority:
+\begin{itemize}[noitemsep]
+  \item \textbf{Class 1:} Highest priority --- protection trips, critical alarms
+  \item \textbf{Class 2:} Medium priority --- switching events, major alarms
+  \item \textbf{Class 3:} Low priority --- equipment status, minor alarms
+  \item \textbf{Class 0:} No events --- static data only (poll Class 0 to read current values)
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 6: Function Codes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{READ (FC=0x01)}
+
+The most common function. A Class Poll reads event buffers:
+\begin{verbatim}
+READ: G60V2 (Class 1 events) + G60V3 (Class 2) + G60V4 (Class 3)
+READ: G60V1 (Class 0 = all static data)
+\end{verbatim}
+The outstation responds with a RESPONSE (FC=0x81) containing whatever objects match the request. If events are pending, IIN1.1--1.3 will be set.
+
+\subsection{WRITE (FC=0x02)}
+
+Used to set time (G50V1 or G50V3), write IIN (G80V1 to clear DEVICE\_RESTART), assign event classes (with ASSIGN\_CLASS FC=0x14), and set unsolicited configuration.
+
+Time sync procedure:
+\begin{enumerate}[noitemsep]
+  \item Master sends DELAY\_MEASURE (FC=0x17) to measure propagation delay
+  \item Outstation responds with G52V2 (delay in ms)
+  \item Master sends WRITE of G50V1 with current time + half measured delay
+  \item Outstation clears IIN1.4 (NEED\_TIME)
+\end{enumerate}
+
+\subsection{SELECT and OPERATE (FC=0x03, 0x04)}
+
+Covered in Chapter 4 SBO section. Key additional points:
+\begin{itemize}[noitemsep]
+  \item The SELECT initiates a timeout timer on the outstation (typically 10s, device-configurable)
+  \item Only one SBO sequence can be active per outstation at a time
+  \item A new SELECT cancels any pending SELECT
+  \item If the master gets no response to SELECT, retry before concluding failure
+\end{itemize}
+
+\subsection{FREEZE and FREEZE\_AND\_CLEAR (FC=0x07, 0x08)}
+
+These apply to counters (Group 20):
+\begin{itemize}[noitemsep]
+  \item \textbf{FREEZE:} Copies current counter values to frozen registers (Group 21). Non-destructive.
+  \item \textbf{FREEZE\_AND\_CLEAR:} Copies to frozen registers, then zeroes the live counters. The snapshot and zero happen atomically --- a counter increment during this operation is deterministically included in the frozen value or the new running value, never lost.
+\end{itemize}
+
+\begin{specbox}
+FREEZE\_AND\_CLEAR atomicity is spec-required (IEEE 1815 clause 4.3.4). If a vendor implementation is non-atomic, energy meter billing calculations will accumulate errors over time. Test this with a pulse source during a FREEZE\_AND\_CLEAR if billing accuracy matters.
+\end{specbox}
+
+\subsection{DIRECT\_OPERATE (FC=0x05)}
+
+Single-step control, no SELECT required. Faster than SBO but provides no protection against race conditions or spurious controls. Use only where SBO is not required by the system design, usually for non-critical outputs (annunciators, auxiliary relays).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 7: Unsolicited Responses}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{What Are Unsolicited Responses?}
+
+An outstation sends an Unsolicited Response (FC=0x82) when events occur without waiting for a poll. This is the event-driven alternative to polling:
+
+\begin{itemize}[noitemsep]
+  \item Master enables unsolicited responses by writing to the outstation's configuration
+  \item Outstation sends events as they occur (or batched up to a configurable count/time threshold)
+  \item Master must confirm each unsolicited response (FC=0x00 CONFIRM)
+  \item If no CONFIRM is received, outstation retries up to 3 times, then holds the buffer (does not discard)
+\end{itemize}
+
+\begin{keybox}
+An unconfirmed unsolicited response causes the outstation to \textbf{hold} its event buffer --- not discard. Events are retained until confirmed. This prevents data loss on noisy links at the cost of buffer memory.
+\end{keybox}
+
+\subsection{Startup Sequence for Unsolicited}
+
+Multi-master environments require a careful startup sequence:
+\begin{enumerate}[noitemsep]
+  \item Master sends DISABLE\_UNSOLICITED (FC=0x15) to prevent spurious messages during initialization
+  \item Master polls Class 0 (full static scan) to get initial state
+  \item Master polls Class 1/2/3 to drain any buffered events
+  \item Master sends ENABLE\_UNSOLICITED (FC=0x14 with appropriate class objects)
+  \item Outstation begins sending events without being polled
+\end{enumerate}
+
+Skipping step 1 causes an outstation to send buffered events during startup before the master is ready to process them. The events are not lost, but they confuse state machines that assume initial scan is the baseline.
+
+\subsection{Unsolicited Hold-Off Timer}
+
+The hold-off timer (also called the startup wait time) delays the outstation from sending unsolicited reports after a power cycle. This prevents event storms when a substation powers up and every IED sends events simultaneously.
+
+A well-configured system staggers these timers: RTU 1 = 30s, RTU 2 = 45s, RTU 3 = 60s. Poorly configured systems all fire at 0s and saturate the communication channel.
+
+\subsection{Multi-Master and Unsolicited}
+
+Only \textbf{one master} should have unsolicited enabled per outstation. The second master polls at a slower rate. If both masters enable unsolicited, each gets a stream of events and each must CONFIRM them --- but the outstation tracks which master confirmed which sequence number. This works technically but doubles confirmation traffic and complicates troubleshooting.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 8: Secure Authentication}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Background: Why SA Exists}
+
+In 2007, the Aurora Generator Vulnerability demonstrated that an attacker with access to a SCADA communication channel could issue control commands --- breaker trips --- and cause physical damage to generators. DNP3 at the time had zero authentication. Any device that could speak DNP3 could issue arbitrary commands.
+
+SA v2 (Challenge-Response with HMAC-SHA-1) was added to the spec. SA v5 (the current version, part of IEEE 1815-2012) extended it with bidirectional authentication and session key management.
+
+\subsection{SA v5 Key Hierarchy}
+
+\begin{description}
+  \item[Update Key (UK)] Long-lived symmetric key pre-provisioned on master and outstation. Never transmitted on the wire. Used only to derive session keys. Changed via the Key Change Procedure.
+  \item[Session Keys] Short-lived keys derived from the Update Key. Separate keys for each direction: Monitor Direction (M$\rightarrow$O) and Control Direction (O$\rightarrow$M). Rotated periodically (typically every 15--60 minutes or after N messages).
+  \item[HMAC] The authentication MAC. SA v5 uses HMAC-SHA-256 truncated to 80 bits (10-byte MACs).
+\end{description}
+
+\subsection{Challenge-Response Flow}
+
+\begin{enumerate}[noitemsep]
+  \item Outstation issues a Challenge (random nonce, sequence number, key status)
+  \item Master computes HMAC over the challenge + the message it wants to send
+  \item Master sends AUTHENTICATE\_REQUEST (FC=0x20) with the HMAC
+  \item Outstation verifies; if valid, processes the original message
+  \item On failure after retries: critical operations are blocked
+\end{enumerate}
+
+\textbf{Aggressive Mode:} Rather than waiting for a challenge, the master pre-emptively sends a MAC with every critical message. If the outstation accepts aggressive mode, it skips the challenge round-trip. This halves the authentication overhead on low-latency links.
+
+\subsection{Nonce and Replay Protection}
+
+Nonces are cryptographically random values that prevent replay attacks. SA v5 requires a CSPRNG (Cryptographically Secure Pseudo-Random Number Generator) --- not a simple counter. An attacker capturing an authenticated frame cannot replay it because the nonce will never repeat.
+
+\begin{warnbox}
+If your outstation uses a sequential counter as a nonce instead of a CSPRNG, it is technically non-compliant with SA v5 and may be vulnerable to replay attacks. This is a known implementation quality issue in some older devices. Check the device profile document.
+\end{warnbox}
+
+\subsection{Key Change Procedure}
+
+The Update Key itself must be changed periodically (NERC CIP and good practice). The Key Change Procedure (FC=0x21) uses AES Key Wrap (RFC 3394) to encrypt the new Update Key under the existing one. The session must be authenticated before a Key Change can proceed.
+
+\subsection{SA v5 and NERC CIP}
+
+NERC CIP-007 (Systems Security Management) and CIP-005 (Electronic Security Perimeters) do not require DNP3 SA specifically, but they do require authentication for SCADA communications at many utilities. SA v5 is the accepted technical implementation for DNP3. If your utility is NERC CIP-applicable, plan for SA v5 on any DNP3 link that crosses a security perimeter.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 9: Troubleshooting}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Bottom-Up Layer Isolation}
+
+Always troubleshoot from the physical layer up. Chasing application layer errors when the CRC failure rate is 20\% wastes everyone's time.
+
+\begin{enumerate}
+  \item \textbf{Physical:} Check cable wiring, termination resistors (RS-485: 120$\Omega$ at each end), signal levels, baud rate match, parity match.
+  \item \textbf{Data Link:} Capture frames. Zero CRC errors? FCB sequencing correct? Correct addresses?
+  \item \textbf{Transport:} Are fragments being assembled? FIR/FIN sequence correct? No missing segments?
+  \item \textbf{Application:} Function codes correct? IIN flags? Object types match device profile?
+\end{enumerate}
+
+\subsection{Common Failure Modes}
+
+\subsubsection{Address mismatch}
+Master polls address 5; device thinks it's address 6. Symptom: no responses, ever. Device is silently ignoring the frames. Fix: verify address in device configuration.
+
+\subsubsection{COMM\_LOST flag}
+If an RTU polls a downstream IED (relay behind the RTU) and that IED goes offline, the RTU sets COMM\_LOST on all points from that IED. The master sees the quality flag and treats the value as stale. This is correct behavior --- the RTU is telling you it can't verify the data.
+
+\subsubsection{IIN2.3 EVENT\_BUFFER\_OVERFLOW}
+The outstation's event buffer filled up and events were discarded. Causes: poll rate too slow, communication channel down for extended period, event storm from a chattering contact. Recovery: issue a full Class 0 poll to resynchronize state. Events before the overflow are gone.
+
+\subsubsection{GPS Week Rollover}
+DNP3 timestamps are 48-bit milliseconds since 1970-01-01 UTC --- they do NOT use GPS week numbers. But many RTUs get their time from a GPS receiver that uses GPS time internally. GPS week rollovers (last occurred April 6, 2019) can corrupt the GPS receiver's output. The symptom is timestamps that are 19.7 years off. If you see timestamps from early 2000 in 2026, GPS week rollover is your first suspect.
+
+\subsubsection{NAT Timeout on TCP DNP3}
+TCP DNP3 sessions over NAT firewalls will be dropped by the NAT table if no traffic flows for the NAT idle timeout (often 5--15 minutes). The DNP3 master's keepalive poll must be more frequent than the NAT timeout. Or configure the firewall to extend the timeout for TCP port 20000.
+
+\subsubsection{Crystal Oscillator Drift}
+RTU clocks drift without GPS synchronization. The drift is temperature-dependent and follows a quadratic curve --- not linear. A 20 ppm crystal at 25$^\circ$C might drift 50 ppm at 65$^\circ$C. After 24 hours without GPS sync at 20 ppm: $20 \times 10^{-6} \times 86400\text{s} = 1.7\text{s}$ drift. Events near protection relay operation will have inaccurate sequence of events records. Always verify GPS sync status before using timestamps for post-event analysis.
+
+\subsection{Wireshark Filters for DNP3}
+
+\begin{verbatim}
+tcp.port == 20000          # All TCP DNP3 traffic
+dnp3                       # DNP3 protocol layer only
+dnp3.iin.broadcast == 1    # Frames with BROADCAST set
+dnp3.al.func == 0x82       # Unsolicited responses only
+dnp3.al.func == 0x03       # SELECT commands
+\end{verbatim}
+
+Save your capture file before making any configuration changes. You will want to compare before/after.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Chapter 10: Lab \& Practice}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Getting Your Hands Dirty}
+
+Reading about DNP3 is useful. Actually building a master, watching it poll an outstation, and seeing event buffers fill up in real time is where it becomes permanent knowledge.
+
+\subsection{Lab Environment Options}
+
+\begin{description}
+  \item[OpenDNP3] C++ DNP3 library by Automatak. Free, Apache 2.0. Full SA v5 support. The gold standard for open-source DNP3. Ships with demo programs for master and outstation.
+  \item[pydnp3] Python bindings for OpenDNP3. Write a DNP3 master or outstation in Python. Great for scripting and testing.
+  \item[Triangle MicroWorks Test Harness] Commercial. The industry standard for interoperability testing. If your device passes TMW, it works.
+  \item[Wireshark] Free. Decodes DNP3 out of the box. For TCP DNP3, filter \texttt{tcp.port == 20000}.
+\end{description}
+
+\subsection{Lab Exercise: OpenDNP3 Master/Outstation}
+
+\begin{verbatim}
+# Build OpenDNP3 with demos
+git clone https://github.com/automatak/dnp3.git
+cd dnp3 && mkdir build && cd build
+cmake .. -DDEMO=ON && make -j4
+
+# Terminal 1: start outstation (listens on 127.0.0.1:20000)
+./outstation-demo
+
+# Terminal 2: start master
+./master-demo
+
+# Terminal 3: capture in Wireshark
+# Filter: tcp.port == 20000
+\end{verbatim}
+
+Watch the console. You will see Class 1/2/3 polls, responses, and unsolicited events. Capture in Wireshark and decode each frame type manually to verify your frame structure understanding.
+
+\subsection{Lab Checklist: Minimum Competency}
+
+Before claiming DNP3 competency, you should be able to:
+\begin{itemize}[noitemsep]
+  \item Run an outstation simulator and connect a master to it
+  \item Capture the startup exchange in Wireshark and decode each frame type
+  \item Identify all 16 IIN bits in a response
+  \item Enable and disable unsolicited responses and observe the difference
+  \item Trigger a binary input change and watch the event flow from buffer to master
+  \item Decode a DNP3 object header: Group, Variation, Qualifier, Range
+  \item Perform a Select-Before-Operate and observe both request/response pairs
+  \item Force an event buffer overflow and observe IIN2.3 being set
+  \item Sync time using Group 50 Variation 1
+  \item Read a Device Profile Document and configure a master poll schedule from it
+\end{itemize}
+
+\subsection{pydnp3 Common Pitfalls}
+
+\begin{enumerate}[noitemsep]
+  \item \textbf{Not calling \texttt{master.Enable()}:} The stack is built but communication never starts.
+  \item \textbf{Process exit without \texttt{manager.shutdown()}:} The IO service thread hangs. The process appears frozen on exit.
+  \item \textbf{Ignoring \texttt{ISOEHandler.process\_header()}:} This is where data arrives. If you don't implement it, you receive nothing.
+  \item \textbf{asyncio + pydnp3:} pydnp3 runs its own IO thread. Mixing it with asyncio \texttt{asyncio.run()} requires careful thread boundary management.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix A: IIN Quick Reference}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addcontentsline{toc}{section}{Appendix A: IIN Quick Reference}
+
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Bit} & \textbf{Flag} & \textbf{Action Required} \\
+\midrule
+IIN1.0 & BROADCAST & Informational --- no action required \\
+IIN1.1 & CLASS1\_EVENTS & Poll G60V2 to retrieve events \\
+IIN1.2 & CLASS2\_EVENTS & Poll G60V3 to retrieve events \\
+IIN1.3 & CLASS3\_EVENTS & Poll G60V4 to retrieve events \\
+IIN1.4 & NEED\_TIME & Send DELAY\_MEASURE + WRITE G50V1 \\
+IIN1.5 & LOCAL\_CONTROL & Investigate which points are in local mode \\
+IIN1.6 & DEVICE\_TROUBLE & Check device hardware and logs \\
+IIN1.7 & DEVICE\_RESTART & Write G80V1 with clear bit to acknowledge \\
+IIN2.0 & FUNC\_NOT\_SUPP & Check master poll configuration vs device profile \\
+IIN2.1 & OBJ\_UNKNOWN & Check Group/Variation vs device profile \\
+IIN2.2 & PARAM\_ERROR & Check qualifier and range in the failing request \\
+IIN2.3 & EVENT\_BUFFER\_OVERFLOW & Increase poll frequency or event buffer size \\
+IIN2.4 & ALREADY\_EXECUTING & Wait for previous control to complete \\
+IIN2.5 & CONFIG\_CORRUPT & Contact device vendor \\
+\bottomrule
+\end{tabularx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix B: CRC-16/DNP Reference}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addcontentsline{toc}{section}{Appendix B: CRC-16/DNP Reference}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Parameter} & \textbf{Value} \\
+\midrule
+Polynomial & \texttt{0x3D65} \\
+Initial Value & \texttt{0xFFFF} \\
+Input Reflection (RefIn) & True \\
+Output Reflection (RefOut) & True \\
+Final XOR & \texttt{0xFFFF} \\
+Residue & \texttt{0x66C5} \\
+Check Value (for ``123456789'') & \texttt{0xEA82} \\
+\bottomrule
+\end{tabularx}
+
+A 5-byte header with CRC 0x0000 always fails. If your library returns 0x0000 for any input, the XorOut is not being applied.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix C: Common Address Assignments}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addcontentsline{toc}{section}{Appendix C: Common Address Assignments}
+
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Address} & \textbf{Use} \\
+\midrule
+0 & Often used for Master address (not standardized) \\
+1--65519 & Valid outstation addresses \\
+65520--65534 & Reserved \\
+65532 (0xFFFC) & Self-address (outstation responds with its own address) \\
+65535 (0xFFFF) & Broadcast --- no response expected \\
+\bottomrule
+\end{tabularx}
+
+\bigskip
+\begin{center}
+\small
+\textit{DNP3 Study Guide --- SCADA Hub Training Series}\\
+\textit{barbosaricardo.github.io/dnp3-study-guide}\\
+\textit{2026 --- Ricardo Barbosa}
+\end{center}
+
+\end{document}

@@ -45,7 +45,7 @@ const TYPES = {
     text: '#fca5a5',
     label: '#f87171',
     iconBg: '#991b1b',
-    title: '⚠️ Field Gotcha',
+    title: 'Field Gotcha',
   },
 }
 

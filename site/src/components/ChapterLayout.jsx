@@ -1,11 +1,15 @@
 import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, BookOpen, Home, Radio, Layers, Link as LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical } from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
 
-export default function ChapterLayout({ chapterId, title, emoji, children, prev, next }) {
+const ICON_MAP = {
+  Home, Radio, Layers, Link: LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical,
+}
+
+export default function ChapterLayout({ chapterId, title, children, prev, next }) {
   const { markChapterVisited } = useProgress()
 
   useEffect(() => {
@@ -13,6 +17,8 @@ export default function ChapterLayout({ chapterId, title, emoji, children, prev,
     window.scrollTo(0, 0)
   }, [chapterId])
 
+  const chapter = CHAPTERS.find((c) => c.id === chapterId)
+  const ChIcon = ICON_MAP[chapter?.icon] || BookOpen
   const prevChapter = prev ? CHAPTERS.find((c) => c.id === prev) : null
   const nextChapter = next ? CHAPTERS.find((c) => c.id === next) : null
 
@@ -31,7 +37,10 @@ export default function ChapterLayout({ chapterId, title, emoji, children, prev,
           <span className="text-slate-400">{title}</span>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-5xl">{emoji}</span>
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, rgba(0,210,160,0.2), rgba(6,182,212,0.15))', border: '1px solid rgba(0,210,160,0.3)' }}>
+            <ChIcon size={28} style={{ color: '#2dd4bf' }} />
+          </div>
           <h1 className="text-3xl font-black text-amber-400 leading-tight">{title}</h1>
         </div>
         <div

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Zap, Award, Clock, ArrowRight, Radio } from 'lucide-react'
+import { BookOpen, Zap, Award, Clock, ArrowRight, Radio, Home as HomeIcon, Layers, Link as LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, Factory, DollarSign, Ruler } from 'lucide-react'
 import { useProgress } from '../hooks/useProgress'
 import { CHAPTERS } from '../data/chapters'
 import GifCard from '../components/GifCard'
@@ -12,6 +12,10 @@ const STATS = [
   { icon: Clock, label: '~5 Hours', sub: 'Total study time' },
   { icon: Award, label: 'SCADA Ready', sub: 'Utility & water SCADA' },
 ]
+
+const ICON_MAP = {
+  Home: HomeIcon, Radio, Layers, Link: LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical,
+}
 
 export default function Home() {
   const { overallProgress, reset } = useProgress()
@@ -63,7 +67,7 @@ export default function Home() {
           </div>
 
           <div className="flex-shrink-0">
-            <GifCard gifKey="robot" caption="Your future outstation 🏭" side="right" />
+            <GifCard gifKey="robot" caption="Your future outstation" side="right" />
           </div>
         </div>
       </motion.div>
@@ -112,19 +116,19 @@ export default function Home() {
       >
         <div className="flex flex-col md:flex-row items-center gap-6">
           <div className="flex-1">
-            <h2 className="text-xl font-bold text-amber-400 mb-3">⚡ Why DNP3 Matters in 2026</h2>
+            <h2 className="text-xl font-bold text-amber-400 mb-3 flex items-center gap-2"><Zap size={20} className="flex-shrink-0" /> Why DNP3 Matters in 2026</h2>
             <ul className="text-sm text-slate-300 space-y-1.5 list-none">
-              <li>🏭 Standard protocol for electric utilities, water treatment, and oil & gas SCADA</li>
-              <li>📡 Event-driven — outstations report data as it changes, not just when polled</li>
-              <li>🕐 48-bit timestamps on every event — critical for post-incident reconstruction</li>
-              <li>🔒 Secure Authentication v5 (IEC 62351-5) — built-in crypto, not bolted on</li>
-              <li>💰 If you work in utility SCADA, DNP3 is not optional knowledge</li>
+              <li className="flex items-center gap-2"><Factory size={13} className="flex-shrink-0" /> Standard protocol for electric utilities, water treatment, and oil & gas SCADA</li>
+              <li className="flex items-center gap-2"><Radio size={13} className="flex-shrink-0" /> Event-driven — outstations report data as it changes, not just when polled</li>
+              <li className="flex items-center gap-2"><Clock size={13} className="flex-shrink-0" /> 48-bit timestamps on every event — critical for post-incident reconstruction</li>
+              <li className="flex items-center gap-2"><Shield size={13} className="flex-shrink-0" /> Secure Authentication v5 (IEC 62351-5) — built-in crypto, not bolted on</li>
+              <li className="flex items-center gap-2"><DollarSign size={13} className="flex-shrink-0" /> If you work in utility SCADA, DNP3 is not optional knowledge</li>
             </ul>
           </div>
           <div className="flex-shrink-0 text-center">
             <div className="text-5xl font-black text-amber-400" style={{ textShadow: '0 0 24px rgba(245,158,11,0.5)' }}>IEEE</div>
             <div className="text-amber-200/60 text-sm">1815-2012</div>
-            <div className="text-xs text-amber-200/40 mt-1">The DNP3 standard 📐</div>
+<div className="text-xs text-amber-200/40 mt-1 flex items-center gap-1">The DNP3 standard <Ruler size={11} className="flex-shrink-0" /></div>
           </div>
         </div>
       </motion.div>
@@ -133,21 +137,26 @@ export default function Home() {
       <motion.div variants={item}>
         <h2 className="text-xl font-bold text-amber-400 mb-4">Chapters</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {CHAPTERS.filter((c) => c.id !== 'home').map((ch) => (
-            <Link
-              key={ch.id}
-              to={ch.path}
-              className="card flex items-center gap-4 hover:border-amber-500/30 hover:shadow-md transition-all group"
-            >
-              <span className="text-3xl">{ch.emoji}</span>
-              <div className="flex-1">
-                <div className="font-semibold text-amber-400 group-hover:text-amber-400 transition-colors">
-                  {ch.label}
+          {CHAPTERS.filter((c) => c.id !== 'home').map((ch) => {
+            const ChIcon = ICON_MAP[ch.icon] || BookOpen
+            return (
+              <Link
+                key={ch.id}
+                to={ch.path}
+                className="card flex items-center gap-4 hover:border-amber-500/30 hover:shadow-md transition-all group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-amber-900/20 flex items-center justify-center flex-shrink-0">
+                  <ChIcon size={20} className="text-amber-400" />
                 </div>
-              </div>
-              <ArrowRight size={16} className="text-slate-300 group-hover:text-amber-400 transition-colors" />
-            </Link>
-          ))}
+                <div className="flex-1">
+                  <div className="font-semibold text-amber-400 group-hover:text-amber-400 transition-colors">
+                    {ch.label}
+                  </div>
+                </div>
+                <ArrowRight size={16} className="text-slate-300 group-hover:text-amber-400 transition-colors" />
+              </Link>
+            )
+          })}
         </div>
       </motion.div>
 
@@ -155,7 +164,7 @@ export default function Home() {
       <motion.div variants={item} className="text-center py-4">
         <p className="text-slate-400 text-sm italic">
           "DNP3 was designed by utilities, for utilities. It assumes you have bad comms links,
-          unreliable clocks, and events that matter. Respect that and you'll be fine." ⚡
+          unreliable clocks, and events that matter. Respect that and you'll be fine."
         </p>
       </motion.div>
     </motion.div>

@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Zap, RefreshCw } from 'lucide-react'
+import { Zap, RefreshCw, Lightbulb, Globe, Hash, AlertOctagon, Megaphone, Map, Droplets, Trash2, Terminal, Ruler, Clock, DollarSign } from 'lucide-react'
 import { FUN_FACTS } from '../data/chapters'
+
+const ICON_MAP = {
+  Globe, Hash, AlertOctagon, Megaphone, Map, Droplets, Trash2, RefreshCw, Terminal, Ruler, Clock, DollarSign,
+}
 
 export default function FunFact({ index }) {
   const [current, setCurrent] = useState(
@@ -36,7 +40,7 @@ export default function FunFact({ index }) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xs font-bold uppercase tracking-widest text-amber-400">Field Intel</span>
-              <span className="text-lg">{fact.emoji}</span>
+              <FactIcon size={16} style={{ color: '#fbbf24' }} />
             </div>
             <p className="text-slate-300 text-sm leading-relaxed">{fact.text}</p>
           </div>

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, LogIn, LogOut } from 'lucide-react'
+import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, LogIn, LogOut, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical } from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
 import { supabase } from '../lib/supabase'
+
+const ICON_MAP = {
+  Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical,
+}
 
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
@@ -41,13 +45,14 @@ export default function Sidebar() {
 
   const NavItem = ({ ch }) => {
     const status = getChapterStatus(ch.id)
+    const Icon = ICON_MAP[ch.icon] || BookOpen
     return (
       <NavLink
         to={ch.path}
         onClick={() => setOpen(false)}
         className={({ isActive }) => `chapter-nav-item ${isActive ? 'active' : ''}`}
       >
-        <span className="text-lg leading-none">{ch.emoji}</span>
+        <Icon size={15} className="flex-shrink-0 opacity-70" />
         <span className="flex-1 truncate">{ch.label}</span>
         <div className="flex gap-0.5 flex-shrink-0">
           <div className={`w-2 h-2 rounded-full ${status.level1Passed ? 'bg-green-400' : status.visited ? 'bg-amber-400' : 'bg-slate-700'}`} />

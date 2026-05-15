@@ -130,7 +130,7 @@ function ResourceDrawer({ resources, level, onClose }) {
                 <div>
                   <button
                     onClick={() => setExpandedExcerpt(expandedExcerpt === i ? null : i)}
-                    className="w-full flex items-center gap-3 p-3 hover:bg-purple-50 transition-colors"
+                    className="w-full flex items-center gap-3 p-3 hover:bg-purple-500/100/10 transition-colors"
                   >
                     <div className="w-9 h-9 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
                       <BookOpen size={18} className="text-purple-600" />
@@ -144,7 +144,7 @@ function ResourceDrawer({ resources, level, onClose }) {
                       : <ChevronDown size={14} className="text-slate-400 flex-shrink-0" />}
                   </button>
                   {expandedExcerpt === i && (
-                    <div className="border-t border-purple-100 p-3 bg-purple-50">
+                    <div className="border-t border-purple-500/20 p-3 bg-purple-500/10">
                       {r.excerpt && (
                         <p className="text-xs text-slate-600 leading-relaxed italic mb-2">"{r.excerpt}"</p>
                       )}

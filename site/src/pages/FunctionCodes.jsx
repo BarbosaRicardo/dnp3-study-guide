@@ -111,8 +111,8 @@ export default function FunctionCodes() {
           immediate execution. It's faster but has no built-in second-confirmation step.
         </p>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-            <div className="font-semibold text-green-800 mb-2">When to use Direct Operate</div>
+          <div className="rounded-xl p-4" style={{ background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)' }}>
+            <div className="font-semibold text-green-300 mb-2">When to use Direct Operate</div>
             <ul className="text-xs text-slate-300 space-y-1">
               <li>• Low-risk controls (non-critical loads)</li>
               <li>• Automated closed-loop control (setpoint changes)</li>
@@ -120,8 +120,8 @@ export default function FunctionCodes() {
               <li>• Analog output setpoints where SBO overhead isn't warranted</li>
             </ul>
           </div>
-          <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-            <div className="font-semibold text-red-800 mb-2">When SBO is required</div>
+          <div className="rounded-xl p-4" style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}>
+            <div className="font-semibold text-red-300 mb-2">When SBO is required</div>
             <ul className="text-xs text-slate-300 space-y-1">
               <li>• Energized switching operations</li>
               <li>• Breaker operations on transmission or distribution equipment</li>

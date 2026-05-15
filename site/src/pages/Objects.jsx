@@ -112,7 +112,7 @@ export default function Objects() {
             { flag: 'ONLINE', color: 'bg-mgreen-50 border-mgreen-200 text-mgreen-500', desc: 'Data is valid and the sensor is communicating' },
             { flag: 'RESTART', color: 'bg-orange-50 border-orange-200 text-orange-500', desc: 'Value was collected after a device restart — possibly unreliable' },
             { flag: 'COMM LOST', color: 'bg-mred-50 border-mred-200 text-mred-500', desc: 'Communication to this sensor is lost — value is stale' },
-            { flag: 'REMOTE FORCED', color: 'bg-purple-50 border-purple-200 text-purple-500', desc: 'Value was forced remotely via DNP3 (for testing)' },
+            { flag: 'REMOTE FORCED', color: 'bg-purple-500/10 border-purple-500/25 text-purple-500', desc: 'Value was forced remotely via DNP3 (for testing)' },
             { flag: 'LOCAL FORCED', color: 'bg-blue-50 border-blue-200 text-blue-500', desc: 'Value was forced locally at the device' },
             { flag: 'OVER RANGE', color: 'bg-amber-50 border-amber-200 text-amber-500', desc: 'Analog value exceeded sensor measurement range' },
           ].map((f) => (

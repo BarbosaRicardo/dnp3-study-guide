@@ -45,7 +45,7 @@ export default function Unsolicited() {
             </div>
           ))}
         </div>
-        <div className="mt-4 bg-orange-50 rounded-xl border border-orange-200 p-3 text-xs text-orange-800">
+        <div className="mt-4 rounded-xl p-3 text-xs text-orange-300" style={{ background: 'rgba(249,115,22,0.08)', border: '1px solid rgba(249,115,22,0.2)' }}>
           ⚠️ If the master does NOT send a Confirm within the timeout, the outstation retransmits. Repeatedly.
           Configure your confirm timeout appropriately or your link drowns in retransmits.
         </div>

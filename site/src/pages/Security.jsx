@@ -54,7 +54,7 @@ export default function Security() {
               <li>• Still in field at many utilities</li>
             </ul>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div className="rounded-xl p-4" style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)' }}>
             <div className="font-bold text-amber-400 mb-2">SA Version 5 (Current)</div>
             <ul className="text-xs text-slate-400 space-y-1">
               <li>• Defined in IEEE 1815-2012</li>

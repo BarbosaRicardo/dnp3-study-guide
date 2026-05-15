@@ -63,7 +63,7 @@ export default function Objects() {
             </thead>
             <tbody>
               {OBJECT_GROUPS.map((row, i) => (
-                <tr key={row.group} className={i % 2 === 0 ? 'bg-white/5' : ''}>
+                <tr key={row.group} className={i % 2 === 0 ? 'bg-white/5/5' : ''}>
                   <td className="px-3 py-2 font-mono font-bold text-amber-400">{row.group}</td>
                   <td className="px-3 py-2 font-medium text-slate-300">{row.name}</td>
                   <td className="px-3 py-2 font-mono text-slate-500">{row.var}</td>

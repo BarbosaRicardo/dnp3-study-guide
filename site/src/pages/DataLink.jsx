@@ -57,7 +57,7 @@ export default function DataLink() {
               <div>ADDR</div>
               <div className="text-white/50">2 bytes</div>
             </div>
-            <div className="frame-field bg-white/10 border-r border-white/20">
+            <div className="frame-field bg-white/5/10 border-r border-white/20">
               <div className="text-mgreen-400">CRC</div>
               <div>CRC-16</div>
               <div className="text-white/50">2 bytes</div>

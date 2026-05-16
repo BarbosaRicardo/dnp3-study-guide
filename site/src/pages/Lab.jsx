@@ -105,7 +105,7 @@ export default function Lab() {
         <p>
           OpenDNP3 ships with demo programs. Here's the fastest path to a working DNP3 exchange on localhost:
         </p>
-        <div className="mt-4 bg-navy-700 text-green-400 rounded-xl p-4 font-mono text-xs space-y-1">
+        <div className="mt-4 bg-slate-900/60 text-green-400 rounded-xl p-4 font-mono text-xs space-y-1">
           <div className="text-slate-400"># Install OpenDNP3 via package manager or build from source</div>
           <div>git clone https://github.com/automatak/dnp3.git</div>
           <div>cd dnp3 && mkdir build && cd build</div>
@@ -126,7 +126,7 @@ export default function Lab() {
           The pydnp3 library wraps OpenDNP3 for Python. A minimal master that reads Binary Input
           Group 1 from a running outstation looks like this:
         </p>
-        <div className="mt-4 bg-navy-700 text-green-400 rounded-xl p-4 font-mono text-xs space-y-0.5">
+        <div className="mt-4 bg-slate-900/60 text-green-400 rounded-xl p-4 font-mono text-xs space-y-0.5">
           <div className="text-slate-400"># pip install pydnp3</div>
           <div>from pydnp3 import opendnp3, openpal, asiopal, asiodnp3</div>
           <div className="mt-2 text-slate-400"># Create master stack</div>

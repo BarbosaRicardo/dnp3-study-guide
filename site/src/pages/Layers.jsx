@@ -25,7 +25,7 @@ export default function Layers() {
 
       {/* Layer diagram */}
       <div className="bg-slate-800/30 rounded-2xl border border-amber-900/30 overflow-hidden my-6">
-        <div className="bg-navy-700 text-white text-xs font-bold px-4 py-2 uppercase tracking-widest">DNP3 Protocol Stack</div>
+        <div className="bg-slate-900/60 text-white text-xs font-bold px-4 py-2 uppercase tracking-widest">DNP3 Protocol Stack</div>
         <div className="p-4 space-y-2">
           {[
             { layer: 'Application Layer (Layer 4)', abbr: 'APDU', color: 'bg-amber-500', desc: 'Function codes, data objects, IIN bits, fragmentation' },

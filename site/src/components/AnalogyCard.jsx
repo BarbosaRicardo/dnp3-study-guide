@@ -8,7 +8,7 @@ function parseMarkdown(text) {
   const parts = text.split(/(\*\*[^*]+\*\*)/)
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={i} className="text-mblue-600">{part.slice(2, -2)}</strong>
+      return <strong key={i} className="text-amber-400">{part.slice(2, -2)}</strong>
     }
     return part.split('\n').map((line, j) => (
       <span key={`${i}-${j}`}>

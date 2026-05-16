@@ -98,7 +98,7 @@ export default function Troubleshoot() {
           data link frame, transport header, application APDU, and object data. For DNP3 over TCP,
           the default port is <strong>20000</strong>.
         </p>
-        <div className="mt-4 bg-navy-700 text-green-400 rounded-xl p-4 font-mono text-xs space-y-1">
+        <div className="mt-4 bg-slate-900/60 text-green-400 rounded-xl p-4 font-mono text-xs space-y-1">
           <div className="text-slate-400"># Wireshark capture filters for DNP3:</div>
           <div>tcp.port == 20000                    <span className="text-slate-400"># DNP3 over TCP</span></div>
           <div>dnp3                                  <span className="text-slate-400"># All DNP3 frames (requires decode)</span></div>

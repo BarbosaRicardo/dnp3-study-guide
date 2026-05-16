@@ -46,7 +46,7 @@ export default function FunctionCodes() {
       <div className="overflow-x-auto my-6">
         <table className="w-full text-xs border-collapse">
           <thead>
-            <tr className="bg-navy-700 text-white">
+            <tr className="bg-slate-900/60 text-white">
               <th className="text-left px-3 py-2 rounded-tl-xl">FC</th>
               <th className="text-left px-3 py-2">Name</th>
               <th className="text-left px-3 py-2">Direction</th>
@@ -55,7 +55,7 @@ export default function FunctionCodes() {
           </thead>
           <tbody>
             {FUNCTION_CODES.map((row, i) => (
-              <tr key={row.fc} className={i % 2 === 0 ? 'bg-white/5/5' : ''}>
+              <tr key={row.fc} className={i % 2 === 0 ? 'bg-white/5' : ''}>
                 <td className="px-3 py-2 font-mono font-bold text-amber-400 whitespace-nowrap">{row.fc}</td>
                 <td className="px-3 py-2 font-semibold text-slate-300 whitespace-nowrap">{row.name}</td>
                 <td className="px-3 py-2 text-slate-400 whitespace-nowrap text-xs">{row.dir}</td>

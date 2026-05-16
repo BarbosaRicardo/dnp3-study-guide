@@ -25,7 +25,7 @@ export default function AppLayer() {
       </section>
 
       {/* APDU structure */}
-      <div className="bg-navy-700 rounded-2xl overflow-hidden my-6">
+      <div className="bg-slate-900/60 rounded-2xl overflow-hidden my-6">
         <div className="text-mcyan-400 text-xs font-bold px-4 py-2 uppercase tracking-widest border-b border-white/10">
           APDU Structure (Request vs Response)
         </div>
@@ -113,7 +113,7 @@ export default function AppLayer() {
         <div className="mt-4 overflow-x-auto">
           <table className="w-full text-xs border-collapse">
             <thead>
-              <tr className="bg-navy-700 text-white">
+              <tr className="bg-slate-900/60 text-white">
                 <th className="text-left px-3 py-2 rounded-tl-xl">Bit</th>
                 <th className="text-left px-3 py-2">Name</th>
                 <th className="text-left px-3 py-2 rounded-tr-xl">Meaning</th>
@@ -136,7 +136,7 @@ export default function AppLayer() {
                 { bit: 'IIN2.5', name: 'Already executing', meaning: 'A previous operate is still in progress' },
                 { bit: 'IIN2.6', name: 'Config corrupt', meaning: '🚨 Outstation configuration is corrupted — call the vendor' },
               ].map((row, i) => (
-                <tr key={row.bit} className={i % 2 === 0 ? 'bg-white/5/5' : ''}>
+                <tr key={row.bit} className={i % 2 === 0 ? 'bg-white/5' : ''}>
                   <td className="px-3 py-2 font-mono font-bold text-amber-400">{row.bit}</td>
                   <td className="px-3 py-2 font-medium text-slate-300">{row.name}</td>
                   <td className="px-3 py-2 text-slate-400">{row.meaning}</td>

@@ -109,7 +109,7 @@ function FillQuestion({ q, onAnswer, answered }) {
 }
 
 const LEVEL_THEME = {
-  1: { header: 'bg-navy-700',    accent: 'text-mcyan-400',  label: 'Level 1 · Foundations' },
+  1: { header: 'bg-slate-900/60',    accent: 'text-mcyan-400',  label: 'Level 1 · Foundations' },
   2: { header: 'bg-slate-800',   accent: 'text-amber-400',  label: 'Level 2 · Applied' },
   3: { header: 'bg-[#0d0d14]',   accent: 'text-orange-400', label: 'Level 3 · Graduate' },
   4: { header: 'bg-[#051e0f]',   accent: 'text-green-400',  label: 'Field Scenarios' },

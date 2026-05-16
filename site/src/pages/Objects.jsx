@@ -54,7 +54,7 @@ export default function Objects() {
         <div className="overflow-x-auto">
           <table className="w-full text-xs border-collapse">
             <thead>
-              <tr className="bg-navy-700 text-white">
+              <tr className="bg-slate-900/60 text-white">
                 <th className="text-left px-3 py-2 rounded-tl-xl">Group</th>
                 <th className="text-left px-3 py-2">Object Type</th>
                 <th className="text-left px-3 py-2">Key Variations</th>
@@ -63,7 +63,7 @@ export default function Objects() {
             </thead>
             <tbody>
               {OBJECT_GROUPS.map((row, i) => (
-                <tr key={row.group} className={i % 2 === 0 ? 'bg-white/5/5' : ''}>
+                <tr key={row.group} className={i % 2 === 0 ? 'bg-white/5' : ''}>
                   <td className="px-3 py-2 font-mono font-bold text-amber-400">{row.group}</td>
                   <td className="px-3 py-2 font-medium text-slate-300">{row.name}</td>
                   <td className="px-3 py-2 font-mono text-slate-500">{row.var}</td>

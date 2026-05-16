@@ -74,7 +74,7 @@ export default function Intro() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
-              <tr className="bg-navy-700 text-white">
+              <tr className="bg-slate-900/60 text-white">
                 <th className="text-left px-4 py-3 rounded-tl-xl">Protocol</th>
                 <th className="text-left px-4 py-3">Origin</th>
                 <th className="text-left px-4 py-3">Primary Use</th>
@@ -84,7 +84,7 @@ export default function Intro() {
             </thead>
             <tbody>
               {TABLE_PROTOCOLS.map((row, i) => (
-                <tr key={i} className={i % 2 === 0 ? 'bg-white/5/5' : ''}>
+                <tr key={i} className={i % 2 === 0 ? 'bg-white/5' : ''}>
                   <td className="px-4 py-3 font-semibold text-amber-400">{row.name}</td>
                   <td className="px-4 py-3 text-xs text-slate-400 font-mono">{row.origin}</td>
                   <td className="px-4 py-3 text-slate-400 text-xs">{row.useCase}</td>

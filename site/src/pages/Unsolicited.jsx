@@ -96,7 +96,7 @@ export default function Unsolicited() {
         <p className="mt-3">
           A well-behaved master startup sequence looks like this:
         </p>
-        <div className="mt-3 bg-navy-700 text-green-400 rounded-xl p-4 font-mono text-xs space-y-1">
+        <div className="mt-3 bg-slate-900/60 text-green-400 rounded-xl p-4 font-mono text-xs space-y-1">
           <div className="text-slate-400"># Startup sequence for a new DNP3 master session:</div>
           <div>1. Disable Unsolicited (FC=0x15) — stop any existing unsolicited stream</div>
           <div>2. Integrity Poll — read all Class 0 data (get current state snapshot)</div>

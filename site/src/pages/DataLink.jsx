@@ -26,7 +26,7 @@ export default function DataLink() {
       </section>
 
       {/* Frame diagram */}
-      <div className="bg-navy-700 rounded-2xl overflow-hidden my-6">
+      <div className="bg-slate-900/60 rounded-2xl overflow-hidden my-6">
         <div className="text-mcyan-400 text-xs font-bold px-4 py-2 uppercase tracking-widest border-b border-white/10">
           DNP3 Data Link Frame Structure
         </div>
@@ -57,7 +57,7 @@ export default function DataLink() {
               <div>ADDR</div>
               <div className="text-white/50">2 bytes</div>
             </div>
-            <div className="frame-field bg-white/5/10 border-r border-white/20">
+            <div className="frame-field bg-white/10 border-r border-white/20">
               <div className="text-mgreen-400">CRC</div>
               <div>CRC-16</div>
               <div className="text-white/50">2 bytes</div>

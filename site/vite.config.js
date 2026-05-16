@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+const isGitHubPages = process.env.GITHUB_PAGES === '1'
+
 export default defineConfig({
   plugins: [react()],
-  base: '/',
+  base: isGitHubPages ? '/dnp3-study-guide/' : '/',
   build: {
     outDir: '../docs',
     emptyOutDir: true,

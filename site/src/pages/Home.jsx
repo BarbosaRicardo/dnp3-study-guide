@@ -5,6 +5,7 @@ import { BookOpen, Zap, Award, Clock, ArrowRight, Radio, Home as HomeIcon, Layer
 import { useProgress } from '../hooks/useProgress'
 import { CHAPTERS } from '../data/chapters'
 import GifCard from '../components/GifCard'
+import TrainingPanel from '../components/TrainingPanel'
 
 const STATS = [
   { icon: BookOpen, label: '10 Chapters', sub: 'From zero to hero' },
@@ -158,6 +159,11 @@ export default function Home() {
             )
           })}
         </div>
+      </motion.div>
+
+      {/* More Training */}
+      <motion.div variants={item}>
+        <TrainingPanel course="dnp3" />
       </motion.div>
 
       {/* Footer motivator */}

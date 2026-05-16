@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, LogIn, LogOut, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical } from 'lucide-react'
+import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, LogIn, LogOut, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText } from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
 import { supabase } from '../lib/supabase'
@@ -117,14 +117,6 @@ export default function Sidebar() {
           <BookOpen size={16} className="flex-shrink-0" />
           <span className="flex-1">Flashcards</span>
         </NavLink>
-        <NavLink
-          to="/report"
-          onClick={() => setOpen(false)}
-          className={({ isActive }) => `chapter-nav-item ${isActive ? 'active' : ''}`}
-        >
-          <BarChart2 size={16} className="flex-shrink-0" />
-          <span className="flex-1">Quiz Report</span>
-        </NavLink>
       </div>
 
       {/* Footer */}
@@ -140,6 +132,16 @@ export default function Sidebar() {
           Download PDF Study Guide
         </a>
         <a
+          href={`${import.meta.env.BASE_URL}syllabus.pdf`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all"
+          style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)', color: 'rgba(245,158,11,0.7)' }}
+        >
+          <FileText size={12} />
+          Course Syllabus
+        </a>
+        <a
           href="https://scada-hub.vercel.app"
           className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all"
           style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)', color: 'rgba(245,158,11,0.7)' }}
@@ -147,6 +149,15 @@ export default function Sidebar() {
           <LayoutGrid size={12} />
           ← SCADA Hub
         </a>
+        <NavLink
+          to="/report"
+          onClick={() => setOpen(false)}
+          className="flex items-center justify-center gap-2 w-full px-3 py-2 rounded-xl text-xs font-semibold transition-all"
+          style={{ background: 'rgba(245,158,11,0.07)', border: '1px solid rgba(245,158,11,0.18)', color: 'rgba(245,158,11,0.7)' }}
+        >
+          <BarChart2 size={12} />
+          Quiz Results
+        </NavLink>
         {/* Auth section */}
         {!sessionLoading && (session ? (
           <div className="flex items-center justify-between gap-2 px-1">

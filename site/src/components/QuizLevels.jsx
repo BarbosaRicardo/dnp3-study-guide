@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Lock, ChevronDown, ChevronUp, BookOpen, Cpu, Youtube, ExternalLink, X, ChevronRight, FlaskConical } from 'lucide-react'
+import { Lock, ChevronDown, ChevronUp, BookOpen, Cpu, Youtube, ExternalLink, X, ChevronRight, FlaskConical, CheckCircle, AlertTriangle } from 'lucide-react'
 import Quiz from './Quiz'
 import { useProgress } from '../hooks/useProgress'
 import { QUIZZES } from '../data/quizzes'
@@ -12,9 +12,8 @@ const LEVEL_META = [
     description: 'Core concepts and protocol mechanics. Pass (≥70%) to unlock Level 2.',
     headerBg: 'bg-slate-900/60',
     accentText: 'text-amber-400',
-    borderColor: 'border-navy-200',
-    activeBorder: 'border-navy-700',
-    emoji: '📘',
+    borderColor: 'border-slate-700/50',
+    activeBorder: 'border-amber-700/60',
   },
   {
     level: 2,
@@ -23,8 +22,7 @@ const LEVEL_META = [
     headerBg: 'bg-slate-800',
     accentText: 'text-amber-400',
     borderColor: 'border-amber-900/30',
-    activeBorder: 'border-slate-700',
-    emoji: '📙',
+    activeBorder: 'border-amber-600/60',
   },
   {
     level: 3,
@@ -33,8 +31,7 @@ const LEVEL_META = [
     headerBg: 'bg-[#0d0d14]',
     accentText: 'text-orange-400',
     borderColor: 'border-amber-900/30',
-    activeBorder: 'border-slate-900',
-    emoji: '📕',
+    activeBorder: 'border-orange-700/60',
   },
 ]
 
@@ -80,16 +77,16 @@ function ResourceDrawer({ resources, level, onClose }) {
                   href={r.searchUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 hover:bg-red-50 transition-colors group"
+                  className="flex items-center gap-3 p-3 hover:bg-white/5 transition-colors group"
                 >
-                  <div className="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Youtube size={18} className="text-red-600" />
+                  <div className="w-9 h-9 bg-red-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Youtube size={18} className="text-red-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-bold text-red-600 uppercase tracking-wide">YouTube</div>
-                    <div className="text-sm text-slate-700 font-medium leading-tight truncate group-hover:text-red-700">{r.title}</div>
+                    <div className="text-xs font-bold text-red-400 uppercase tracking-wide">YouTube</div>
+                    <div className="text-sm text-slate-200 font-medium leading-tight truncate group-hover:text-white">{r.title}</div>
                   </div>
-                  <ExternalLink size={14} className="text-slate-300 flex-shrink-0" />
+                  <ExternalLink size={14} className="text-slate-500 flex-shrink-0" />
                 </a>
               )}
               {r.type === 'doc' && (
@@ -97,32 +94,32 @@ function ResourceDrawer({ resources, level, onClose }) {
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 hover:bg-blue-50 transition-colors group"
+                  className="flex items-center gap-3 p-3 hover:bg-white/5 transition-colors group"
                 >
-                  <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <ExternalLink size={18} className="text-blue-600" />
+                  <div className="w-9 h-9 bg-blue-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <ExternalLink size={18} className="text-blue-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-bold text-blue-600 uppercase tracking-wide">Documentation</div>
-                    <div className="text-sm text-slate-700 font-medium leading-tight">{r.title}</div>
+                    <div className="text-xs font-bold text-blue-400 uppercase tracking-wide">Documentation</div>
+                    <div className="text-sm text-slate-200 font-medium leading-tight">{r.title}</div>
                   </div>
-                  <ExternalLink size={14} className="text-slate-300 flex-shrink-0" />
+                  <ExternalLink size={14} className="text-slate-500 flex-shrink-0" />
                 </a>
               )}
               {r.type === 'book' && (
                 <div className="p-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <BookOpen size={18} className="text-orange-600" />
+                    <div className="w-9 h-9 bg-amber-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <BookOpen size={18} className="text-amber-400" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="text-xs font-bold text-orange-600 uppercase tracking-wide">Textbook</div>
-                      <div className="text-sm text-slate-700 font-semibold leading-tight">{r.title}</div>
+                      <div className="text-xs font-bold text-amber-400 uppercase tracking-wide">Textbook</div>
+                      <div className="text-sm text-slate-200 font-semibold leading-tight">{r.title}</div>
                     </div>
                   </div>
-                  <div className="mt-2 ml-12 text-xs text-slate-500">
+                  <div className="mt-2 ml-12 text-xs text-slate-400">
                     {r.chapter}
-                    {r.page && <span className="ml-1 text-orange-500 font-medium">· p. {r.page}</span>}
+                    {r.page && <span className="ml-1 text-amber-500 font-medium">· p. {r.page}</span>}
                   </div>
                 </div>
               )}
@@ -130,14 +127,14 @@ function ResourceDrawer({ resources, level, onClose }) {
                 <div>
                   <button
                     onClick={() => setExpandedExcerpt(expandedExcerpt === i ? null : i)}
-                    className="w-full flex items-center gap-3 p-3 hover:bg-purple-500/100/10 transition-colors"
+                    className="w-full flex items-center gap-3 p-3 hover:bg-white/5 transition-colors"
                   >
-                    <div className="w-9 h-9 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <BookOpen size={18} className="text-purple-600" />
+                    <div className="w-9 h-9 bg-purple-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <BookOpen size={18} className="text-purple-400" />
                     </div>
                     <div className="flex-1 min-w-0 text-left">
-                      <div className="text-xs font-bold text-purple-600 uppercase tracking-wide">White Paper / Journal</div>
-                      <div className="text-sm text-slate-700 font-medium leading-tight">{r.title}</div>
+                      <div className="text-xs font-bold text-purple-400 uppercase tracking-wide">White Paper / Journal</div>
+                      <div className="text-sm text-slate-200 font-medium leading-tight">{r.title}</div>
                     </div>
                     {expandedExcerpt === i
                       ? <ChevronUp size={14} className="text-slate-400 flex-shrink-0" />
@@ -146,17 +143,17 @@ function ResourceDrawer({ resources, level, onClose }) {
                   {expandedExcerpt === i && (
                     <div className="border-t border-purple-500/20 p-3 bg-purple-500/10">
                       {r.excerpt && (
-                        <p className="text-xs text-slate-600 leading-relaxed italic mb-2">"{r.excerpt}"</p>
+                        <p className="text-xs text-slate-300 leading-relaxed italic mb-2">"{r.excerpt}"</p>
                       )}
                       {r.citation && (
-                        <p className="text-xs text-purple-600 font-medium">{r.citation}</p>
+                        <p className="text-xs text-purple-400 font-medium">{r.citation}</p>
                       )}
                       {r.url && (
                         <a
                           href={r.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-blue-600 hover:underline mt-1"
+                          className="inline-flex items-center gap-1 text-xs text-blue-400 hover:underline mt-1"
                         >
                           Read full paper <ExternalLink size={10} />
                         </a>
@@ -170,17 +167,17 @@ function ResourceDrawer({ resources, level, onClose }) {
                   href={r.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 p-3 hover:bg-green-50 transition-colors group"
+                  className="flex items-center gap-3 p-3 hover:bg-white/5 transition-colors group"
                 >
-                  <div className="w-9 h-9 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Cpu size={18} className="text-green-600" />
+                  <div className="w-9 h-9 bg-green-900/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Cpu size={18} className="text-green-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-xs font-bold text-green-600 uppercase tracking-wide">Dataset / AI Resource</div>
-                    <div className="text-sm text-slate-700 font-medium leading-tight">{r.title}</div>
+                    <div className="text-xs font-bold text-green-400 uppercase tracking-wide">Dataset / AI Resource</div>
+                    <div className="text-sm text-slate-200 font-medium leading-tight">{r.title}</div>
                     {r.description && <div className="text-xs text-slate-400 mt-0.5 leading-tight">{r.description}</div>}
                   </div>
-                  <ExternalLink size={14} className="text-slate-300 flex-shrink-0" />
+                  <ExternalLink size={14} className="text-slate-500 flex-shrink-0" />
                 </a>
               )}
             </div>
@@ -204,11 +201,17 @@ function LevelCard({ meta, questions, chapterId, locked, passed }) {
         <button
           onClick={() => !locked && setOpen((o) => !o)}
           className={`w-full text-left px-4 py-3 flex items-center gap-3 transition-colors ${
-            locked ? 'opacity-60 cursor-not-allowed bg-white' :
+            locked ? 'opacity-50 cursor-not-allowed' :
             open ? `${headerBg}` : 'hover:bg-amber-900/10'
           }`}
         >
-          <span className="text-lg leading-none flex-shrink-0">{locked ? '🔒' : passed ? '✅' : emoji}</span>
+          <span className="flex-shrink-0 flex items-center">
+            {locked
+              ? <Lock size={15} className="text-slate-500" />
+              : passed
+              ? <CheckCircle size={15} className="text-green-400" />
+              : <span className="w-5 h-5 rounded-full border border-amber-500/40 flex items-center justify-center text-xs font-bold text-amber-400">{level}</span>}
+          </span>
           <div className="flex-1 min-w-0">
             <div className={`font-bold text-sm ${open ? 'text-white' : 'text-slate-300'}`}>{label}</div>
             <div className={`text-xs mt-0.5 leading-snug ${open ? accentText : 'text-slate-500'}`}>{description}</div>
@@ -225,11 +228,9 @@ function LevelCard({ meta, questions, chapterId, locked, passed }) {
           <div className="border-t border-amber-900/20">
             {/* Passed banner */}
             {passed && resources.length > 0 && (
-              <div className={`px-4 py-2 flex items-center justify-between ${
-                level === 3 ? 'bg-orange-50' : level === 2 ? 'bg-amber-50' : 'bg-green-50'
-              }`}>
-                <span className="text-xs text-slate-600 font-medium">
-                  ✅ Level {level} passed
+              <div className="px-4 py-2 flex items-center justify-between" style={{ background: 'rgba(245,158,11,0.07)', borderBottom: '1px solid rgba(245,158,11,0.12)' }}>
+                <span className="text-xs text-slate-300 font-medium flex items-center gap-1.5">
+                  <CheckCircle size={12} className="text-green-400" /> Level {level} passed
                 </span>
                 <button
                   onClick={() => setDrawerOpen(true)}
@@ -248,7 +249,7 @@ function LevelCard({ meta, questions, chapterId, locked, passed }) {
                 <Quiz chapterId={chapterId} questions={questions} level={level} />
               ) : (
                 <div className="text-center py-8 text-slate-400 text-sm">
-                  <div className="text-3xl mb-2">🚧</div>
+                  <AlertTriangle size={32} className="text-amber-500/50 mx-auto mb-2" />
                   <div className="font-medium">Level {level} questions are being prepared.</div>
                   <div className="text-xs mt-1">Check back soon.</div>
                 </div>

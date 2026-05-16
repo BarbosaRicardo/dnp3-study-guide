@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { BookOpen, Zap, Award, Clock, ArrowRight, Radio, Home as HomeIcon, Layers, Link as LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, Factory, DollarSign, Ruler } from 'lucide-react'
+import { BookOpen, Zap, Award, Clock, ArrowRight, Radio, Home as HomeIcon, Layers, Link as LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, Factory, DollarSign, Ruler, Droplets, Flame, Map } from 'lucide-react'
 import { useProgress } from '../hooks/useProgress'
 import { CHAPTERS } from '../data/chapters'
 import GifCard from '../components/GifCard'
@@ -77,7 +77,7 @@ export default function Home() {
         <motion.div variants={item} className="card">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-amber-400">Your Progress</h3>
-            <button onClick={reset} className="text-xs text-slate-400 hover:text-mred-400 transition-colors">Reset</button>
+            <button onClick={reset} className="text-xs text-slate-400 hover:text-red-400 transition-colors">Reset</button>
           </div>
           <div className="h-3 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(245,158,11,0.1)' }}>
             <motion.div

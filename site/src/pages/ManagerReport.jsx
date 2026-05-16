@@ -13,7 +13,7 @@ export default function ManagerReport() {
       transition={{ duration: 0.35 }}
       className="max-w-3xl mx-auto py-12 px-4 text-center"
     >
-      <div className="text-5xl mb-4">📊</div>
+      <div className="flex justify-center mb-4"><BarChart2 size={48} className="text-amber-400" /></div>
       <h1 className="text-3xl font-black text-amber-400 mb-3">Quiz Report</h1>
       <p className="text-slate-400 mb-8 max-w-md mx-auto">
         All quiz submissions across every DNP3 chapter — timestamped, scored, and exportable.

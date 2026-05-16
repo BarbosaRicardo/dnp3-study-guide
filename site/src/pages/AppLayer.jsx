@@ -5,6 +5,8 @@ import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import AnalogyCard from '../components/AnalogyCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 import { ANALOGIES } from '../data/chapters'
 
 export default function AppLayer() {
@@ -26,7 +28,7 @@ export default function AppLayer() {
 
       {/* APDU structure */}
       <div className="bg-slate-900/60 rounded-2xl overflow-hidden my-6">
-        <div className="text-mcyan-400 text-xs font-bold px-4 py-2 uppercase tracking-widest border-b border-white/10">
+        <div className="text-amber-400 text-xs font-bold px-4 py-2 uppercase tracking-widest border-b border-white/10">
           APDU Structure (Request vs Response)
         </div>
         <div className="p-4 space-y-4">
@@ -34,12 +36,12 @@ export default function AppLayer() {
             <div className="text-xs text-slate-400 mb-2">Request (Master → Outstation):</div>
             <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
               <div className="frame-field bg-amber-500/80 border-r border-white/20">
-                <div className="text-mcyan-400">App Ctrl</div>
+                <div className="text-amber-400">App Ctrl</div>
                 <div>AC</div>
                 <div className="text-white/50">1 byte</div>
               </div>
               <div className="frame-field bg-amber-500/60 border-r border-white/20">
-                <div className="text-mcyan-400">Func Code</div>
+                <div className="text-amber-400">Func Code</div>
                 <div>FC</div>
                 <div className="text-white/50">1 byte</div>
               </div>
@@ -54,12 +56,12 @@ export default function AppLayer() {
             <div className="text-xs text-slate-400 mb-2">Response (Outstation → Master):</div>
             <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
               <div className="frame-field bg-amber-500/80 border-r border-white/20">
-                <div className="text-mcyan-400">App Ctrl</div>
+                <div className="text-amber-400">App Ctrl</div>
                 <div>AC</div>
                 <div className="text-white/50">1 byte</div>
               </div>
               <div className="frame-field bg-amber-500/60 border-r border-white/20">
-                <div className="text-mcyan-400">Func Code</div>
+                <div className="text-amber-400">Func Code</div>
                 <div>FC=0x81</div>
                 <div className="text-white/50">1 byte</div>
               </div>

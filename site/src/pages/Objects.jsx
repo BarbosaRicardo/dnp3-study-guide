@@ -4,6 +4,8 @@ import Callout from '../components/Callout'
 import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 
 const OBJECT_GROUPS = [
   { group: 'G1',  name: 'Binary Input (Static)',           var: 'V1: packed bit, V2: with flags', note: 'Circuit breaker status, switch position, alarm state' },
@@ -86,9 +88,9 @@ export default function Objects() {
           <div className="flex gap-2 flex-wrap">
             <span className="bg-amber-500 text-white px-3 py-1 rounded-lg">Group (1 byte)</span>
             <span className="text-slate-400">+</span>
-            <span className="bg-mcyan-500 text-white px-3 py-1 rounded-lg">Variation (1 byte)</span>
+            <span className="bg-amber-700 text-white px-3 py-1 rounded-lg">Variation (1 byte)</span>
             <span className="text-slate-400">+</span>
-            <span className="bg-mgreen-500 text-white px-3 py-1 rounded-lg">Qualifier (1 byte)</span>
+            <span className="bg-green-700 text-white px-3 py-1 rounded-lg">Qualifier (1 byte)</span>
             <span className="text-slate-400">+</span>
             <span className="bg-amber-500 text-white px-3 py-1 rounded-lg">Range/Count/Index</span>
           </div>
@@ -109,9 +111,9 @@ export default function Objects() {
         </p>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
-            { flag: 'ONLINE', color: 'bg-mgreen-50 border-mgreen-200 text-mgreen-500', desc: 'Data is valid and the sensor is communicating' },
+            { flag: 'ONLINE', color: 'bg-green-950/30 border-green-800/50 text-green-400', desc: 'Data is valid and the sensor is communicating' },
             { flag: 'RESTART', color: 'bg-orange-50 border-orange-200 text-orange-500', desc: 'Value was collected after a device restart — possibly unreliable' },
-            { flag: 'COMM LOST', color: 'bg-mred-50 border-mred-200 text-mred-500', desc: 'Communication to this sensor is lost — value is stale' },
+            { flag: 'COMM LOST', color: 'bg-red-950/30 border-red-800/50 text-red-400', desc: 'Communication to this sensor is lost — value is stale' },
             { flag: 'REMOTE FORCED', color: 'bg-purple-500/10 border-purple-500/25 text-purple-500', desc: 'Value was forced remotely via DNP3 (for testing)' },
             { flag: 'LOCAL FORCED', color: 'bg-blue-50 border-blue-200 text-blue-500', desc: 'Value was forced locally at the device' },
             { flag: 'OVER RANGE', color: 'bg-amber-50 border-amber-200 text-amber-500', desc: 'Analog value exceeded sensor measurement range' },

@@ -5,6 +5,8 @@ import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import AnalogyCard from '../components/AnalogyCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 import { ANALOGIES } from '../data/chapters'
 
 const COMMON_ISSUES = [
@@ -66,8 +68,8 @@ export default function Troubleshoot() {
         <div className="space-y-4">
           {COMMON_ISSUES.map((item) => (
             <div key={item.issue} className="bg-slate-800/40 border border-amber-900/30 rounded-2xl overflow-hidden">
-              <div className="bg-mred-50 border-b border-mred-100 px-4 py-3">
-                <div className="font-bold text-mred-500 text-sm">Problem: {item.issue}</div>
+              <div className="bg-red-950/30 border-b border-red-900/40 px-4 py-3">
+                <div className="font-bold text-red-500 text-sm">Problem: {item.issue}</div>
               </div>
               <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -75,7 +77,7 @@ export default function Troubleshoot() {
                   <ul className="space-y-1">
                     {item.causes.map((c, i) => (
                       <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
-                        <span className="text-mred-400 font-bold flex-shrink-0">→</span>
+                        <span className="text-red-400 font-bold flex-shrink-0">→</span>
                         {c}
                       </li>
                     ))}
@@ -126,7 +128,7 @@ export default function Troubleshoot() {
             { symptom: 'Valid CRC but wrong sequence', cause: 'Duplicate frame retransmit, or sequence counter desynchronized' },
           ].map((row, i) => (
             <div key={i} className="flex gap-4 bg-slate-800/40 rounded-xl px-4 py-3 border border-amber-900/20">
-              <span className="font-semibold text-mred-500 min-w-48 flex-shrink-0 text-xs">{row.symptom}</span>
+              <span className="font-semibold text-red-500 min-w-48 flex-shrink-0 text-xs">{row.symptom}</span>
               <span className="text-slate-400 text-xs">{row.cause}</span>
             </div>
           ))}

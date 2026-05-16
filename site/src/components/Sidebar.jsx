@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, LogIn, LogOut, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText, ChevronDown, Network, Globe, Code2, Sliders, Server, LayoutDashboard, ScanSearch} from 'lucide-react'
+import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText, ChevronDown, Network, Globe, Code2, Sliders, Server, LayoutDashboard, ScanSearch} from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
-import { supabase } from '../lib/supabase'
 
 const ICON_MAP = {
   Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical,
@@ -11,37 +10,7 @@ const ICON_MAP = {
 
 export default function Sidebar() {
   const [open, setOpen] = useState(true)
-  const [session, setSession] = useState(null)
-  const [sessionLoading, setSessionLoading] = useState(true)
-  const [showLogin, setShowLogin] = useState(false)
-  const [loginEmail, setLoginEmail] = useState('')
-  const [loginPassword, setLoginPassword] = useState('')
-  const [loginError, setLoginError] = useState('')
-  const [loginLoading, setLoginLoading] = useState(false)
   const [showGuides, setShowGuides] = useState(false)
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => { setSession(data.session); setSessionLoading(false) })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_, s) => setSession(s))
-    return () => subscription.unsubscribe()
-  }, [])
-
-  function resolveEmail(input) {
-    const t = input.trim()
-    return t.includes('@') ? t : `${t}@scadahub.io`
-  }
-
-  async function handleLogin(e) {
-    e.preventDefault()
-    setLoginError('')
-    setLoginLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({
-      email: resolveEmail(loginEmail),
-      password: loginPassword,
-    })
-    setLoginLoading(false)
-    if (error) { setLoginError(error.message) } else { setShowLogin(false) }
-  }
   const { getChapterStatus, overallProgress } = useProgress()
   const prog = overallProgress()
 

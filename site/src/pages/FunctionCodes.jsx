@@ -5,6 +5,8 @@ import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import AnalogyCard from '../components/AnalogyCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 import { ANALOGIES } from '../data/chapters'
 
 const FUNCTION_CODES = [
@@ -86,7 +88,7 @@ export default function FunctionCodes() {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-mcyan-500 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</div>
+                <div className="w-8 h-8 bg-amber-700 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0">2</div>
                 <div>
                   <div className="font-semibold text-amber-400">Operate (FC=0x04)</div>
                   <div className="text-xs text-slate-400 mt-1">Master sends: "Operate the control I just selected." Outstation verifies the operate matches the select, verifies the timer hasn't expired, and executes. If any check fails, the operate is rejected.</div>

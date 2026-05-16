@@ -4,6 +4,8 @@ import Callout from '../components/Callout'
 import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 
 export default function Security() {
   return (

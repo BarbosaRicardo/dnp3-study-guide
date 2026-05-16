@@ -5,6 +5,8 @@ import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import AnalogyCard from '../components/AnalogyCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 import { ANALOGIES } from '../data/chapters'
 
 export default function DataLink() {
@@ -27,38 +29,38 @@ export default function DataLink() {
 
       {/* Frame diagram */}
       <div className="bg-slate-900/60 rounded-2xl overflow-hidden my-6">
-        <div className="text-mcyan-400 text-xs font-bold px-4 py-2 uppercase tracking-widest border-b border-white/10">
+        <div className="text-amber-400 text-xs font-bold px-4 py-2 uppercase tracking-widest border-b border-white/10">
           DNP3 Data Link Frame Structure
         </div>
         <div className="p-4">
           <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
             <div className="frame-field bg-amber-500/80 border-r border-white/20">
-              <div className="text-mcyan-400">Start</div>
+              <div className="text-amber-400">Start</div>
               <div>0x05 0x64</div>
               <div className="text-white/50">2 bytes</div>
             </div>
             <div className="frame-field bg-amber-500/60 border-r border-white/20">
-              <div className="text-mcyan-400">Len</div>
+              <div className="text-amber-400">Len</div>
               <div>LEN</div>
               <div className="text-white/50">1 byte</div>
             </div>
             <div className="frame-field bg-amber-500/60 border-r border-white/20">
-              <div className="text-mcyan-400">Control</div>
+              <div className="text-amber-400">Control</div>
               <div>CTRL</div>
               <div className="text-white/50">1 byte</div>
             </div>
-            <div className="frame-field bg-mcyan-500/60 border-r border-white/20">
+            <div className="frame-field bg-amber-700/50 border-r border-white/20">
               <div className="text-amber-300">Dest</div>
               <div>ADDR</div>
               <div className="text-white/50">2 bytes</div>
             </div>
-            <div className="frame-field bg-mcyan-500/60 border-r border-white/20">
+            <div className="frame-field bg-amber-700/50 border-r border-white/20">
               <div className="text-amber-300">Source</div>
               <div>ADDR</div>
               <div className="text-white/50">2 bytes</div>
             </div>
             <div className="frame-field bg-white/10 border-r border-white/20">
-              <div className="text-mgreen-400">CRC</div>
+              <div className="text-green-400">CRC</div>
               <div>CRC-16</div>
               <div className="text-white/50">2 bytes</div>
             </div>

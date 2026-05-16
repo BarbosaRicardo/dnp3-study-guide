@@ -11,7 +11,7 @@ const LEVEL_META = [
     label: 'Level 1 — Foundations',
     description: 'Core concepts and protocol mechanics. Pass (≥70%) to unlock Level 2.',
     headerBg: 'bg-slate-900/60',
-    accentText: 'text-mcyan-400',
+    accentText: 'text-amber-400',
     borderColor: 'border-navy-200',
     activeBorder: 'border-navy-700',
     emoji: '📘',
@@ -43,7 +43,7 @@ function ResourceDrawer({ resources, level, onClose }) {
   const [expandedExcerpt, setExpandedExcerpt] = useState(null)
   const isL3 = level === 3
   const bg = isL3 ? 'bg-[#0d0d14]' : level === 2 ? 'bg-slate-900' : 'bg-slate-900/60'
-  const accent = isL3 ? 'text-orange-400' : level === 2 ? 'text-amber-400' : 'text-mcyan-400'
+  const accent = isL3 ? 'text-orange-400' : level === 2 ? 'text-amber-400' : 'text-amber-400'
 
   return (
     <>

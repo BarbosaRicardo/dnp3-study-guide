@@ -5,7 +5,9 @@ import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import AnalogyCard from '../components/AnalogyCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
 import { ANALOGIES } from '../data/chapters'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 
 export default function Unsolicited() {
   return (
@@ -32,9 +34,9 @@ export default function Unsolicited() {
           {[
             { step: '1', actor: 'Outstation', action: 'Breaker trips → creates Class 1 event in buffer', color: 'bg-amber-500' },
             { step: '2', actor: 'Outstation', action: 'Sends Unsolicited Response (FC=0x82) with event data', color: 'bg-amber-500' },
-            { step: '3', actor: 'Master',     action: 'Receives unsolicited response, parses event', color: 'bg-mcyan-500' },
-            { step: '4', actor: 'Master',     action: 'Sends Application Confirm (FC=0x00)', color: 'bg-mcyan-500' },
-            { step: '5', actor: 'Outstation', action: 'Receives confirm → clears event from buffer', color: 'bg-mgreen-500' },
+            { step: '3', actor: 'Master',     action: 'Receives unsolicited response, parses event', color: 'bg-amber-600' },
+            { step: '4', actor: 'Master',     action: 'Sends Application Confirm (FC=0x00)', color: 'bg-amber-600' },
+            { step: '5', actor: 'Outstation', action: 'Receives confirm → clears event from buffer', color: 'bg-green-700' },
           ].map((s) => (
             <div key={s.step} className="flex items-center gap-3">
               <div className={`${s.color} text-white w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0`}>
@@ -45,8 +47,9 @@ export default function Unsolicited() {
             </div>
           ))}
         </div>
-        <div className="mt-4 rounded-xl p-3 text-xs text-orange-300" style={{ background: 'rgba(249,115,22,0.08)', border: '1px solid rgba(249,115,22,0.2)' }}>
-          ⚠️ If the master does NOT send a Confirm within the timeout, the outstation retransmits. Repeatedly.
+        <div className="mt-4 rounded-xl p-3 text-xs text-orange-300 flex gap-2" style={{ background: 'rgba(249,115,22,0.08)', border: '1px solid rgba(249,115,22,0.2)' }}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0 mt-0.5"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>If the master does NOT send a Confirm within the timeout, the outstation retransmits. Repeatedly.</span>
           Configure your confirm timeout appropriately or your link drowns in retransmits.
         </div>
       </div>

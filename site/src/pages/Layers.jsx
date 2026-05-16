@@ -4,6 +4,8 @@ import Callout from '../components/Callout'
 import FunFact from '../components/FunFact'
 import GifCard from '../components/GifCard'
 import QuizLevels from '../components/QuizLevels'
+import ChapterExercise from '../components/ChapterExercise'
+import { DNP3_CHAPTER_EXERCISES } from '../data/chapterExercises'
 
 export default function Layers() {
   return (
@@ -29,8 +31,8 @@ export default function Layers() {
         <div className="p-4 space-y-2">
           {[
             { layer: 'Application Layer (Layer 4)', abbr: 'APDU', color: 'bg-amber-500', desc: 'Function codes, data objects, IIN bits, fragmentation' },
-            { layer: 'Transport Layer (Layer 3)',   abbr: 'TPDU', color: 'bg-mcyan-500',  desc: 'FIR/FIN bits, sequence numbers, reassembly' },
-            { layer: 'Data Link Layer (Layer 2)',   abbr: 'LPDU', color: 'bg-mgreen-500', desc: '0x0564 start, addresses, CRC-16/DNP, direction bit' },
+            { layer: 'Transport Layer (Layer 3)',   abbr: 'TPDU', color: 'bg-amber-700',  desc: 'FIR/FIN bits, sequence numbers, reassembly' },
+            { layer: 'Data Link Layer (Layer 2)',   abbr: 'LPDU', color: 'bg-green-700', desc: '0x0564 start, addresses, CRC-16/DNP, direction bit' },
             { layer: 'Physical Layer (Layer 1)',    abbr: 'PHY',  color: 'bg-slate-600',  desc: 'RS-232, RS-485 serial or TCP/IP (port 20000)' },
           ].map((l) => (
             <div key={l.layer} className="flex items-center gap-4 rounded-xl border border-amber-900/30 p-3" style={{ background: 'rgba(245,158,11,0.04)' }}>

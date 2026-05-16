@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, RotateCcw, Shuffle, BookOpen } from 'lucide-react'
+import { ChevronLeft, ChevronRight, RotateCcw, Shuffle, BookOpen, Layers, AlertTriangle } from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { FLASHCARDS } from '../data/flashcards'
 
@@ -68,7 +68,7 @@ export default function Flashcards() {
         animate={{ opacity: 1, y: 0 }}
         className="max-w-2xl mx-auto py-16 px-4 text-center"
       >
-        <div className="text-5xl mb-4">🃏</div>
+        <div className="flex justify-center mb-4"><Layers size={48} className="text-amber-400" /></div>
         <h1 className="text-3xl font-black text-amber-400 mb-3">Flashcards</h1>
         <p className="text-slate-400">Flashcard content is being prepared. Check back soon.</p>
       </motion.div>
@@ -109,7 +109,7 @@ export default function Flashcards() {
 
       {total === 0 ? (
         <div className="text-center py-16 text-slate-500">
-          <div className="text-4xl mb-3">🚧</div>
+          <div className="flex justify-center mb-3"><AlertTriangle size={36} className="text-amber-500/60" /></div>
           <div>No flashcards for this chapter yet.</div>
         </div>
       ) : (

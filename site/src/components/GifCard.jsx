@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { GIFS } from '../data/gifs'
 
-export default function GifCard({ gifKey, caption, side = 'right', className = '', tooltip = null }) {
+export default function GifCard({ gifKey, gifId, caption, side = 'right', className = '', tooltip = null }) {
   const [error, setError] = useState(false)
-  const id = GIFS[gifKey]
+  const id = gifId || GIFS[gifKey]
 
   if (!id || error) return null
 

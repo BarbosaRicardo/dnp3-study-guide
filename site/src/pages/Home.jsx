@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { BookOpen, Zap, Award, Clock, ArrowRight, Radio, Home as HomeIcon, Layers, Link as LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, Factory, DollarSign, Ruler, Droplets, Flame, Map } from 'lucide-react'
@@ -18,8 +18,16 @@ const ICON_MAP = {
   Home: HomeIcon, Radio, Layers, Link: LinkIcon, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical,
 }
 
+const HERO_OPTIONS = [
+  { id: 'MdPZFGgDL3PC8',        caption: `When Class 1 events back up and nobody is polling.`,             tooltip: `DNP3 event classes define polling priority. Class 1 is highest. If the master stops polling, the outstation event buffer fills and old events get silently dropped. DNP3 doesn't complain — it just forgets. Your historian will never know that breaker tripped.` },
+  { id: '3o7TKF1fSIs1R19B8k',   caption: `Select-Before-Operate. DNP3 makes you commit twice.`,           tooltip: `DNP3 requires two messages to execute a control: SELECT confirms intent, OPERATE executes. A single bit flip or race condition can't accidentally open a breaker. This wasn't paranoia — it was written after a real substation incident involving a mis-addressed control.` },
+  { id: 'feqkVgjJpYtjy',        caption: `IIN1.6: Device Restart detected. Time sync required.`,          tooltip: `Every DNP3 response carries 16 IIN health flags. IIN1.6 means the device just rebooted. Any data from before the restart may be stale. Miss this flag and your historian timestamps wrong values, silently, until someone notices the SCADA screen is wrong.` },
+  { id: 'XIqCQx02E1U9W',        caption: `48-bit millisecond UTC timestamps. DNP3 doesn't forget.`,       tooltip: `DNP3 timestamps have 48-bit millisecond precision — enough to represent dates until the year 10889. After Y2K, the engineers who wrote this standard decided they weren't getting caught with an overflow problem again. Reasonable, honestly.` },
+  { id: 'l46Cy1rHbQ92uuLXa',    caption: `RS-485, TCP/IP, fiber, radio — DNP3 runs on all of it.`,       tooltip: `DNP3 was designed in 1993 for RS-485 serial. The same application-layer frame format now runs on TCP/IP, fiber, radio, and power-line carrier. Same protocol, different transport. This is what protocol independence looks like in practice.` },
+]
 export default function Home() {
   const { overallProgress, reset } = useProgress()
+  const [heroIdx] = useState(() => Math.floor(Math.random() * HERO_OPTIONS.length))
   const prog = overallProgress()
 
   const container = {
@@ -63,7 +71,7 @@ export default function Home() {
           </div>
 
           <div className="flex-shrink-0">
-            <GifCard gifKey="courseHero" caption="DNP3: keeping the grid alive while everything else is on fire." side="right" tooltip="DNP3 was engineered for power utilities — built to survive partial outages, noisy electrical environments, and conditions that would make Ethernet weep. It doesn't fail gracefully. It just doesn't fail." />
+            <GifCard gifId={HERO_OPTIONS[heroIdx].id} caption={HERO_OPTIONS[heroIdx].caption} tooltip={HERO_OPTIONS[heroIdx].tooltip} side="right" />
           </div>
         </div>
       </motion.div>

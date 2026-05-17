@@ -68,7 +68,7 @@ export default function Home() {
           </div>
 
           <div className="flex-shrink-0">
-            <GifCard gifKey="robot" caption="Your future outstation" side="right" />
+            <GifCard gifKey="courseHero" caption="DNP3: keeping the grid alive while everything else is on fire." side="right" tooltip="DNP3 was engineered for power utilities — built to survive partial outages, noisy electrical environments, and conditions that would make Ethernet weep. It doesn't fail gracefully. It just doesn't fail." />
           </div>
         </div>
       </motion.div>

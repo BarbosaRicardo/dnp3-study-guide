@@ -29,5 +29,6 @@ export const GIFS = {
   dataModel:  '3oEjHFOscgNwdSRRDy',  // data organizing
   register:   '67ThRZlYBvibtdF9JH',  // cash register
   waitress:   'g9582DNuQppxC',        // celebrate (serving)
+  courseHero: 'MdPZFGgDL3PC8',           // fire/flames — this is fine, the grid is fine
   done:       '3ohzdIuqJoo8QdKlnW',  // mic drop
 }

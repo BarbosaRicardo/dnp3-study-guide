@@ -113,7 +113,6 @@ export default function Unsolicited() {
       <AnalogyCard analogy={ANALOGIES[1]} />
 
       <GifCard gifKey="nerd" caption="Your outstation, reporting events as they happen 📣" side="left"
-        body="Unsolicited reporting inverts polling: the outstation sends a report when Class 1, 2, or 3 events accumulate or a hold-off timer expires, without waiting for the master to ask. The master acknowledges each unsolicited response. On satellite or radio links where each poll round-trip costs several seconds of airtime, unsolicited reporting can cut traffic by 80% or more versus continuous polling."
       />
 
       <FunFact index={4} />

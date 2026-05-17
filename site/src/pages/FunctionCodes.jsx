@@ -137,7 +137,6 @@ export default function FunctionCodes() {
       <AnalogyCard analogy={ANALOGIES[3]} />
 
       <GifCard gifKey="checkmark" caption="Select... Operate... Execute ✅" side="right"
-        body="Select-Before-Operate (SBO) requires two separate messages before a control executes. SELECT arms a specific output point at the outstation; OPERATE executes it — but only if it arrives within the configured timeout. If a packet is delayed, dropped, or replayed after timeout, the outstation ignores it. This was written after a real incident where a mis-addressed control tripped the wrong breaker."
       />
 
       <FunFact index={11} />

@@ -175,7 +175,6 @@ export default function AppLayer() {
       <AnalogyCard analogy={ANALOGIES[2]} />
 
       <GifCard gifKey="network" caption="Fragmentation in action — your APDU in pieces" side="left"
-        body="When an Application Layer PDU exceeds the transport layer's maximum payload, DNP3 fragments it across multiple Data Link frames. Each intermediate fragment carries a FIR/FIN flag pair indicating whether it's the first or final segment. The receiver reassembles in order before delivering to the application layer — invisible to the application, but visible in Wireshark as multiple frames for one logical message."
       />
 
       <FunFact index={7} />

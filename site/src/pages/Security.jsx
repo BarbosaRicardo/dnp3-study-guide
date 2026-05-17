@@ -125,7 +125,6 @@ export default function Security() {
       </Callout>
 
       <GifCard gifKey="warning" caption="Without SA, anyone on the network can operate your breakers 🔓" side="right"
-        body="DNP3 without Secure Authentication carries no cryptographic verification. Any device on the RS-485 bus or TCP network can send a valid-looking OPERATE command. SAv5 adds a HMAC-based challenge-response to critical function codes — OPERATE, Direct Operate, Write Time — without encrypting the full session. The challenge must be answered correctly before the outstation executes any control."
       />
 
       <FunFact index={6} />

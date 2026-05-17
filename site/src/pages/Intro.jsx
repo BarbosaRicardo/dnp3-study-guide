@@ -127,7 +127,6 @@ export default function Intro() {
       <AnalogyCard analogy={ANALOGIES[0]} />
 
       <GifCard gifKey="thinking" caption="You, realizing DNP3 has timestamps and Modbus doesn't" side="left"
-        body="DNP3 timestamps events with 48-bit millisecond precision at the outstation — the moment a binary input changes state, the timestamp is recorded locally. When the master eventually polls for Class 1 events, it receives the sequence of changes with their original timestamps intact. This lets you reconstruct exactly what happened and in what order, days after the fact, even if communications were interrupted."
       />
 
       <FunFact index={1} />

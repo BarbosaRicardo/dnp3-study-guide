@@ -133,7 +133,6 @@ export default function Objects() {
       </Callout>
 
       <GifCard gifKey="dataModel" caption="Objects: organized, labeled, timestamped 📊" side="right"
-        body="DNP3 objects are identified by group and variation. Group 1 is binary inputs, Group 30 is analog inputs, Group 20 is counters. Each group has multiple variations — Group 30 Var 1 is a 32-bit integer, Var 5 adds a 48-bit event timestamp. When you configure a data map, you choose the variation for each point. The outstation's entire data model is defined by its object configuration."
       />
 
       <FunFact index={9} />

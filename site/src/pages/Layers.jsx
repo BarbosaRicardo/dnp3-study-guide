@@ -118,7 +118,6 @@ export default function Layers() {
       </Callout>
 
       <GifCard gifKey="cables" caption="Protocol layers, visualized" side="right"
-        body="DNP3 implements three explicit layers: Data Link (framing, addressing, CRC), Pseudo-Transport (segmentation and reassembly), and Application (function codes, objects, IIN flags). Each adds its own header and integrity check. A CRC failure at the Data Link layer discards the frame before the transport layer ever sees it — layered error detection means failures are caught at the lowest possible level."
       />
 
       <FunFact index={3} />

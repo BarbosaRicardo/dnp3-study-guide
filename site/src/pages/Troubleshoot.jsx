@@ -136,7 +136,6 @@ export default function Troubleshoot() {
       </section>
 
       <GifCard gifKey="error" caption="Malformed frame? CRC mismatch? Time to Wireshark 🦈" side="right"
-        body="Wireshark's DNP3 dissector decodes every frame layer: start bytes, length, control byte, CRC result, then the full Application layer with function code, object group/variation headers, and data values. A CRC failure appears as an inline dissector error. When serial-to-TCP converters silently corrupt bytes, Wireshark pinpoints exactly where the frame breaks and which CRC failed."
       />
 
       <FunFact index={8} />

@@ -144,7 +144,6 @@ export default function DataLink() {
       <AnalogyCard analogy={ANALOGIES[5]} />
 
       <GifCard gifKey="serial" caption="Bytes flowing down the serial link ⚡" side="right"
-        body="The DNP3 Data Link frame starts with the 0x0564 start bytes that every receiver looks for, followed by length, control, destination address (2 bytes), source address (2 bytes), and a CRC over the header. On a shared RS-485 bus, all outstations receive every frame — only the addressed device responds. The rest discard it after comparing the destination address."
       />
 
       <FunFact index={5} />

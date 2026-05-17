@@ -35,12 +35,12 @@ export default function AppLayer() {
           <div>
             <div className="text-xs text-slate-400 mb-2">Request (Master → Outstation):</div>
             <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
-              <div className="frame-field bg-amber-500/80 border-r border-white/20">
+              <div className="frame-field bg-amber-500/100/80 border-r border-white/20">
                 <div className="text-amber-400">App Ctrl</div>
                 <div>AC</div>
                 <div className="text-white/50">1 byte</div>
               </div>
-              <div className="frame-field bg-amber-500/60 border-r border-white/20">
+              <div className="frame-field bg-amber-500/100/60 border-r border-white/20">
                 <div className="text-amber-400">Func Code</div>
                 <div>FC</div>
                 <div className="text-white/50">1 byte</div>
@@ -55,12 +55,12 @@ export default function AppLayer() {
           <div>
             <div className="text-xs text-slate-400 mb-2">Response (Outstation → Master):</div>
             <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
-              <div className="frame-field bg-amber-500/80 border-r border-white/20">
+              <div className="frame-field bg-amber-500/100/80 border-r border-white/20">
                 <div className="text-amber-400">App Ctrl</div>
                 <div>AC</div>
                 <div className="text-white/50">1 byte</div>
               </div>
-              <div className="frame-field bg-amber-500/60 border-r border-white/20">
+              <div className="frame-field bg-amber-500/100/60 border-r border-white/20">
                 <div className="text-amber-400">Func Code</div>
                 <div>FC=0x81</div>
                 <div className="text-white/50">1 byte</div>
@@ -174,7 +174,9 @@ export default function AppLayer() {
 
       <AnalogyCard analogy={ANALOGIES[2]} />
 
-      <GifCard gifKey="network" caption="Fragmentation in action — your APDU in pieces" side="left" />
+      <GifCard gifKey="network" caption="Fragmentation in action — your APDU in pieces" side="left"
+        body="When an Application Layer PDU exceeds the transport layer's maximum payload, DNP3 fragments it across multiple Data Link frames. Each intermediate fragment carries a FIR/FIN flag pair indicating whether it's the first or final segment. The receiver reassembles in order before delivering to the application layer — invisible to the application, but visible in Wireshark as multiple frames for one logical message."
+      />
 
       <FunFact index={7} />
 

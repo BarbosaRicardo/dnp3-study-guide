@@ -32,8 +32,8 @@ export default function Unsolicited() {
         <div className="font-semibold text-amber-400 mb-4">Unsolicited Response Lifecycle</div>
         <div className="flex flex-col gap-2 text-sm">
           {[
-            { step: '1', actor: 'Outstation', action: 'Breaker trips → creates Class 1 event in buffer', color: 'bg-amber-500' },
-            { step: '2', actor: 'Outstation', action: 'Sends Unsolicited Response (FC=0x82) with event data', color: 'bg-amber-500' },
+            { step: '1', actor: 'Outstation', action: 'Breaker trips → creates Class 1 event in buffer', color: 'bg-amber-500/100' },
+            { step: '2', actor: 'Outstation', action: 'Sends Unsolicited Response (FC=0x82) with event data', color: 'bg-amber-500/100' },
             { step: '3', actor: 'Master',     action: 'Receives unsolicited response, parses event', color: 'bg-amber-600' },
             { step: '4', actor: 'Master',     action: 'Sends Application Confirm (FC=0x00)', color: 'bg-amber-600' },
             { step: '5', actor: 'Outstation', action: 'Receives confirm → clears event from buffer', color: 'bg-green-700' },
@@ -112,7 +112,9 @@ export default function Unsolicited() {
 
       <AnalogyCard analogy={ANALOGIES[1]} />
 
-      <GifCard gifKey="nerd" caption="Your outstation, reporting events as they happen 📣" side="left" />
+      <GifCard gifKey="nerd" caption="Your outstation, reporting events as they happen 📣" side="left"
+        body="Unsolicited reporting inverts polling: the outstation sends a report when Class 1, 2, or 3 events accumulate or a hold-off timer expires, without waiting for the master to ask. The master acknowledges each unsolicited response. On satellite or radio links where each poll round-trip costs several seconds of airtime, unsolicited reporting can cut traffic by 80% or more versus continuous polling."
+      />
 
       <FunFact index={4} />
 

@@ -85,7 +85,7 @@ export default function Home() {
           </div>
           <div className="h-3 rounded-full overflow-hidden mb-2" style={{ background: 'rgba(245,158,11,0.1)' }}>
             <motion.div
-              className="h-full bg-amber-500 rounded-full"
+              className="h-full bg-amber-500/100 rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${prog.pct}%` }}
               transition={{ duration: 0.8, ease: 'easeOut' }}

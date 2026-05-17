@@ -86,13 +86,13 @@ export default function Objects() {
         <div className="mt-4 bg-slate-800/30 rounded-xl border border-amber-900/30 p-4 font-mono text-sm">
           <div className="text-slate-400 mb-2">Object Header format:</div>
           <div className="flex gap-2 flex-wrap">
-            <span className="bg-amber-500 text-white px-3 py-1 rounded-lg">Group (1 byte)</span>
+            <span className="bg-amber-500/100 text-white px-3 py-1 rounded-lg">Group (1 byte)</span>
             <span className="text-slate-400">+</span>
             <span className="bg-amber-700 text-white px-3 py-1 rounded-lg">Variation (1 byte)</span>
             <span className="text-slate-400">+</span>
             <span className="bg-green-700 text-white px-3 py-1 rounded-lg">Qualifier (1 byte)</span>
             <span className="text-slate-400">+</span>
-            <span className="bg-amber-500 text-white px-3 py-1 rounded-lg">Range/Count/Index</span>
+            <span className="bg-amber-500/100 text-white px-3 py-1 rounded-lg">Range/Count/Index</span>
           </div>
           <div className="mt-3 text-xs text-slate-400 space-y-1">
             <div><span className="text-amber-400 font-bold">Qualifier 0x00</span> — Start/Stop index (8-bit), read specific point range</div>
@@ -112,11 +112,11 @@ export default function Objects() {
         <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3">
           {[
             { flag: 'ONLINE', color: 'bg-green-950/30 border-green-800/50 text-green-400', desc: 'Data is valid and the sensor is communicating' },
-            { flag: 'RESTART', color: 'bg-orange-50 border-orange-200 text-orange-500', desc: 'Value was collected after a device restart — possibly unreliable' },
+            { flag: 'RESTART', color: 'bg-orange-500/10 border-orange-500/30 text-orange-500', desc: 'Value was collected after a device restart — possibly unreliable' },
             { flag: 'COMM LOST', color: 'bg-red-950/30 border-red-800/50 text-red-400', desc: 'Communication to this sensor is lost — value is stale' },
-            { flag: 'REMOTE FORCED', color: 'bg-purple-500/10 border-purple-500/25 text-purple-500', desc: 'Value was forced remotely via DNP3 (for testing)' },
-            { flag: 'LOCAL FORCED', color: 'bg-blue-50 border-blue-200 text-blue-500', desc: 'Value was forced locally at the device' },
-            { flag: 'OVER RANGE', color: 'bg-amber-50 border-amber-200 text-amber-500', desc: 'Analog value exceeded sensor measurement range' },
+            { flag: 'REMOTE FORCED', color: 'bg-purple-500/100/10 border-purple-500/25 text-purple-500', desc: 'Value was forced remotely via DNP3 (for testing)' },
+            { flag: 'LOCAL FORCED', color: 'bg-blue-500/10 border-blue-500/30 text-blue-500', desc: 'Value was forced locally at the device' },
+            { flag: 'OVER RANGE', color: 'bg-amber-500/10 border-amber-500/30 text-amber-500', desc: 'Analog value exceeded sensor measurement range' },
           ].map((f) => (
             <div key={f.flag} className={`border rounded-xl p-3 ${f.color}`}>
               <div className="font-bold text-xs">{f.flag}</div>
@@ -132,7 +132,9 @@ export default function Objects() {
         constantly. DNP3 gives you quality data. Use it or you're wasting half the protocol's value.
       </Callout>
 
-      <GifCard gifKey="dataModel" caption="Objects: organized, labeled, timestamped 📊" side="right" />
+      <GifCard gifKey="dataModel" caption="Objects: organized, labeled, timestamped 📊" side="right"
+        body="DNP3 objects are identified by group and variation. Group 1 is binary inputs, Group 30 is analog inputs, Group 20 is counters. Each group has multiple variations — Group 30 Var 1 is a 32-bit integer, Var 5 adds a 48-bit event timestamp. When you configure a data map, you choose the variation for each point. The outstation's entire data model is defined by its object configuration."
+      />
 
       <FunFact index={9} />
 

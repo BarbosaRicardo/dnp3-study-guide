@@ -34,17 +34,17 @@ export default function DataLink() {
         </div>
         <div className="p-4">
           <div className="flex rounded-xl overflow-hidden border border-white/20 text-white text-xs font-mono">
-            <div className="frame-field bg-amber-500/80 border-r border-white/20">
+            <div className="frame-field bg-amber-500/100/80 border-r border-white/20">
               <div className="text-amber-400">Start</div>
               <div>0x05 0x64</div>
               <div className="text-white/50">2 bytes</div>
             </div>
-            <div className="frame-field bg-amber-500/60 border-r border-white/20">
+            <div className="frame-field bg-amber-500/100/60 border-r border-white/20">
               <div className="text-amber-400">Len</div>
               <div>LEN</div>
               <div className="text-white/50">1 byte</div>
             </div>
-            <div className="frame-field bg-amber-500/60 border-r border-white/20">
+            <div className="frame-field bg-amber-500/100/60 border-r border-white/20">
               <div className="text-amber-400">Control</div>
               <div>CTRL</div>
               <div className="text-white/50">1 byte</div>
@@ -143,7 +143,9 @@ export default function DataLink() {
 
       <AnalogyCard analogy={ANALOGIES[5]} />
 
-      <GifCard gifKey="serial" caption="Bytes flowing down the serial link ⚡" side="right" />
+      <GifCard gifKey="serial" caption="Bytes flowing down the serial link ⚡" side="right"
+        body="The DNP3 Data Link frame starts with the 0x0564 start bytes that every receiver looks for, followed by length, control, destination address (2 bytes), source address (2 bytes), and a CRC over the header. On a shared RS-485 bus, all outstations receive every frame — only the addressed device responds. The rest discard it after comparing the destination address."
+      />
 
       <FunFact index={5} />
 

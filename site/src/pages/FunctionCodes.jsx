@@ -81,7 +81,7 @@ export default function FunctionCodes() {
           <div className="flex flex-col md:flex-row items-start gap-4">
             <div className="flex-1 space-y-3">
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-amber-500 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</div>
+                <div className="w-8 h-8 bg-amber-500/100 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0">1</div>
                 <div>
                   <div className="font-semibold text-amber-400">Select (FC=0x03)</div>
                   <div className="text-xs text-slate-400 mt-1">Master sends: "I intend to open Breaker 3A." Outstation validates and responds with the same control block echoed back. If everything matches, outstation arms and starts a countdown timer (typically 5–30 seconds).</div>
@@ -136,7 +136,9 @@ export default function FunctionCodes() {
 
       <AnalogyCard analogy={ANALOGIES[3]} />
 
-      <GifCard gifKey="checkmark" caption="Select... Operate... Execute ✅" side="right" />
+      <GifCard gifKey="checkmark" caption="Select... Operate... Execute ✅" side="right"
+        body="Select-Before-Operate (SBO) requires two separate messages before a control executes. SELECT arms a specific output point at the outstation; OPERATE executes it — but only if it arrives within the configured timeout. If a packet is delayed, dropped, or replayed after timeout, the outstation ignores it. This was written after a real incident where a mis-addressed control tripped the wrong breaker."
+      />
 
       <FunFact index={11} />
 

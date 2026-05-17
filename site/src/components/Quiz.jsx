@@ -438,10 +438,10 @@ export default function Quiz({ chapterId, questions, level = 1 }) {
                                   href={r.url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-green-50 transition-colors group"
+                                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-green-500/100/10 transition-colors group"
                                 >
                                   <Cpu size={15} className="text-green-500 flex-shrink-0" />
-                                  <span className="text-xs text-slate-700 flex-1 group-hover:text-green-700 leading-snug">{r.title}</span>
+                                  <span className="text-xs text-slate-700 flex-1 group-hover:text-green-400 leading-snug">{r.title}</span>
                                   <ExternalLink size={11} className="text-slate-300 flex-shrink-0" />
                                 </a>
                               )}

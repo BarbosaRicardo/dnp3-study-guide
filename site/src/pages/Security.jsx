@@ -94,7 +94,7 @@ export default function Security() {
               { step: '5', desc: 'Outstation independently computes the same HMAC and compares. Match = authenticated, proceed. No match = reject.' },
             ].map((s) => (
               <div key={s.step} className="flex gap-3">
-                <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">{s.step}</div>
+                <div className="w-6 h-6 bg-amber-500/100 rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">{s.step}</div>
                 <div className="text-slate-300 pt-0.5">{s.desc}</div>
               </div>
             ))}
@@ -124,7 +124,9 @@ export default function Security() {
         an adversary might capture and replay a breaker close command.
       </Callout>
 
-      <GifCard gifKey="warning" caption="Without SA, anyone on the network can operate your breakers 🔓" side="right" />
+      <GifCard gifKey="warning" caption="Without SA, anyone on the network can operate your breakers 🔓" side="right"
+        body="DNP3 without Secure Authentication carries no cryptographic verification. Any device on the RS-485 bus or TCP network can send a valid-looking OPERATE command. SAv5 adds a HMAC-based challenge-response to critical function codes — OPERATE, Direct Operate, Write Time — without encrypting the full session. The challenge must be answered correctly before the outstation executes any control."
+      />
 
       <FunFact index={6} />
 

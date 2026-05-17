@@ -30,7 +30,7 @@ export default function Layers() {
         <div className="bg-slate-900/60 text-white text-xs font-bold px-4 py-2 uppercase tracking-widest">DNP3 Protocol Stack</div>
         <div className="p-4 space-y-2">
           {[
-            { layer: 'Application Layer (Layer 4)', abbr: 'APDU', color: 'bg-amber-500', desc: 'Function codes, data objects, IIN bits, fragmentation' },
+            { layer: 'Application Layer (Layer 4)', abbr: 'APDU', color: 'bg-amber-500/100', desc: 'Function codes, data objects, IIN bits, fragmentation' },
             { layer: 'Transport Layer (Layer 3)',   abbr: 'TPDU', color: 'bg-amber-700',  desc: 'FIR/FIN bits, sequence numbers, reassembly' },
             { layer: 'Data Link Layer (Layer 2)',   abbr: 'LPDU', color: 'bg-green-700', desc: '0x0564 start, addresses, CRC-16/DNP, direction bit' },
             { layer: 'Physical Layer (Layer 1)',    abbr: 'PHY',  color: 'bg-slate-600',  desc: 'RS-232, RS-485 serial or TCP/IP (port 20000)' },
@@ -117,7 +117,9 @@ export default function Layers() {
         sequences. If you don't know about this, you'll be on-site for hours.
       </Callout>
 
-      <GifCard gifKey="cables" caption="Protocol layers, visualized" side="right" />
+      <GifCard gifKey="cables" caption="Protocol layers, visualized" side="right"
+        body="DNP3 implements three explicit layers: Data Link (framing, addressing, CRC), Pseudo-Transport (segmentation and reassembly), and Application (function codes, objects, IIN flags). Each adds its own header and integrity check. A CRC failure at the Data Link layer discards the frame before the transport layer ever sees it — layered error detection means failures are caught at the lowest possible level."
+      />
 
       <FunFact index={3} />
 

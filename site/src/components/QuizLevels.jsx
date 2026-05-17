@@ -141,7 +141,7 @@ function ResourceDrawer({ resources, level, onClose }) {
                       : <ChevronDown size={14} className="text-slate-400 flex-shrink-0" />}
                   </button>
                   {expandedExcerpt === i && (
-                    <div className="border-t border-purple-500/20 p-3 bg-purple-500/10">
+                    <div className="border-t border-purple-500/20 p-3 bg-purple-500/100/10">
                       {r.excerpt && (
                         <p className="text-xs text-slate-300 leading-relaxed italic mb-2">"{r.excerpt}"</p>
                       )}
@@ -235,7 +235,7 @@ function LevelCard({ meta, questions, chapterId, locked, passed }) {
                 <button
                   onClick={() => setDrawerOpen(true)}
                   className={`flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg text-white ${
-                    level === 3 ? 'bg-orange-600' : level === 2 ? 'bg-amber-600' : 'bg-amber-500'
+                    level === 3 ? 'bg-orange-600' : level === 2 ? 'bg-amber-600' : 'bg-amber-500/100'
                   }`}
                 >
                   Dig Deeper

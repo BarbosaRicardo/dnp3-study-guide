@@ -174,8 +174,10 @@ export default function AppLayer() {
 
       <AnalogyCard analogy={ANALOGIES[2]} />
 
-      <GifCard gifKey="network" caption="Fragmentation in action — your APDU in pieces" side="left"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <GifCard gifKey="network" caption="Fragmentation in action — your APDU in pieces" />
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">Large application responses are split across Transport Layer frames using FIR and FIN bits. FIR marks the first segment; FIN marks the last. If any fragment is lost or corrupted, the master discards the entire response and retransmits the request — there is no selective acknowledgment. The transport sequence number (0–63) detects duplicates and reordering. Reducing the maximum APDU size can improve reliability on noisy serial links at the cost of more round-trips.</p>
+      </div>
 
       <FunFact index={7} />
 

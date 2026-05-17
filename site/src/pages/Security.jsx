@@ -124,8 +124,10 @@ export default function Security() {
         an adversary might capture and replay a breaker close command.
       </Callout>
 
-      <GifCard gifKey="warning" caption="Without SA, anyone on the network can operate your breakers 🔓" side="right"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">Secure Authentication v5 uses HMAC-SHA-256 with session keys negotiated from a pre-shared long-term key. Without SA, any device on the serial bus or Ethernet segment can send a valid DNP3 control command — the outstation has no way to verify the source. NERC CIP environments increasingly mandate SA on all control paths. An unsecured RS-485 link can be exploited by anyone with physical access to the bus.</p>
+        <GifCard gifKey="warning" caption="Without SA, anyone on the network can operate your breakers 🔓" />
+      </div>
 
       <FunFact index={6} />
 

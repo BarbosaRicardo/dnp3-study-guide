@@ -112,8 +112,10 @@ export default function Unsolicited() {
 
       <AnalogyCard analogy={ANALOGIES[1]} />
 
-      <GifCard gifKey="nerd" caption="Your outstation, reporting events as they happen 📣" side="left"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <GifCard gifKey="nerd" caption="Your outstation, reporting events as they happen 📣" />
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">The outstation keeps three event buffers — Class 1, 2, and 3. When an event occurs, it's added to the appropriate buffer. An Unsolicited Response (FC 130) fires when the buffer hits its threshold count or the unsolicited timer expires. The master must confirm receipt with FC 0 or the outstation retransmits up to the configured retry limit. If the master is offline and the buffer fills, the oldest events are dropped silently — your historian never sees those transitions.</p>
+      </div>
 
       <FunFact index={4} />
 

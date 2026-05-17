@@ -135,8 +135,10 @@ export default function Troubleshoot() {
         </div>
       </section>
 
-      <GifCard gifKey="error" caption="Malformed frame? CRC mismatch? Time to Wireshark 🦈" side="right"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">Wireshark with the DNP3 dissector parses every field — function code, IIN bits, object group and variation, application sequence numbers, CRC results. Filter on <code className="text-xs bg-white/10 px-1 rounded">dnp3</code> and start with IIN bits in every response. IIN1.6 (Device Restart) means the outstation rebooted and lost its event buffer. IIN2.0 (Class 1 events pending) with no unsolicited traffic means the feature is disabled or the master isn't confirming acknowledges.</p>
+        <GifCard gifKey="error" caption="Malformed frame? CRC mismatch? Time to Wireshark 🦈" />
+      </div>
 
       <FunFact index={8} />
 

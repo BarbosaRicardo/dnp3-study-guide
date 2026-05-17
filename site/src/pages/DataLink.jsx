@@ -143,8 +143,10 @@ export default function DataLink() {
 
       <AnalogyCard analogy={ANALOGIES[5]} />
 
-      <GifCard gifKey="serial" caption="Bytes flowing down the serial link ⚡" side="right"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">The data link layer transmits one frame at a time — no windowing, no parallel frames. Each frame starts with 0x05 0x64, includes a length byte and two address bytes, and ends with a 16-bit CRC. The primary station controls access to the serial link. Outstations never transmit at the data link level on their own — only the application layer has unsolicited capability.</p>
+        <GifCard gifKey="serial" caption="Bytes flowing down the serial link ⚡" />
+      </div>
 
       <FunFact index={5} />
 

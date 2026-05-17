@@ -132,8 +132,10 @@ export default function Objects() {
         constantly. DNP3 gives you quality data. Use it or you're wasting half the protocol's value.
       </Callout>
 
-      <GifCard gifKey="dataModel" caption="Objects: organized, labeled, timestamped 📊" side="right"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">Every DNP3 object carries a value, quality flags, and a timestamp as a single unit. The flags tell you whether the value is ONLINE, RESTART, COMM_LOST, LOCAL_FORCED, or OVER_RANGE. If COMM_LOST is set, the outstation lost contact with its own field device and is reporting stale data — not live data. Your SCADA historian must check these flags on every value, not just on startup.</p>
+        <GifCard gifKey="dataModel" caption="Objects: organized, labeled, timestamped 📊" />
+      </div>
 
       <FunFact index={9} />
 

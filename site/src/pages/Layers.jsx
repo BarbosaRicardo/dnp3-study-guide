@@ -117,8 +117,10 @@ export default function Layers() {
         sequences. If you don't know about this, you'll be on-site for hours.
       </Callout>
 
-      <GifCard gifKey="cables" caption="Protocol layers, visualized" side="right"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">DNP3's four-layer stack mirrors OSI in spirit. Physical handles the bits. Data Link handles framing, addressing, and CRC. Transport handles fragmentation and reassembly across frame boundaries. Application handles data objects, function codes, IIN bits, and services. Each layer only trusts the layer directly below it — a CRC error at Data Link means Transport never sees the bytes, and a Transport reassembly failure means Application never gets the message.</p>
+        <GifCard gifKey="cables" caption="Protocol layers, visualized" />
+      </div>
 
       <FunFact index={3} />
 

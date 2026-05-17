@@ -136,8 +136,10 @@ export default function FunctionCodes() {
 
       <AnalogyCard analogy={ANALOGIES[3]} />
 
-      <GifCard gifKey="checkmark" caption="Select... Operate... Execute ✅" side="right"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">SBO requires the outstation to verify the control object matches between Select and Operate requests. If anything differs — control code, queue flag, trip/close — the Operate returns NO_SELECT. The SBO timeout window is configurable, typically 5–30 seconds. Outside that window, the Operate is also rejected. This two-step handshake is what CIP and NERC compliance frameworks mandate for critical control paths, because it means a network glitch or confused master can't accidentally de-energize a neighborhood.</p>
+        <GifCard gifKey="checkmark" caption="Select... Operate... Execute ✅" />
+      </div>
 
       <FunFact index={11} />
 

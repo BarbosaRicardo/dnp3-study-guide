@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText, ChevronDown, Network, Globe, Code2, Sliders, Server, LayoutDashboard, ScanSearch} from 'lucide-react'
+import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText, ChevronDown, Network, Globe, Code2, Sliders, Server, LayoutDashboard, ScanSearch, GraduationCap} from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
+import TrainingModal from './TrainingModal'
 
 const ICON_MAP = {
   Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical,
 }
 
 export default function Sidebar() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
   const [showGuides, setShowGuides] = useState(false)
+  const [showTraining, setShowTraining] = useState(false)
   const { getChapterStatus, overallProgress } = useProgress()
   const prog = overallProgress()
 
@@ -152,6 +154,17 @@ export default function Sidebar() {
           <BookOpen size={16} className="flex-shrink-0" />
           <span className="flex-1">Flashcards</span>
         </NavLink>
+          <button
+            onClick={() => setShowTraining(true)}
+            className="chapter-nav-item w-full mt-0.5"
+          >
+            <GraduationCap size={15} className="text-blue-400 flex-shrink-0" />
+            <span className="flex-1 text-left truncate">More Training</span>
+            <span className="text-xs px-1.5 py-0.5 rounded-full text-blue-400"
+              style={{ background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.3)' }}>
+              LIVE
+            </span>
+          </button>
       </div>
 
       {/* Footer */}
@@ -235,6 +248,7 @@ export default function Sidebar() {
       >
         <SidebarContent />
       </aside>
+      {showTraining && <TrainingModal course="dnp3" onClose={() => setShowTraining(false)} />}
     </>
   )
 }

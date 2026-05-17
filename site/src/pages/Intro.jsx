@@ -126,8 +126,10 @@ export default function Intro() {
 
       <AnalogyCard analogy={ANALOGIES[0]} />
 
-      <GifCard gifKey="thinking" caption="You, realizing DNP3 has timestamps and Modbus doesn't" side="left"
-      />
+      <div className="flex items-start gap-6 my-6">
+        <GifCard gifKey="thinking" caption="You, realizing DNP3 has timestamps and Modbus doesn't" />
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">This is the thing that surprises engineers coming from Modbus: every DNP3 data object includes a timestamp. Not just the poll response — the individual value, stamped at the outstation the moment the input changed. Your SCADA master doesn't need to know exactly when it asked; it knows exactly when the event happened. For sequence-of-events recording, fault analysis, and NERC compliance logs, that difference is everything.</p>
+      </div>
 
       <FunFact index={1} />
 

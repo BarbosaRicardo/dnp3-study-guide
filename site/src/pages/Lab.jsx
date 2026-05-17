@@ -174,7 +174,10 @@ export default function Lab() {
         </div>
       </section>
 
-      <GifCard gifKey="celebrate" caption="You made it through DNP3! That's real utility SCADA knowledge 🎉" side="right" />
+      <div className="flex items-start gap-6 my-6">
+        <GifCard gifKey="celebrate" caption="You made it through DNP3! That's real utility SCADA knowledge 🎉" />
+        <p className="flex-1 text-sm text-slate-400 leading-relaxed">DNP3 is the protocol that runs North American electric utility SCADA. If you can read a DNP3 Wireshark capture, configure unsolicited reporting, set up Secure Authentication, and explain why IIN1.6 means you missed events — you're ahead of 90% of engineers in the field. That knowledge is what keeps the lights on.</p>
+      </div>
 
       <FunFact index={11} />
 

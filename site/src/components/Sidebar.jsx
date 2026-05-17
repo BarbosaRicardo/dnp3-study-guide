@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText, ChevronDown, Network, Globe, Code2, Sliders, Server, LayoutDashboard, ScanSearch, GraduationCap} from 'lucide-react'
+import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText, ChevronDown, Network, Globe, Code2, Sliders, Server, LayoutDashboard, ScanSearch, GraduationCap, CheckCircle2 } from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
 import TrainingModal from './TrainingModal'
@@ -27,10 +27,16 @@ export default function Sidebar() {
       >
         <Icon size={15} className="flex-shrink-0 opacity-70" />
         <span className="flex-1 truncate">{ch.label}</span>
-        <div className="flex gap-0.5 flex-shrink-0">
-          <div className={`w-2 h-2 rounded-full ${status.level1Passed ? 'bg-green-400' : status.visited ? 'bg-amber-400' : 'bg-slate-700'}`} />
-          <div className={`w-2 h-2 rounded-full ${status.level2Passed ? 'bg-amber-400' : 'bg-slate-700'}`} />
-          <div className={`w-2 h-2 rounded-full ${status.level3Passed ? 'bg-amber-200' : 'bg-slate-700'}`} />
+        <div className="flex gap-0.5 flex-shrink-0 items-center">
+          {status.completed ? (
+            <CheckCircle2 size={13} className="text-emerald-400" />
+          ) : (
+            <>
+              <div className={`w-2 h-2 rounded-full ${status.level1Passed ? 'bg-green-400' : status.visited ? 'bg-amber-400' : 'bg-slate-700'}`} />
+              <div className={`w-2 h-2 rounded-full ${status.level2Passed ? 'bg-amber-400' : 'bg-slate-700'}`} />
+              <div className={`w-2 h-2 rounded-full ${status.level3Passed ? 'bg-amber-200' : 'bg-slate-700'}`} />
+            </>
+          )}
         </div>
       </NavLink>
     )
@@ -104,12 +110,13 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-5" style={{ borderBottom: '1px solid rgba(245,158,11,0.15)' }}>
         <div className="flex items-center gap-3">
-          <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center"
+          <button
+            onClick={() => setOpen(false)}
+            className="w-10 h-10 rounded-xl flex items-center justify-center lg:cursor-default"
             style={{ background: 'linear-gradient(135deg,#f59e0b,#fbbf24)', boxShadow: '0 0 16px rgba(245,158,11,0.4)' }}
           >
             <Zap size={20} className="text-black" />
-          </div>
+          </button>
           <div>
             <div className="font-black text-amber-400 leading-tight tracking-wide">DNP3</div>
             <div className="text-xs font-medium" style={{ color: 'rgba(245,158,11,0.55)' }}>Study Guide</div>

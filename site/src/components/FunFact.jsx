@@ -40,7 +40,7 @@ export default function FunFact({ index }) {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xs font-bold uppercase tracking-widest text-amber-400">Field Intel</span>
-              <FactIcon size={16} style={{ color: '#fbbf24' }} />
+              <Lightbulb size={16} style={{ color: '#fbbf24' }} />
             </div>
             <p className="text-slate-300 text-sm leading-relaxed">{fact.text}</p>
           </div>

@@ -18,6 +18,7 @@ const ICON_MAP = {
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
   const [showGuides, setShowGuides] = useState(false)
+  const [showChapters, setShowChapters] = useState(true)
   const [showTraining, setShowTraining] = useState(false)
   const { getChapterStatus, overallProgress } = useProgress()
   const prog = overallProgress()
@@ -244,9 +245,23 @@ export default function Sidebar() {
       <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
         <HomeItem />
         <AllGuidesItem />
-        {CHAPTERS.filter(ch => ch.id !== 'home').map((ch) => (
-          <NavItem key={ch.id} ch={ch} />
-        ))}
+        <div>
+          <button
+            onClick={() => setShowChapters(c => !c)}
+            className="chapter-nav-item w-full"
+          >
+            <BookOpen size={15} className="flex-shrink-0 opacity-70" />
+            <span className="flex-1 text-left">Chapters</span>
+            <ChevronDown size={13} className="flex-shrink-0 opacity-50 transition-transform" style={{ transform: showChapters ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+          </button>
+          {showChapters && (
+            <div className="ml-1 space-y-0.5 mt-0.5">
+              {CHAPTERS.filter(ch => ch.id !== 'home').map((ch) => (
+                <NavItem key={ch.id} ch={ch} />
+              ))}
+            </div>
+          )}
+        </div>
       </nav>
 
       {/* Extras */}

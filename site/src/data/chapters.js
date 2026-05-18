@@ -65,3 +65,57 @@ export const ANALOGIES = [
     gif: 'serial'
   },
 ]
+
+export const FIELD_STORIES = [
+  {
+    title: "The Event Buffer That Overflowed",
+    icon: "AlertOctagon",
+    story: "A municipal water utility ran DNP3 polling every 30 seconds across 12 substations. During a weekend storm, comms dropped for 4 hours. When polling resumed, the Class 1 event buffers on 3 RTUs were full — oldest events silently dropped. The SCADA historian showed no record of 6 pump state changes that happened during the outage. The morning operator report said 'no alarms.' It was only during a quarterly review that an engineer noticed the historian gaps. The fix: configure shorter poll intervals and enable alarm-on-comms-loss. The lesson: DNP3 silence is not confirmation of a quiet night."
+  },
+  {
+    title: "The IIN Flag Nobody Read",
+    icon: "Radio",
+    story: "A substation RTU had been restarting silently every 72 hours due to a firmware memory leak. Every restart set IIN1.6 (Device Restart). Every response carried this flag. The master polled perfectly — it just never checked IIN bits. For 6 months, the SCADA team assumed all data was current. It wasn't: after each restart, time sync was required, and timestamps were offset by hours until the next manual sync. The historian showed 6 months of subtly wrong event timestamps. The root cause was discovered when a protection engineer noticed relay event times didn't match SCADA event times."
+  },
+  {
+    title: "The Select That Never Operated",
+    icon: "Shield",
+    story: "An operator tried to remotely open a breaker via DNP3 Select-Before-Operate. The SELECT went out. The 10-second operate window ticked down. The OPERATE arrived at second 11. The outstation rejected it silently — SBO timeout exceeded. The HMI showed no error. The operator assumed the breaker had opened and started energization procedures. A field crew found it still closed. The control system had no timeout alarm configured. After the incident, every SBO operation was given an explicit confirmation dialog that expired if no OPERATE was confirmed within 8 seconds. Two seconds of buffer in the protocol; zero in the UI."
+  },
+  {
+    title: "The CRC That Was Almost Right",
+    icon: "AlertTriangle",
+    story: "A new SCADA integration used a DNP3 CRC-16 implementation copied from an online forum. It worked on 90% of frames. The other 10% were silently dropped. The developer had used CRC-16/MODBUS instead of CRC-16/DNP. The two polynomials are different. The RTU rejected malformed frames without explanation. For two weeks, the team thought the RTU firmware was buggy. A Wireshark capture finally revealed the pattern: frames with certain byte sequences always failed. A DNP3 protocol analyzer confirmed the CRC polynomial mismatch. The correct CRC was a one-line fix. The diagnosis took 14 days."
+  },
+  {
+    title: "The Time Sync That Drifted Away",
+    icon: "Ghost",
+    story: "A power plant ran DNP3 without a GPS time source. The master sent time sync at startup and never again. Over 18 months, the RTU clocks drifted — slowly, silently, differently on each device. By month 18, RTU clocks were off by up to 4 minutes from each other. Event sequences in the historian showed breaker trips appearing to happen *before* their cause. Protection engineers spent weeks trying to understand an impossible sequence of events before an instrument technician noticed the clock drift on a routine check. Every RTU had to be resynchronized. The historian data for 18 months was flagged as unreliable."
+  },
+]
+
+export const CHAPTER_HOOKS = {
+  intro:       "A remote RTU stops responding. No alarm. No indication. The SCADA screen just shows stale data. Is that a DNP3 problem, a comms problem, or a device problem — and what's your first move?",
+  layers:      "If DNP3 has three layers (Data Link, Transport, Application), which one do you fix first when a device stops responding? Does the answer change if it responds but sends garbage?",
+  datalink:    "DNP3 uses CRC-16/DNP — not the same CRC as Modbus. If you reuse a Modbus CRC implementation, every frame will be rejected silently. How would you know?",
+  appLayer:    "A DNP3 response arrives fragmented across multiple transport frames. One frame is lost. What happens, and how does the protocol recover?",
+  objects:     "Your RTU is sending DNP3 Group 30 Variation 1 analogs. Your master is configured to read Group 30 Variation 4. Both sides seem correct. Why might you still get no data?",
+  fc:          "Select-Before-Operate exists specifically because of a real incident. What failure mode does it prevent — and is there a way an operator could bypass it accidentally?",
+  unsol:       "An outstation is configured for unsolicited responses but the master never seems to receive them. The master is polling normally. The outstation confirms it's sending. What are the 3 most likely causes?",
+  security:    "DNP3 Secure Authentication v2 and v5 are not backward compatible. You have a mix of RTUs in the field. How does this affect your deployment plan — and what happens when a v5 master talks to a v2 outstation?",
+  troubleshoot:"A DNP3 master reports a device as offline. You can ping it. You can open a TCP connection to port 20000. But DNP3 polls time out. What are you checking next?",
+  lab:         "Before you configure a single DNP3 data object: what three things must you know about the outstation before the first poll will succeed?",
+}
+
+export const CHAPTER_RETRIEVAL = {
+  intro:       { q: "What are the two DNP3 start bytes that begin every frame?", a: "0x05 0x64 — always" },
+  layers:      { q: "What are the three DNP3 protocol layers?", a: "Data Link Layer, Transport Layer, Application Layer" },
+  datalink:    { q: "What CRC variant does DNP3 use — and how is it different from Modbus?", a: "CRC-16/DNP — a different polynomial from CRC-16/Modbus; the two are not interchangeable" },
+  appLayer:    { q: "What does the FIN bit in a DNP3 transport header indicate?", a: "This is the last fragment of the Application Layer message" },
+  objects:     { q: "What is DNP3 Class 0 data?", a: "A static snapshot of all current values — no timestamps, not event-driven" },
+  fc:          { q: "What two steps are required for DNP3 Select-Before-Operate?", a: "SELECT (intent), then OPERATE (execute) — within the outstation's configured SBO timeout" },
+  unsol:       { q: "What must the master do when it receives a DNP3 unsolicited response?", a: "Send a confirm (ACK) — otherwise the outstation will retransmit" },
+  security:    { q: "Are DNP3 Secure Authentication v2 and v5 backward compatible?", a: "No — they use different mechanisms and cannot interoperate" },
+  troubleshoot: { q: "Which IIN bit signals that a DNP3 device has just restarted?", a: "IIN1.6 — Device Restart; requires time synchronization afterward" },
+  lab:         { q: "What DNP3 port is used for TCP/IP sessions by convention?", a: "Port 20000" },
+}

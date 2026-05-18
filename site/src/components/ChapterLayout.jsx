@@ -1,9 +1,28 @@
-import React, { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import React, { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link, useNavigate } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, BookOpen, Home, Database, Binary, Cpu, Radio, FileText, Globe, Settings, AlertTriangle, Wrench, Shield, FlaskConical } from 'lucide-react'
-import { CHAPTERS } from '../data/chapters'
+import { ChevronLeft, ChevronRight, BookOpen, Home, Database, Binary, Cpu, Radio, FileText, Globe, Settings, AlertTriangle, Wrench, Shield, FlaskConical, Clock, HelpCircle, ChevronDown } from 'lucide-react'
+import { CHAPTERS, CHAPTER_HOOKS, CHAPTER_RETRIEVAL } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
+
+const READ_TIME = {
+  intro: 12, layers: 10, datalink: 12, appLayer: 14,
+  objects: 12, fc: 10, unsol: 10, security: 12,
+  troubleshoot: 12, lab: 20,
+}
+
+const CHAPTER_STAKES = {
+  intro:        'DNP3 is the protocol utilities actually use. Understanding it is what separates SCADA engineers from operators who just watch screens.',
+  layers:       'The protocol stack is not trivia. Every field failure traces to a specific layer. Know which layer is broken before you touch anything.',
+  datalink:     'The data link layer is where frames live or die. A bad CRC here and the outstation ignores you silently — no error, just silence.',
+  appLayer:     'The application layer is what you actually read and write. Miss a bit in the fragment sequence and your data model falls apart.',
+  objects:      'Group and Variation determine what wire format a value takes. Get this wrong and you read voltage as status or vice versa.',
+  fc:           'Function codes are the verbs of DNP3. Miss one and you issue a read when you meant to select, or a select when you meant to operate.',
+  unsol:        'Unsolicited responses are why DNP3 beats Modbus in real-time utility SCADA. Miss this and you are back to polling 500 substations one at a time.',
+  security:     'SA v5 is not optional in critical infrastructure anymore. Engineers who understand it are the ones NERC CIP compliance teams call at 2 AM.',
+  troubleshoot: 'A DNP3 engineer who can diagnose silently-dropped events and CRC failures faster than the vendor can becomes irreplaceable.',
+  lab:          'You can read DNP3 specs for a week and still be lost on the first real capture. This session is where it becomes permanent.',
+}
 
 const ICON_MAP = {
   Home, BookOpen, Database, Binary, Cpu, Radio, FileText, Globe, Settings, AlertTriangle, Wrench, Shield, FlaskConical,
@@ -42,11 +61,7 @@ function ChapterBattery({ status, nextChapter }) {
               className="flex-1 flex items-center justify-center relative"
               style={{
                 borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none',
-                background: status[cell.key]
-                  ? isComplete
-                    ? 'rgba(74,222,128,0.32)'
-                    : 'rgba(74,222,128,0.28)'
-                  : 'transparent',
+                background: status[cell.key] ? 'rgba(74,222,128,0.28)' : 'transparent',
                 transition: 'background 0.4s ease',
               }}
             >
@@ -64,9 +79,38 @@ function ChapterBattery({ status, nextChapter }) {
             </div>
           ))}
 
-          {/* Center label overlay — only when complete */}
+          {/* Left-to-right charging sweep — clipped to filled zone only */}
+          {filled > 0 && !isComplete && (
+            <div
+              className="absolute inset-y-0 left-0 overflow-hidden pointer-events-none"
+              style={{ width: `${(filled / 4) * 100}%`, zIndex: 10 }}
+            >
+              <motion.div
+                className="absolute inset-y-0"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(74,222,128,0.6) 50%, transparent 100%)',
+                  width: '50%',
+                }}
+                animate={{ x: ['-100%', '200%'] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut', repeatDelay: 0.6 }}
+              />
+            </div>
+          )}
+
+          {/* Completed: full green pulse + label */}
           {isComplete && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <motion.div
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              animate={{
+                background: [
+                  'rgba(74,222,128,0.18)',
+                  'rgba(74,222,128,0.38)',
+                  'rgba(74,222,128,0.18)',
+                ],
+              }}
+              transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ zIndex: 10 }}
+            >
               <span
                 className="text-xs font-black tracking-widest uppercase"
                 style={{
@@ -75,9 +119,9 @@ function ChapterBattery({ status, nextChapter }) {
                   textShadow: '0 0 12px rgba(74,222,128,0.7)',
                 }}
               >
-                ✓ COMPLETED
+                ✓ Completed
               </span>
-            </div>
+            </motion.div>
           )}
         </div>
 
@@ -92,18 +136,6 @@ function ChapterBattery({ status, nextChapter }) {
             transition: 'background 0.5s ease',
           }}
         />
-      </div>
-
-      {/* Cell legend */}
-      <div className="flex gap-4 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-        {cells.map((cell) => (
-          <span
-            key={cell.key}
-            style={{ color: status[cell.key] ? '#86efac' : 'rgba(255,255,255,0.25)' }}
-          >
-            {cell.label === 'Field' ? 'Field Scenarios' : `Level ${cell.label.slice(1)}`}
-          </span>
-        ))}
       </div>
 
       {/* Next Up card — shown when complete */}
@@ -128,6 +160,8 @@ export default function ChapterLayout({ chapterId, title, children, prev, next }
   const { markChapterVisited, markChapterComplete, getChapterStatus } = useProgress()
   const navigate = useNavigate()
   const status = getChapterStatus(chapterId)
+  const [retrievalChapter, setRetrievalChapter] = useState(null)
+  const [retrievalRevealed, setRetrievalRevealed] = useState(false)
 
   const chapter = CHAPTERS.find((c) => c.id === chapterId)
   const ChIcon = ICON_MAP[chapter?.icon] || BookOpen
@@ -136,6 +170,19 @@ export default function ChapterLayout({ chapterId, title, children, prev, next }
 
   useEffect(() => {
     markChapterVisited(chapterId)
+    localStorage.setItem(`ch_visited_${chapterId}`, String(Date.now()))
+
+    // Spaced retrieval: find a chapter visited 5+ days ago and surface a retrieval prompt
+    const fiveDaysMs = 5 * 86400000
+    const now = Date.now()
+    const stale = CHAPTERS.filter(c => c.id !== 'home' && c.id !== chapterId && CHAPTER_RETRIEVAL[c.id]).filter(c => {
+      const ts = parseInt(localStorage.getItem(`ch_visited_${c.id}`) || '0', 10)
+      return ts > 0 && (now - ts) >= fiveDaysMs
+    })
+    if (stale.length > 0) {
+      setRetrievalChapter(stale[Math.floor(Math.random() * stale.length)])
+    }
+
     window.scrollTo(0, 0)
   }, [chapterId])
 
@@ -170,10 +217,68 @@ export default function ChapterLayout({ chapterId, title, children, prev, next }
               style={{ background: 'linear-gradient(135deg, rgba(0,210,160,0.2), rgba(6,182,212,0.15))', border: '1px solid rgba(0,210,160,0.3)' }}>
               <ChIcon size={28} style={{ color: '#2dd4bf' }} />
             </div>
-            <h1 className="text-3xl font-black text-white leading-tight tracking-tight">{title}</h1>
+            <div>
+              <h1 className="text-3xl font-black text-white leading-tight tracking-tight">{title}</h1>
+              {READ_TIME[chapterId] && (
+                <div className="flex items-center gap-1.5 mt-1">
+                  <Clock size={11} style={{ color: 'rgba(45,212,191,0.5)' }} />
+                  <span className="text-xs" style={{ color: 'rgba(45,212,191,0.5)' }}>~{READ_TIME[chapterId]} min read</span>
+                </div>
+              )}
+            </div>
           </div>
+          {CHAPTER_STAKES[chapterId] && (
+            <p className="mt-3 text-sm italic leading-relaxed" style={{ color: 'rgba(45,212,191,0.55)' }}>
+              {CHAPTER_STAKES[chapterId]}
+            </p>
+          )}
           <div className="mt-4 h-px" style={{ background: 'linear-gradient(90deg, rgba(0,210,160,0.7), rgba(6,182,212,0.4), transparent)' }} />
         </div>
+
+        {/* Spaced retrieval banner — only when a chapter was visited 5+ days ago */}
+        {retrievalChapter && CHAPTER_RETRIEVAL[retrievalChapter.id] && (
+          <div className="rounded-xl p-4 mb-2" style={{ background: 'rgba(139,92,246,0.07)', border: '1px solid rgba(139,92,246,0.2)' }}>
+            <div className="flex items-center gap-2 mb-2">
+              <HelpCircle size={13} style={{ color: '#a78bfa' }} />
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: '#a78bfa' }}>
+                Retrieval Check — {retrievalChapter.label}
+              </span>
+              <span className="text-xs" style={{ color: 'rgba(167,139,250,0.5)' }}>It's been a while</span>
+            </div>
+            <p className="text-sm font-semibold text-slate-200 mb-2">{CHAPTER_RETRIEVAL[retrievalChapter.id].q}</p>
+            <AnimatePresence>
+              {retrievalRevealed ? (
+                <motion.p
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  className="text-sm font-mono"
+                  style={{ color: '#4ade80' }}
+                >
+                  {CHAPTER_RETRIEVAL[retrievalChapter.id].a}
+                </motion.p>
+              ) : (
+                <button
+                  onClick={() => setRetrievalRevealed(true)}
+                  className="text-xs font-semibold flex items-center gap-1"
+                  style={{ color: 'rgba(167,139,250,0.7)' }}
+                >
+                  <ChevronDown size={12} /> Reveal answer
+                </button>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+
+        {/* Opening hook — question before content */}
+        {CHAPTER_HOOKS[chapterId] && (
+          <div className="rounded-xl p-4 mb-2" style={{ background: 'rgba(45,212,191,0.05)', border: '1px solid rgba(45,212,191,0.15)' }}>
+            <div className="flex items-center gap-2 mb-1.5">
+              <HelpCircle size={13} style={{ color: 'rgba(45,212,191,0.6)' }} />
+              <span className="text-xs font-bold uppercase tracking-widest" style={{ color: 'rgba(45,212,191,0.5)' }}>Think First</span>
+            </div>
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(45,212,191,0.75)' }}>{CHAPTER_HOOKS[chapterId]}</p>
+          </div>
+        )}
 
         {/* Content */}
         <div className="space-y-6 text-slate-300 leading-relaxed">

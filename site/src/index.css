@@ -89,9 +89,10 @@ body::before {
     @apply flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-all duration-200 text-sm font-medium;
   }
   .chapter-nav-item.active {
+    color: #fbbf24;
     background: rgba(245,158,11,0.15);
     border: 1px solid rgba(245,158,11,0.35);
-    color: #fbbf24;
+    border-left: 3px solid #fbbf24;
     box-shadow: 0 0 12px rgba(245,158,11,0.15);
   }
   .chapter-nav-item:not(.active) {
@@ -99,9 +100,10 @@ body::before {
     border: 1px solid transparent;
   }
   .chapter-nav-item:not(.active):hover {
-    background: rgba(245,158,11,0.06);
+    background: rgba(245,158,11,0.09);
     border-color: rgba(245,158,11,0.15);
     color: #e2e8f0;
+    transition: background 120ms ease;
   }
 }
 

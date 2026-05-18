@@ -18,7 +18,7 @@ const ICON_MAP = {
 export default function Sidebar() {
   const [open, setOpen] = useState(false)
   const [showGuides, setShowGuides] = useState(false)
-  const [showChapters, setShowChapters] = useState(true)
+  const [showChapters, setShowChapters] = useState(false)
   const [showTraining, setShowTraining] = useState(false)
   const { getChapterStatus, overallProgress } = useProgress()
   const prog = overallProgress()

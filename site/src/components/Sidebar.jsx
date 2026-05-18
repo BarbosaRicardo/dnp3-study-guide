@@ -4,6 +4,7 @@ import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, Home, Radio, Layers, Lin
 import { CHAPTERS } from '../data/chapters'
 import { useProgress } from '../hooks/useProgress'
 import TrainingModal from './TrainingModal'
+import BadgeTray from './BadgeTray'
 
 const READ_TIME = {
   intro: 12, layers: 10, datalink: 12, appLayer: 14,
@@ -284,7 +285,8 @@ export default function Sidebar() {
               LIVE
             </span>
           </button>
-      </div>
+      </div>      <BadgeTray />
+
 
       {/* Footer */}
       <div className="p-4 space-y-3" style={{ borderTop: '1px solid rgba(245,158,11,0.12)' }}>

@@ -143,6 +143,13 @@ export default function Troubleshoot() {
       <FunFact index={8} />
 
       <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.troubleshoot} />
+      {/* IIN-P2P — survey/orphan audit 2026-06-11 */}
+      <div className="card mb-6">
+        <h3 className="text-lg font-bold text-white mb-2">The Restart Bit That Will Not Clear, and P2P Checkout</h3>
+        <p className="text-sm text-slate-300 leading-relaxed mb-2"><b>IIN1.7/IIN1.5 DEVICE_RESTART</b> set in every response — even right after the master clears it — means the outstation is restarting continuously. Stop debugging your polls and check the device: power, watchdog, firmware. The flag is doing its job.</p>
+        <p className="text-sm text-slate-300 leading-relaxed mb-2">And the commissioning term you will see on every survey line: the <b>P2P (point-to-point) checkout</b> — verify each point end-to-end against the point map (force at the outstation, confirm index, value, class, and timestamp at the master) before anyone calls a channel done.</p>
+      </div>
+
       <QuizLevels chapterId="troubleshoot" />
     </ChapterLayout>
   )

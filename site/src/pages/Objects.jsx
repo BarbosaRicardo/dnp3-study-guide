@@ -140,6 +140,12 @@ export default function Objects() {
       <FunFact index={9} />
 
       <ChapterExercise exercise={DNP3_CHAPTER_EXERCISES.objects} />
+      {/* FROZEN-COUNTERS — survey/orphan audit 2026-06-11 */}
+      <div className="card mb-6">
+        <h3 className="text-lg font-bold text-white mb-2">Frozen Counters</h3>
+        <p className="text-sm text-slate-300 leading-relaxed mb-2">A <b>frozen counter</b> (Group 21, commonly <b>G21V1</b>) is a counter value captured — \u201cfrozen\u201d — at a specific moment by a freeze command, while the running counter (Group 20) keeps counting. Energy and pulse accumulators use freeze-and-read so the master gets consistent interval values instead of racing a moving number.</p>
+      </div>
+
       <QuizLevels chapterId="objects" />
     </ChapterLayout>
   )

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { Menu, X, Zap, LayoutGrid, BookOpen, BarChart2, Home, Radio, Layers, Link, Package, FolderTree, Settings, Bell, Shield, Wrench, FlaskConical, FileText, ChevronDown, Network, Globe, Code2, Sliders, Server, LayoutDashboard, ScanSearch, GraduationCap, CheckCircle2 } from 'lucide-react'
 import { CHAPTERS } from '../data/chapters'
+import { isOnMatrix } from '../data/matrixMap'
 import { useProgress } from '../hooks/useProgress'
 import TrainingModal from './TrainingModal'
 import BadgeTray from './BadgeTray'
@@ -73,6 +74,13 @@ export default function Sidebar() {
               <span className="opacity-40 font-normal mr-1 text-xs">{prefix}</span>
             )}
             <span className="font-semibold">{topic}</span>
+            {isOnMatrix(ch.id) && (
+              <span
+                className="ml-1.5 align-middle inline-block w-1.5 h-1.5 rounded-full"
+                style={{ background: '#ffb454', boxShadow: '0 0 4px #ffb454' }}
+                title="On the company skills matrix"
+              />
+            )}
           </span>
           <div className="flex gap-0.5 flex-shrink-0 items-center">
             {status.completed ? (
